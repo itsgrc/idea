@@ -4,3 +4,5 @@ officina.db
 officina_test.db
 report-*.md
 CALENDARIO.md
+__pycache__/
+*.pyc
