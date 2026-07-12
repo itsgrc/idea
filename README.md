@@ -3,6 +3,8 @@
 > **Data analisi:** Luglio 2026
 > **Criteri:** rapporto tempi/costi, velocità di lancio, velocità di acquisizione clienti, potenziale di scala, probabilità di successo.
 
+> 🏭 **I progetti sono in sviluppo!** Ogni idea ha ora la sua cartella con README operativo, roadmap 90 giorni e prototipo funzionante: **[→ Dashboard dei 9 progetti](projects/README.md)**
+
 ---
 
 ## 📐 Metodologia di valutazione

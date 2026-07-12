@@ -1,0 +1,71 @@
+{
+  "nome": "Studio Dentistico Demo",
+  "orari": "lun-ven 9:00-19:00",
+  "stati": {
+    "saluto": {
+      "messaggio": "Studio Dentistico Demo, buongiorno! Sono l'assistente virtuale dello studio. Come posso aiutarla?",
+      "vai_a": "intento"
+    },
+    "intento": {
+      "intenti": {
+        "appuntamento": {
+          "parole": ["appuntamento", "prenotare", "prenotazione", "visita", "pulizia", "igiene", "controllo", "fissare"],
+          "vai_a": "raccolta_nome"
+        },
+        "urgenza": {
+          "parole": ["male", "dolore", "urgente", "urgenza", "rotto", "gonfiore", "sangue"],
+          "vai_a": "urgenza"
+        },
+        "info": {
+          "parole": ["orari", "aperto", "chiuso", "dove", "indirizzo", "costo", "prezzo", "quanto"],
+          "vai_a": "info"
+        }
+      },
+      "fallback": "Posso aiutarla a prenotare una visita, gestire un'urgenza o darle informazioni sullo studio. Cosa le serve?"
+    },
+    "urgenza": {
+      "messaggio": "Mi dispiace per il fastidio. Per le urgenze avviso subito il dottore: mi lascia il suo nome e la richiamiamo entro 15 minuti?",
+      "salva_in": "nome",
+      "azione": "notifica_urgente_titolare",
+      "vai_a": "chiusura_urgenza"
+    },
+    "chiusura_urgenza": {
+      "messaggio": "Perfetto {nome}, ho avvisato lo studio: la richiameranno entro 15 minuti a questo numero. Ha bisogno d'altro?",
+      "vai_a": "fine"
+    },
+    "info": {
+      "messaggio": "Lo studio è aperto {orari}, in via Roma 1. Per i costi serve una valutazione: vuole che le fissi una prima visita gratuita?",
+      "vai_a": "raccolta_nome_se_si"
+    },
+    "raccolta_nome_se_si": {
+      "intenti": {
+        "si": { "parole": ["sì", "si", "ok", "va bene", "certo", "volentieri"], "vai_a": "raccolta_nome" },
+        "no": { "parole": ["no", "non", "ci penso"], "vai_a": "fine_cortese" }
+      },
+      "fallback": "Mi dica pure: vuole che le fissi un appuntamento?"
+    },
+    "raccolta_nome": {
+      "messaggio": "Con piacere! Mi può dire il suo nome e cognome?",
+      "salva_in": "nome",
+      "vai_a": "raccolta_orario"
+    },
+    "raccolta_orario": {
+      "messaggio": "Grazie {nome}. Preferisce mattina o pomeriggio? Le propongo i primi orari liberi.",
+      "salva_in": "preferenza_orario",
+      "vai_a": "conferma"
+    },
+    "conferma": {
+      "messaggio": "Perfetto: ho segnato {nome}, preferenza {preferenza_orario}. Riceverà un SMS di conferma con data e ora esatte. Ha bisogno d'altro?",
+      "azione": "crea_appuntamento",
+      "vai_a": "fine"
+    },
+    "fine_cortese": {
+      "messaggio": "Nessun problema! Ci trova {orari}. Buona giornata!",
+      "terminale": true
+    },
+    "fine": {
+      "messaggio": "Grazie per aver chiamato lo Studio Dentistico Demo. Buona giornata!",
+      "terminale": true
+    }
+  }
+}
