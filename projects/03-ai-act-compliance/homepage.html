@@ -1,0 +1,155 @@
+<title>Conforme — Il tuo alleato per l'EU AI Act</title>
+<style>
+  :root{
+    --bg:#FFFFFF; --surface:#F5F7FA; --ink:#101B2D; --muted:#54627A;
+    --line:#D9E0EA; --navy:#1B2E4D; --gold:#B8860B; --gold-soft:#F7EFDC;
+    --alert:#9C2B2B;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0C1524; --surface:#14203442; --ink:#E6EBF4; --muted:#9AA8BE;
+    --line:#26344C; --navy:#D4DEF0; --gold:#F2C14E; --gold-soft:#2A2410;
+    --alert:#E58A8A;
+  }}
+  :root[data-theme="light"]{--bg:#FFFFFF;--surface:#F5F7FA;--ink:#101B2D;--muted:#54627A;--line:#D9E0EA;--navy:#1B2E4D;--gold:#B8860B;--gold-soft:#F7EFDC;--alert:#9C2B2B}
+  :root[data-theme="dark"]{--bg:#0C1524;--surface:#14203442;--ink:#E6EBF4;--muted:#9AA8BE;--line:#26344C;--navy:#D4DEF0;--gold:#F2C14E;--gold-soft:#2A2410;--alert:#E58A8A}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px}
+  a{color:var(--gold)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .serif{font-family:Georgia,"Times New Roman",serif}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 14px;font-weight:700}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,5.8vw,48px);line-height:1.12;font-weight:700;margin:0 0 16px;letter-spacing:-.01em;text-wrap:balance}
+  h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(21px,3.5vw,28px);margin:0 0 8px;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);max-width:58ch;margin:0 0 26px}
+  .hero{padding:64px 0 40px;border-bottom:3px double var(--line)}
+  .deadline{display:inline-flex;gap:10px;align-items:center;background:var(--gold-soft);border:1px solid var(--gold);border-radius:8px;padding:10px 16px;margin:0 0 22px;font-size:14px}
+  .deadline b{font-family:ui-monospace,Menlo,monospace;color:var(--gold)}
+  .cta{display:inline-block;background:var(--gold);color:#1B1503;text-decoration:none;font-weight:700;padding:13px 26px;border-radius:8px}
+  .cta.sec{background:transparent;color:var(--gold);border:2px solid var(--gold)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap}
+  .ctanote{font-size:13px;color:var(--muted);margin-top:12px}
+  section{padding:44px 0 10px}
+  .secnote{color:var(--muted);max-width:64ch;margin:0 0 24px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .risk{display:grid;grid-template-columns:14px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+  .risk i{width:14px;height:14px;border-radius:3px;margin-top:5px}
+  .risk b{display:block;font-size:15px}
+  .risk span{font-size:13.5px;color:var(--muted)}
+  .tbl{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  td.num{font-family:ui-monospace,Menlo,monospace;white-space:nowrap;color:var(--alert);font-weight:700}
+  .step{font-weight:700;color:var(--gold);font-size:13px;letter-spacing:.08em;display:block;margin-bottom:8px}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .price.hl{border:2px solid var(--gold)}
+  .price .tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+  .price .amount{font-size:28px;font-weight:800;font-family:ui-monospace,Menlo,monospace;display:block;margin:6px 0}
+  .price .amount small{font-size:13px;font-weight:400;color:var(--muted);font-family:system-ui,sans-serif}
+  .price p{font-size:14px;color:var(--muted);margin:6px 0 0}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:0 16px}
+  summary{cursor:pointer;font-weight:600;padding:14px 0;font-size:15px}
+  details p{margin:0 0 14px;font-size:14.5px;color:var(--muted)}
+  footer{border-top:3px double var(--line);margin-top:52px;padding:26px 0 44px}
+  footer p{font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Conforme · Adeguamento all'EU AI Act per il mid-market italiano</p>
+    <div class="deadline">⏱ <span>Obblighi per i sistemi ad alto rischio in applicazione da <b>agosto 2026</b></span></div>
+    <h1>L'AI Act è in vigore. Sai quali dei tuoi software ci ricadono?</h1>
+    <p class="lede">Se la tua azienda usa software con intelligenza artificiale — selezione del personale, valutazione clienti, chatbot, manutenzione predittiva — il Regolamento europeo 2024/1689 ti riguarda già. La maggior parte delle aziende non sa nemmeno quali dei propri sistemi sono coinvolti. Il nostro lavoro inizia esattamente da lì.</p>
+    <div class="ctarow">
+      <a class="cta" href="#percorso">Inizia dall'assessment gratuito</a>
+      <a class="cta sec" href="#rischi">Cosa prevede la legge</a>
+    </div>
+    <p class="ctanote">10 minuti, nessun impegno: scopri la classificazione preliminare dei tuoi sistemi.</p>
+  </div>
+</header>
+
+<main>
+<section id="rischi">
+  <div class="wrap">
+    <h2>I quattro livelli di rischio del Regolamento</h2>
+    <p class="secnote">L'AI Act classifica ogni sistema di intelligenza artificiale per livello di rischio. Gli obblighi — e le sanzioni — dipendono da questa classificazione.</p>
+    <div class="risk"><i style="background:#9C2B2B"></i><div><b>Pratiche vietate (art. 5)</b><span>Manipolazione dannosa, social scoring, riconoscimento emozioni sul lavoro. Vietate dal febbraio 2025.</span></div></div>
+    <div class="risk"><i style="background:#C87F1B"></i><div><b>Alto rischio (Allegato III)</b><span>Selezione del personale, credit scoring, accesso a servizi essenziali, dispositivi regolamentati. Il caso più comune — e più sottovalutato — nelle aziende italiane è il software HR.</span></div></div>
+    <div class="risk"><i style="background:#B8A11B"></i><div><b>Rischio trasparenza (art. 50)</b><span>Chatbot e contenuti generati: obbligo di dichiarare che si interagisce con un'AI e di marcare i contenuti sintetici.</span></div></div>
+    <div class="risk"><i style="background:#3E7A4E"></i><div><b>Rischio minimo</b><span>Nessun obbligo specifico — ma il sistema va comunque censito: la classificazione va rifatta a ogni modifica sostanziale.</span></div></div>
+
+    <div class="tbl" style="margin-top:22px"><table>
+      <tr><th>Violazione</th><th class="num">Sanzione massima</th></tr>
+      <tr><td>Pratiche vietate</td><td class="num">35 M€ o 7% del fatturato mondiale</td></tr>
+      <tr><td>Obblighi alto rischio</td><td class="num">15 M€ o 3% del fatturato mondiale</td></tr>
+      <tr><td>Informazioni scorrette alle autorità</td><td class="num">7,5 M€ o 1% del fatturato mondiale</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<section id="percorso">
+  <div class="wrap">
+    <h2>Il percorso verso la conformità</h2>
+    <p class="secnote">Dal primo assessment al monitoraggio continuo: costruiamo la documentazione che un'ispezione si aspetta di trovare.</p>
+    <div class="grid3">
+      <div class="card"><span class="step">1 · ASSESSMENT GRATUITO</span><h3>Sai dove sei</h3><p>Questionario guidato di 10 minuti: classificazione preliminare dei tuoi sistemi AI e prima mappa dei rischi.</p></div>
+      <div class="card"><span class="step">2 · AUDIT COMPLETO</span><h3>Registro e piano</h3><p>Registro dei Sistemi AI, classificazione formale, gap analysis e piano di adeguamento con priorità e scadenze.</p></div>
+      <div class="card"><span class="step">3 · MONITORAGGIO</span><h3>Resti conforme</h3><p>Il registro è un documento vivo: nuovi sistemi, modifiche, evoluzioni normative. Noi lo teniamo aggiornato, tu lavori sereno.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prezzi">
+  <div class="wrap">
+    <h2>Investimento</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA esclusa, per aziende da 50 a 5.000 dipendenti. L'importo esatto dipende dal numero di sistemi da valutare.</p>
+    <div class="prices">
+      <div class="price"><span class="tag">Assessment</span><span class="amount">Gratuito</span><p>Classificazione preliminare dei sistemi e report di sintesi. Senza impegno.</p></div>
+      <div class="price hl"><span class="tag">Audit completo</span><span class="amount">da 3.000 €<small> una tantum</small></span><p>Registro dei Sistemi AI, classificazione formale, gap analysis, piano di adeguamento, formazione di base del personale (art. 4).</p></div>
+      <div class="price"><span class="tag">Monitoraggio</span><span class="amount">da 500 €<small>/mese</small></span><p>Registro sempre aggiornato, classificazione dei nuovi sistemi, alert normativi, documentazione pronta per le ispezioni.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="wrap">
+    <h2>Perché noi</h2>
+    <div class="grid3">
+      <div class="card"><h3>Parliamo la tua lingua</h3><p>Normativa europea e decreti attuativi italiani, spiegati in italiano comprensibile. Niente report di 200 pagine che nessuno leggerà.</p></div>
+      <div class="card"><h3>Tecnici + legali</h3><p>La classificazione di un sistema AI è un problema tecnico E giuridico. Lavoriamo in coppia con studi legali specializzati: ognuno fa il suo mestiere.</p></div>
+      <div class="card"><h3>Il mid-market è la nostra casa</h3><p>Le grandi società di consulenza servono le multinazionali. Noi serviamo l'azienda da 50 a 5.000 persone che usa l'AI ma non ha un ufficio compliance dedicato.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Domande frequenti</h2>
+    <details><summary>Non sviluppiamo AI, la usiamo soltanto. Ci riguarda comunque?</summary><p>Sì: il Regolamento distingue tra provider (chi sviluppa) e deployer (chi usa). Anche come semplice utilizzatore hai obblighi specifici — sorveglianza umana, uso conforme alle istruzioni, in alcuni casi valutazione d'impatto. Il software HR comprato da un fornitore esterno è l'esempio classico.</p></details>
+    <details><summary>Quanto dura un audit?</summary><p>Per un'azienda mid-market tipica: circa due settimane, con un impegno di poche ore per i tuoi referenti. Il grosso del lavoro lo facciamo noi sui documenti e con interviste mirate.</p></details>
+    <details><summary>L'assessment gratuito che valore legale ha?</summary><p>Nessuno, ed è giusto dirlo chiaramente: è un pre-assessment informativo che ti dice dove guardare. La classificazione formale, opponibile in caso di controlli, arriva con l'audit completo validato dai professionisti abilitati.</p></details>
+    <details><summary>E se dall'audit emergono problemi seri?</summary><p>È il motivo per cui si fa l'audit: meglio scoprirli con noi che con un'ispezione. Il piano di adeguamento ordina gli interventi per rischio e costo, e si affronta un passo alla volta.</p></details>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap">
+    <h2>Agosto 2026 è già qui</h2>
+    <p class="secnote">Il servizio è in fase di lancio. L'assessment online e i canali di contatto vengono attivati con l'apertura al pubblico.</p>
+    <a class="cta" href="#contatti">Prenota l'assessment gratuito</a>
+    <p class="ctanote">Lancio: settembre 2026 · in partnership con studi legali specializzati in diritto delle nuove tecnologie</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «Conforme» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un servizio in fase di lancio: prezzi indicativi, IVA esclusa. I contenuti hanno finalità informativa e divulgativa e <b>non costituiscono consulenza legale</b>; la consulenza legale è resa esclusivamente da professionisti abilitati partner del progetto. Le sintesi normative sono semplificazioni del Reg. UE 2024/1689: fa fede unicamente il testo pubblicato in Gazzetta Ufficiale dell'Unione Europea.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento. Trattamento dati conforme al GDPR; informativa completa disponibile all'attivazione del servizio.</p>
+    <p>© 2026 Progetto Conforme — pagina dimostrativa.</p>
+  </div>
+</footer>

@@ -1,0 +1,142 @@
+<title>Cantiere Aperto — 9 business costruiti in pubblico, numeri veri</title>
+<style>
+  :root{
+    --bg:#FFFFFF; --surface:#F7F7F5; --ink:#141414; --muted:#5F5F5C;
+    --line:#E2E2DE; --red:#C22F2F; --red-ink:#A02020;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#141413; --surface:#1D1D1B; --ink:#EDEDEA; --muted:#A3A39E;
+    --line:#333330; --red:#E05252; --red-ink:#F07B7B;
+  }}
+  :root[data-theme="light"]{--bg:#FFFFFF;--surface:#F7F7F5;--ink:#141414;--muted:#5F5F5C;--line:#E2E2DE;--red:#C22F2F;--red-ink:#A02020}
+  :root[data-theme="dark"]{--bg:#141413;--surface:#1D1D1B;--ink:#EDEDEA;--muted:#A3A39E;--line:#333330;--red:#E05252;--red-ink:#F07B7B}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.65}
+  .wrap{max-width:840px;margin:0 auto;padding:0 20px}
+  a{color:var(--red-ink)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+  .sans{font-family:system-ui,"Segoe UI",Roboto,sans-serif}
+  .masthead{border-bottom:4px double var(--ink);padding:34px 0 18px;text-align:center}
+  .masthead .kicker{font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  .masthead h1{font-size:clamp(38px,8vw,68px);line-height:1;margin:0;font-weight:700;letter-spacing:-.01em}
+  .masthead .sub{font-style:italic;color:var(--muted);margin:12px 0 0;font-size:17px}
+  .hero{padding:44px 0 30px;text-align:center}
+  .hero h2{font-size:clamp(24px,4.5vw,36px);line-height:1.2;margin:0 0 16px;font-weight:700;text-wrap:balance}
+  .hero h2 em{color:var(--red)}
+  .lede{font-size:18px;color:var(--muted);max-width:56ch;margin:0 auto 26px}
+  .cta{display:inline-block;background:var(--red);color:#fff;text-decoration:none;font-weight:700;padding:13px 28px;border-radius:4px;font-family:system-ui,sans-serif;font-size:15.5px}
+  .ctanote{font-family:system-ui,sans-serif;font-size:13px;color:var(--muted);margin-top:12px}
+  section{padding:40px 0 6px}
+  h3.sec{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);border-top:1px solid var(--line);padding-top:14px;margin:0 0 18px;text-align:center}
+  .secnote{color:var(--muted);max-width:60ch;margin:0 auto 24px;text-align:center}
+  .pil{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .pil div{background:var(--bg);padding:20px 18px}
+  .pil b{display:block;font-size:17px;margin-bottom:6px}
+  .pil p{margin:0;font-size:14px;color:var(--muted);font-family:system-ui,sans-serif}
+  .pil .n{font-family:ui-monospace,Menlo,monospace;color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:8px}
+  .sample{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--red);padding:22px 26px;margin:0 0 14px}
+  .sample .d{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);letter-spacing:.06em;margin:0 0 6px;text-transform:uppercase}
+  .sample b{font-size:18px}
+  .sample p{margin:8px 0 0;font-size:15px;color:var(--muted)}
+  .promise{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .promise div{border-top:3px solid var(--ink);padding-top:12px}
+  .promise b{display:block;margin-bottom:4px;font-size:16px}
+  .promise p{margin:0;font-size:14px;color:var(--muted);font-family:system-ui,sans-serif}
+  .future{background:var(--surface);border:1px solid var(--line);padding:22px 26px}
+  .future ul{margin:10px 0 0;padding-left:20px;font-size:15px}
+  .future li{margin:6px 0}
+  .future li small{color:var(--muted);font-family:system-ui,sans-serif}
+  footer{border-top:4px double var(--ink);margin-top:52px;padding:26px 0 44px}
+  footer p{font-family:system-ui,sans-serif;font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="kicker">Newsletter settimanale · ogni sabato mattina</p>
+    <h1>Cantiere Aperto</h1>
+    <p class="sub">Nove business costruiti in pubblico. Numeri veri, fallimenti compresi.</p>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h2>I guru ti mostrano la villa.<br>Noi ti mostriamo <em>il cantiere</em>.</h2>
+    <p class="lede">Stiamo lanciando nove progetti — dal voice AI per dentisti al software per officine — e documentiamo tutto: quanto costa, cosa vende, cosa fallisce e perché. Nessun corso miracoloso. Solo il diario di bordo, ogni sabato, gratis.</p>
+    <a class="cta" href="#iscriviti">Leggi il cantiere ogni sabato — gratis</a>
+    <p class="ctanote">Niente spam, niente «ultima occasione», disiscrizione con un clic.</p>
+  </div>
+</div>
+
+<main>
+<section id="pilastri">
+  <div class="wrap">
+    <h3 class="sec">Cosa trovi ogni settimana</h3>
+    <div class="pil">
+      <div><span class="n">RUBRICA 01</span><b>📈 Numeri veri</b><p>Demo fatte, clienti firmati, euro incassati e spesi. La dashboard del portfolio, senza filtri e senza vanity metrics.</p></div>
+      <div><span class="n">RUBRICA 02</span><b>🔧 Come si fa</b><p>Il tutorial estratto dal lavoro vero della settimana: lo script di vendita, il codice, il processo. Tutto replicabile.</p></div>
+      <div><span class="n">RUBRICA 03</span><b>💡 L'analisi</b><p>Mercati, opportunità e l'angolo italiano che i contenuti americani non vedono. Con le fonti, sempre.</p></div>
+      <div><span class="n">RUBRICA 04</span><b>❌ L'errore della settimana</b><p>Cosa è andato storto e la lezione che ci ha lasciato. La rubrica che nessun guru avrà mai il coraggio di scrivere.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="esempi">
+  <div class="wrap">
+    <h3 class="sec">Dal diario di bordo — anteprime</h3>
+    <div class="sample">
+      <p class="d">Esempio · rubrica numeri veri</p>
+      <b>Settimana 3 del voice AI: 12 demo, 2 piloti, 0 euro.</b>
+      <p>Dodici studi dentistici hanno visto la demo. Due hanno firmato il pilota gratuito. Fatturato: zero, ed è giusto così — vi spieghiamo perché il pilota gratuito di 30 giorni è la scommessa, coi numeri del funnel completo.</p>
+    </div>
+    <div class="sample">
+      <p class="d">Esempio · rubrica errori</p>
+      <b>Abbiamo buttato una settimana su una funzione che nessuno voleva.</b>
+      <p>Sembrava geniale a noi. Alle officine, no. La lezione: chiedere prima di costruire — e la checklist di domande che da oggi facciamo sempre prima di scrivere una riga di codice.</p>
+    </div>
+    <p class="secnote" style="text-align:left;font-size:13.5px;font-family:system-ui,sans-serif">ℹ️ Questi riquadri sono esempi del formato editoriale: i numeri definitivi arrivano dal cantiere reale, settimana per settimana.</p>
+  </div>
+</section>
+
+<section id="patto">
+  <div class="wrap">
+    <h3 class="sec">Il patto con chi legge</h3>
+    <div class="promise">
+      <div><b>Nessuna promessa di guadagno</b><p>Non ti diremo mai «guadagna 10.000 € al mese». Ti mostriamo cosa succede davvero quando ci si prova, con i nostri soldi e il nostro tempo.</p></div>
+      <div><b>I fallimenti si pubblicano</b><p>Se un progetto muore, lo leggerai qui con l'autopsia completa. È l'informazione più preziosa che possiamo darti.</p></div>
+      <div><b>Le fonti si citano</b><p>Ogni dato di mercato ha il suo link. Se è una nostra stima, c'è scritto «stima». Sempre.</p></div>
+      <div><b>La tua email è sacra</b><p>Serve solo a spedirti la newsletter. Niente cessioni a terzi, niente funnel aggressivi, disiscrizione immediata.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prodotti">
+  <div class="wrap">
+    <h3 class="sec">E in futuro</h3>
+    <div class="future">
+      <p style="margin:0">La newsletter è e resterà gratuita. Quando il cantiere avrà prodotto abbastanza, arriveranno — solo per chi li vorrà:</p>
+      <ul>
+        <li><b>I template del cantiere</b> — gli strumenti che usiamo davvero, confezionati <small>· 29–49 €</small></li>
+        <li><b>Workshop dal vivo</b> — «lancia il tuo assistente vocale in 2 settimane» <small>· 149 €</small></li>
+        <li><b>Il corso completo</b> — solo dopo che il workshop avrà dimostrato di valere <small>· 390 €</small></li>
+      </ul>
+      <p style="margin:12px 0 0;font-size:13.5px;font-family:system-ui,sans-serif;color:var(--muted)">Prezzi indicativi, IVA inclusa dove applicabile. Nessun prodotto promette risultati economici: insegniamo un metodo, i risultati dipendono da chi lo applica e dal suo mercato.</p>
+    </div>
+  </div>
+</section>
+
+<section id="iscriviti">
+  <div class="wrap" style="text-align:center">
+    <h3 class="sec">Il cantiere apre ogni sabato</h3>
+    <p class="secnote">La newsletter è in fase di lancio: il modulo di iscrizione viene attivato a breve su questa pagina.</p>
+    <a class="cta" href="#iscriviti">Iscriviti — è gratis</a>
+    <p class="ctanote">Primo numero: autunno 2026</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «Cantiere Aperto» è un nome di progetto provvisorio, in fase di verifica di registrabilità come testata/marchio. I contenuti hanno finalità informativa e di intrattenimento e non costituiscono consulenza finanziaria, legale o di investimento. Nessun contenuto o prodotto promette o garantisce risultati economici: le esperienze documentate sono specifiche dei progetti descritti e non sono rappresentative di risultati altrui. I riquadri contrassegnati come esempio illustrano il formato editoriale.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento. L'iscrizione alla newsletter richiederà un consenso esplicito conforme al GDPR, con informativa completa al momento dell'attivazione.</p>
+    <p>© 2026 Progetto Cantiere Aperto — pagina dimostrativa.</p>
+  </div>
+</footer>

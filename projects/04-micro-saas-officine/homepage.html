@@ -1,0 +1,163 @@
+<title>Ponte — Il gestionale che parla la lingua dell'officina</title>
+<style>
+  :root{
+    --bg:#F4F4F2; --surface:#FFFFFF; --ink:#1B1D1F; --muted:#5C6166;
+    --line:#DCDDDA; --yellow:#F5B301; --yellow-ink:#8A6400; --dark:#232629;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#151719; --surface:#1E2124; --ink:#EAEBEC; --muted:#9CA1A7;
+    --line:#33373B; --yellow:#F5B301; --yellow-ink:#FFD35C; --dark:#0E1011;
+  }}
+  :root[data-theme="light"]{--bg:#F4F4F2;--surface:#FFFFFF;--ink:#1B1D1F;--muted:#5C6166;--line:#DCDDDA;--yellow:#F5B301;--yellow-ink:#8A6400;--dark:#232629}
+  :root[data-theme="dark"]{--bg:#151719;--surface:#1E2124;--ink:#EAEBEC;--muted:#9CA1A7;--line:#33373B;--yellow:#F5B301;--yellow-ink:#FFD35C;--dark:#0E1011}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  a{color:var(--yellow-ink)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+  .stripe{height:14px;background:repeating-linear-gradient(-45deg,var(--yellow) 0 18px,var(--dark) 18px 36px)}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow-ink);margin:0 0 12px;font-weight:700}
+  h1{font-size:clamp(32px,6.5vw,54px);line-height:1.04;letter-spacing:-.02em;font-weight:900;margin:0 0 16px;text-transform:uppercase;text-wrap:balance}
+  h1 mark{background:var(--yellow);color:#1B1D1F;padding:0 8px}
+  h2{font-size:clamp(21px,3.5vw,28px);font-weight:800;letter-spacing:-.01em;margin:0 0 8px;text-transform:uppercase;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);max-width:56ch;margin:0 0 26px}
+  .hero{padding:56px 0 40px}
+  .cta{display:inline-block;background:var(--yellow);color:#1B1D1F;text-decoration:none;font-weight:800;padding:14px 28px;border-radius:6px;text-transform:uppercase;font-size:15px;letter-spacing:.03em}
+  .cta.sec{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap}
+  .ctanote{font-size:13px;color:var(--muted);margin-top:12px}
+  .board{background:var(--dark);color:#F2F3F4;border-radius:12px;padding:20px;margin-top:34px;max-width:560px}
+  .board .bh{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);margin:0 0 12px}
+  .job{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #3A3E42;font-size:14px}
+  .job:last-child{border-bottom:0}
+  .plate{font-family:ui-monospace,Menlo,monospace;background:#F2F3F4;color:#1B1D1F;border-radius:4px;padding:2px 7px;font-weight:700;font-size:12.5px}
+  .st{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+  .st.a{background:#4A5158;color:#F2F3F4}.st.b{background:var(--yellow);color:#1B1D1F}.st.c{background:#3E7A4E;color:#fff}
+  section{padding:44px 0 10px}
+  .secnote{color:var(--muted);max-width:62ch;margin:0 0 24px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;border-top:4px solid var(--yellow)}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .card .soon{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:var(--line);border-radius:999px;padding:2px 8px;margin-bottom:8px;color:var(--muted)}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+  .price.hl{border:3px solid var(--yellow)}
+  .price .tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--yellow-ink)}
+  .price .amount{font-size:34px;font-weight:900;font-family:ui-monospace,Menlo,monospace;display:block;margin:6px 0;letter-spacing:-.02em}
+  .price .amount small{font-size:14px;font-weight:400;color:var(--muted);font-family:system-ui,sans-serif}
+  .price ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+  .price li{margin:4px 0}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin:0 0 10px;padding:0 16px}
+  summary{cursor:pointer;font-weight:700;padding:14px 0;font-size:15px}
+  details p{margin:0 0 14px;font-size:14.5px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:52px;padding:26px 0 44px}
+  footer p{font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+
+<div class="stripe" aria-hidden="true"></div>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Ponte · Gestionale per autofficine e carrozzerie</p>
+    <h1>Meno carta.<br>Meno telefono.<br><mark>Più officina.</mark></h1>
+    <p class="lede">Accettazione, preventivi, stati di lavorazione, consegna: tutto in uno strumento che si impara in un'ora, pensato per chi ha le mani sporche di grasso, non per chi sta in ufficio.</p>
+    <div class="ctarow">
+      <a class="cta" href="#prezzi">Provalo gratis 30 giorni</a>
+      <a class="cta sec" href="#funzioni">Cosa fa</a>
+    </div>
+    <p class="ctanote">Senza carta di credito · i tuoi dati restano tuoi · disdici quando vuoi</p>
+
+    <div class="board" role="img" aria-label="Esempio della lavagna digitale di officina">
+      <p class="bh">🔧 La tua officina, stamattina</p>
+      <div class="job"><span class="plate">AB 123 CD</span><span>Panda 1.2 · tagliando + pastiglie</span><span class="st b">In lavorazione</span></div>
+      <div class="job"><span class="plate">EF 456 GH</span><span>Golf 1.6 · frizione</span><span class="st a">Accettata</span></div>
+      <div class="job"><span class="plate">IL 789 MN</span><span>Ducato · revisione</span><span class="st c">Pronta → SMS inviato</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="problema">
+  <div class="wrap">
+    <h2>Il tempo perso non si fattura</h2>
+    <p class="secnote">Ogni giorno in officina se ne va un'ora buona tra telefonate di clienti che chiedono «è pronta?», preventivi scritti a mano e fogli che si perdono. Quell'ora, moltiplicata per un anno, è un mese di lavoro regalato.</p>
+    <div class="grid3">
+      <div class="card"><h3>📞 «È pronta la macchina?»</h3><p>La domanda che interrompe il lavoro dieci volte al giorno. Con l'SMS automatico alla consegna, sparisce.</p></div>
+      <div class="card"><h3>📄 Preventivi sulla carta</h3><p>Fogli che si perdono, cifre a memoria, discussioni alla cassa. Ogni intervento ha il suo preventivo scritto, sempre ritrovabile.</p></div>
+      <div class="card"><h3>🧠 Tutto in testa al titolare</h3><p>Chi ha portato cosa, cosa aspetta i ricambi, chi non ha pagato: la lavagna digitale lo sa al posto tuo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="funzioni">
+  <div class="wrap">
+    <h2>Cosa fa</h2>
+    <div class="grid3">
+      <div class="card"><h3>Accettazione in 30 secondi</h3><p>Targa, cliente, lavoro da fare. Dal telefono o dal PC, anche con le mani occupate.</p></div>
+      <div class="card"><h3>Stati di lavorazione</h3><p>Accettata → in lavorazione → pronta → consegnata. Tutta l'officina a colpo d'occhio, come una lavagna che si aggiorna da sola.</p></div>
+      <div class="card"><h3>SMS automatico al cliente</h3><p>«La sua auto è pronta»: parte da solo quando segni il lavoro come finito. Zero telefonate in meno... anzi, zero telefonate e basta.</p></div>
+      <div class="card"><h3>Storico per targa</h3><p>Ogni veicolo si porta dietro i suoi lavori: cosa è stato fatto, quando, per quanto. Il tagliando scaduto te lo dice lui.</p></div>
+      <div class="card"><h3>Riepilogo serale</h3><p>Quanto c'è in officina, quanto è stato incassato, cosa è fermo in attesa ricambi. Il numero che guardi mentre chiudi la saracinesca.</p></div>
+      <div class="card"><span class="soon">In arrivo</span><h3>Preventivo dalla foto</h3><p>Fotografi il danno, l'AI prepara la bozza del preventivo. La stiamo costruendo con le officine pilota.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prezzi">
+  <div class="wrap">
+    <h2>Prezzi da officina, non da software house</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA esclusa. Meno di quanto costa un'ora di manodopera al mese.</p>
+    <div class="prices">
+      <div class="price">
+        <span class="tag">Base</span>
+        <span class="amount">49 €<small>/mese</small></span>
+        <ul><li>Accettazione e stati di lavorazione</li><li>Storico clienti e veicoli</li><li>Preventivi e importi</li><li>1–2 postazioni</li></ul>
+      </div>
+      <div class="price hl">
+        <span class="tag">Pro · consigliato</span>
+        <span class="amount">99 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Base</li><li>SMS automatici ai clienti</li><li>Agenda appuntamenti</li><li>Riepilogo serale e report</li></ul>
+      </div>
+      <div class="price">
+        <span class="tag">AI</span>
+        <span class="amount">199 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Pro</li><li>Preventivo dalla foto (in arrivo)</li><li>Richiami tagliando automatici</li><li>Priorità sulle nuove funzioni</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="wrap">
+    <h2>Costruito in officina, non in ufficio</h2>
+    <p class="secnote">Ponte nasce con un gruppo di officine pilota che lo usano ogni giorno e ci dicono senza giri di parole cosa funziona e cosa no. Se cerchi un gestionale con 400 funzioni che non userai mai, non siamo noi. Se cerchi quello che ti fa chiudere prima la sera, parliamone.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Domande dirette, risposte dirette</h2>
+    <details><summary>Non sono pratico di computer. Ce la faccio?</summary><p>Se usi WhatsApp, usi Ponte. L'abbiamo progettato per essere usato dal telefono, con i guanti da lavoro appena tolti. E l'attivazione la facciamo insieme, non ti lasciamo da solo.</p></details>
+    <details><summary>I miei dati dove finiscono?</summary><p>Su server in Europa, trattati secondo il GDPR. Sono tuoi: puoi esportarli o cancellarli quando vuoi, anche se decidi di andartene. Nessun vincolo, nessun ricatto.</p></details>
+    <details><summary>Ho già un gestionale della casa madre / di fatturazione.</summary><p>Ponte non sostituisce la fatturazione: gestisce il lavoro di officina, che è la parte che oggi vive su carta e memoria. Convivono benissimo.</p></details>
+    <details><summary>Quanto ci vuole a partire?</summary><p>Un'ora per la configurazione iniziale, insieme a noi. Da domattina accetti la prima auto con Ponte.</p></details>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap">
+    <h2>Entra tra le officine pilota</h2>
+    <p class="secnote">Stiamo selezionando le prime officine pilota: useranno Ponte gratis e decideranno con noi le prossime funzioni. I canali di contatto vengono attivati con l'apertura del programma.</p>
+    <a class="cta" href="#contatti">Candidati come officina pilota</a>
+    <p class="ctanote">Programma pilota: autunno 2026 · posti limitati per seguirvi davvero</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «Ponte» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un software in fase di sviluppo con programma pilota: prezzi indicativi, IVA esclusa; le funzioni contrassegnate «in arrivo» non sono ancora disponibili e le tempistiche possono variare. Le funzioni basate su intelligenza artificiale saranno chiaramente indicate come tali nell'interfaccia. Trattamento dati conforme al GDPR su infrastruttura UE; informativa completa disponibile all'attivazione.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento.</p>
+    <p>© 2026 Progetto Ponte — pagina dimostrativa.</p>
+  </div>
+</footer>
+<div class="stripe" aria-hidden="true"></div>

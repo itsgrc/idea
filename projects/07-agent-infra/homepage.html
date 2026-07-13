@@ -1,0 +1,158 @@
+<title>AgentLens — La scatola nera dei tuoi agenti AI</title>
+<style>
+  /* Tema unico scuro: scelta deliberata — è un dev tool, vive nel terminale. */
+  :root{
+    --bg:#0B0E14; --panel:#12161F; --panel2:#171C28; --ink:#C7D2E0; --bright:#EDF2F8;
+    --muted:#7D8A9C; --line:#232B3A; --green:#7EE787; --violet:#A78BFA; --amber:#E3B341;
+    --red:#F47067;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;line-height:1.65;font-size:15px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  a{color:var(--green)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet);margin:0 0 14px}
+  h1{font-family:system-ui,"Segoe UI",sans-serif;font-size:clamp(30px,6vw,50px);line-height:1.08;letter-spacing:-.025em;font-weight:800;margin:0 0 16px;color:var(--bright);text-wrap:balance}
+  h1 em{font-style:normal;color:var(--green)}
+  h2{font-family:system-ui,sans-serif;font-size:clamp(20px,3.4vw,27px);letter-spacing:-.015em;margin:0 0 8px;color:var(--bright);text-wrap:balance}
+  .lede{font-family:system-ui,sans-serif;font-size:17px;color:var(--muted);max-width:58ch;margin:0 0 26px}
+  .hero{padding:60px 0 40px}
+  .cta{display:inline-block;background:var(--green);color:#08110A;text-decoration:none;font-weight:700;padding:12px 24px;border-radius:8px;font-family:system-ui,sans-serif;font-size:15px}
+  .cta.sec{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap}
+  .ctanote{font-size:12.5px;color:var(--muted);margin-top:12px}
+  .term{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:34px;overflow:hidden}
+  .tbar{display:flex;gap:6px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel2)}
+  .tbar i{width:11px;height:11px;border-radius:50%;background:var(--line)}
+  .tbar i:first-child{background:var(--red)}.tbar i:nth-child(2){background:var(--amber)}.tbar i:nth-child(3){background:var(--green)}
+  .tbar span{margin-left:8px;font-size:12px;color:var(--muted)}
+  .tbody{padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.7}
+  .tbody .c{color:var(--muted)} .tbody .g{color:var(--green)} .tbody .v{color:var(--violet)} .tbody .a{color:var(--amber)} .tbody .r{color:var(--red)}
+  .tbody pre{margin:0;white-space:pre}
+  section{padding:44px 0 10px}
+  .secnote{font-family:system-ui,sans-serif;color:var(--muted);max-width:62ch;margin:0 0 24px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .card h3{font-family:system-ui,sans-serif;margin:0 0 6px;font-size:15.5px;color:var(--bright)}
+  .card p{font-family:system-ui,sans-serif;margin:0;font-size:13.5px;color:var(--muted)}
+  .q{color:var(--violet);font-size:13px;display:block;margin-bottom:8px}
+  .code{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;overflow-x:auto;font-size:13px;line-height:1.7}
+  .code pre{margin:0;white-space:pre}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .price{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+  .price.hl{border-color:var(--green)}
+  .price .tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--violet)}
+  .price .amount{font-family:system-ui,sans-serif;font-size:30px;font-weight:800;color:var(--bright);display:block;margin:6px 0}
+  .price .amount small{font-size:13px;font-weight:400;color:var(--muted)}
+  .price ul{font-family:system-ui,sans-serif;margin:8px 0 0;padding-left:18px;font-size:13.5px;color:var(--muted)}
+  .price li{margin:4px 0}
+  details{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:0 16px}
+  summary{cursor:pointer;font-weight:600;padding:13px 0;font-size:14px;color:var(--bright);font-family:system-ui,sans-serif}
+  details p{font-family:system-ui,sans-serif;margin:0 0 14px;font-size:14px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:52px;padding:26px 0 44px}
+  footer p{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">AgentLens · Observability per agenti AI in produzione</p>
+    <h1>Quando il tuo agente sbaglia,<br><em>sai dirmi perché?</em></h1>
+    <p class="lede">Gli agenti AI in produzione prendono decisioni, chiamano tool, spendono token. AgentLens registra ogni step e risponde alle tre domande che contano: cos'ha fatto, quanto è costato, dove ha sbagliato. In Europa, quei log sono anche un obbligo di legge.</p>
+    <div class="ctarow">
+      <a class="cta" href="#quickstart">pip install → 3 righe → tracce</a>
+      <a class="cta sec" href="#cloud">Cloud in beta</a>
+    </div>
+    <p class="ctanote">Tracer open source (MIT) · zero dipendenze · i dati restano tuoi</p>
+
+    <div class="term">
+      <div class="tbar" aria-hidden="true"><i></i><i></i><i></i><span>agentlens report tracce.jsonl</span></div>
+      <div class="tbody"><pre>
+<span class="c">🔍 AgentLens — report su tracce.jsonl</span>
+══════════════════════════════════════════════════════
+Esecuzioni: <span class="g">5</span>   riuscite: <span class="g">5/5</span>   costo totale: <span class="a">0.1252 €</span>
+Costo medio per esecuzione: <span class="a">0.0250 €</span>
+
+step          n    p50 ms   p95 ms   errori   costo €
+──────────────────────────────────────────────────────
+<span class="v">llm</span>          15        54       72        0    0.1252
+<span class="v">stt</span>           5        22       30        0    0.0000
+<span class="v">tool</span>          5        19       32        <span class="r">1</span>    0.0000
+<span class="c">fallback      1         0        0        0    0.0000</span>
+
+<span class="c">💡 Ogni riga con errori > 0 è un ticket di supporto</span>
+<span class="c">   evitato — se lo vedi prima tu.</span></pre></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="domande">
+  <div class="wrap">
+    <h2>Le domande a cui rispondiamo</h2>
+    <div class="grid3">
+      <div class="card"><span class="q">// accountability</span><h3>«Perché l'agente ha detto questo al cliente?»</h3><p>Ogni decisione ha la sua traccia: prompt, versione, contesto, output. Ricostruisci qualsiasi esecuzione, anche di tre mesi fa.</p></div>
+      <div class="card"><span class="q">// unit economics</span><h3>«Quanto mi costa l'agente, per cliente?»</h3><p>Costi per esecuzione, per step e per cliente. Il margine del tuo prodotto AI smette di essere una stima.</p></div>
+      <div class="card"><span class="q">// iterazione</span><h3>«La v3 del prompt è meglio della v2?»</h3><p>Confronta versioni su latenza, errori e costo con dati di produzione, non sensazioni.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="aiact">
+  <div class="wrap">
+    <h2>Il log che è anche un obbligo di legge</h2>
+    <p class="secnote">Per i sistemi AI ad alto rischio, l'EU AI Act (art. 12) richiede la registrazione automatica degli eventi. Se operi in Europa, la scatola nera non è un nice-to-have: è compliance. AgentLens produce log strutturati e report pronti da allegare alla documentazione tecnica — debugging e conformità con lo stesso strumento.</p>
+  </div>
+</section>
+
+<section id="quickstart">
+  <div class="wrap">
+    <h2>Quickstart — 3 righe, davvero</h2>
+    <div class="code"><pre>
+<span style="color:var(--muted)"># il tracer è un singolo file, zero dipendenze</span>
+<span style="color:var(--violet)">from</span> agentlens <span style="color:var(--violet)">import</span> Trace
+
+<span style="color:var(--violet)">with</span> Trace(<span style="color:var(--green)">"receptionist"</span>) <span style="color:var(--violet)">as</span> t:
+    <span style="color:var(--violet)">with</span> t.step(<span style="color:var(--green)">"llm"</span>, model=<span style="color:var(--green)">"claude"</span>, prompt_version=<span style="color:var(--green)">"v3"</span>) <span style="color:var(--violet)">as</span> s:
+        risposta = chiama_il_modello(prompt)
+        s.done(tokens_in=<span style="color:var(--amber)">1200</span>, cost_eur=<span style="color:var(--amber)">0.011</span>)</pre></div>
+    <p class="secnote" style="margin-top:14px">Ogni step finisce in un JSONL locale: niente lock-in, niente dati spediti a terzi. Il report CLI è gratuito per sempre.</p>
+  </div>
+</section>
+
+<section id="cloud">
+  <div class="wrap">
+    <h2>Open source al centro, cloud per chi cresce</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA esclusa. Il tracer resta MIT per sempre: paghi solo dashboard, retention e report di conformità.</p>
+    <div class="prices">
+      <div class="price"><span class="tag">Open source</span><span class="amount">0 €<small> · MIT</small></span><ul><li>Tracer completo, un file</li><li>Report CLI</li><li>JSONL locale, dati tuoi</li></ul></div>
+      <div class="price hl"><span class="tag">Team · beta</span><span class="amount">49 €<small>/mese</small></span><ul><li>Dashboard hosted (UE)</li><li>Retention 90 giorni</li><li>Alert su errori e costi</li><li>5 progetti</li></ul></div>
+      <div class="price"><span class="tag">Compliance</span><span class="amount">249 €<small>/mese</small></span><ul><li>Tutto il piano Team</li><li>Retention 24 mesi</li><li>Report AI Act art. 12 esportabili</li><li>Audit log immutabile</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>FAQ</h2>
+    <details><summary>Perché non usare l'observability APM che ho già?</summary><p>Gli APM tracciano richieste HTTP, non decisioni: non sanno cosa sia un prompt, una versione, un costo per token o un fallback. AgentLens è nato per il livello semantico degli agenti — e convive benissimo con il tuo APM.</p></details>
+    <details><summary>I dati delle tracce dove vanno?</summary><p>Con il tracer open source: restano sul tuo disco, punto. Con il cloud: su infrastruttura nell'UE, cifrati, con export e cancellazione self-service. Le tracce possono contenere dati personali dei tuoi utenti: il contratto include il DPA ex art. 28 GDPR.</p></details>
+    <details><summary>Supportate il mio framework di agenti?</summary><p>Il tracer è volutamente framework-agnostic: se il tuo codice può chiamare un context manager Python, può tracciare. Integrazioni dedicate per i framework più usati sono sulla roadmap pubblica.</p></details>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap">
+    <h2>La beta apre presto</h2>
+    <p class="secnote">Il tracer open source è già nel repository del progetto. La dashboard cloud è in beta privata: i canali di iscrizione vengono attivati a breve.</p>
+    <a class="cta" href="#contatti">Richiedi accesso alla beta</a>
+    <p class="ctanote">Beta: autunno 2026 · primi 20 team · feedback diretto sul prodotto</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «AgentLens» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un software in fase di sviluppo: prezzi indicativi, IVA esclusa; funzioni e tempistiche possono variare. I riferimenti all'EU AI Act (Reg. UE 2024/1689) hanno finalità informativa e non costituiscono consulenza legale: la valutazione degli obblighi applicabili al tuo sistema richiede analisi specifica. L'output di esempio nel terminale proviene dalla demo pubblica del tracer.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento.</p>
+    <p>© 2026 Progetto AgentLens — pagina dimostrativa.</p>
+  </div>
+</footer>

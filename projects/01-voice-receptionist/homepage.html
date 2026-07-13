@@ -1,0 +1,191 @@
+<title>Rispondo — La segreteria AI che non perde una chiamata</title>
+<style>
+  :root{
+    --bg:#F7F9FB; --surface:#FFFFFF; --ink:#12263A; --muted:#5A6B7C;
+    --line:#DCE4EC; --accent:#E4572E; --accent-ink:#C2401C; --teal:#14757A;
+    --soft:#FDEEE8;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0D1B29; --surface:#132436; --ink:#E8EEF4; --muted:#93A6B8;
+    --line:#24384C; --accent:#FF7A50; --accent-ink:#FF9873; --teal:#3FB3B9;
+    --soft:#27201E;
+  }}
+  :root[data-theme="light"]{--bg:#F7F9FB;--surface:#FFFFFF;--ink:#12263A;--muted:#5A6B7C;--line:#DCE4EC;--accent:#E4572E;--accent-ink:#C2401C;--teal:#14757A;--soft:#FDEEE8}
+  :root[data-theme="dark"]{--bg:#0D1B29;--surface:#132436;--ink:#E8EEF4;--muted:#93A6B8;--line:#24384C;--accent:#FF7A50;--accent-ink:#FF9873;--teal:#3FB3B9;--soft:#27201E}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.6;font-size:16px}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  a{color:var(--accent-ink)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .eyebrow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 12px}
+  h1{font-size:clamp(30px,6vw,50px);line-height:1.08;letter-spacing:-.025em;font-weight:800;margin:0 0 16px;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--accent)}
+  h2{font-size:clamp(21px,3.5vw,28px);letter-spacing:-.015em;margin:0 0 8px;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);max-width:56ch;margin:0 0 26px}
+  .hero{padding:64px 0 40px}
+  .wave{display:flex;gap:5px;align-items:flex-end;height:42px;margin:0 0 26px}
+  .wave i{width:6px;border-radius:3px;background:var(--accent);animation:w 1.1s ease-in-out infinite alternate}
+  .wave i:nth-child(2n){background:var(--teal);animation-duration:.9s}
+  .wave i:nth-child(3n){animation-duration:1.4s}
+  @keyframes w{from{height:22%}to{height:100%}}
+  @media (prefers-reduced-motion:reduce){.wave i{animation:none;height:60%}}
+  .cta{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;padding:13px 26px;border-radius:10px;font-size:16px}
+  .cta.sec{background:transparent;color:var(--accent-ink);border:2px solid var(--accent)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .ctanote{font-size:13px;color:var(--muted)}
+  .phone{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;max-width:480px;margin:34px 0 0;box-shadow:0 2px 10px rgba(18,38,58,.07)}
+  .phone .ph-h{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px;font-family:ui-monospace,Menlo,monospace}
+  .msg{max-width:85%;padding:9px 13px;border-radius:12px;margin:7px 0;font-size:14.5px}
+  .msg.ai{background:var(--soft);border-bottom-left-radius:4px}
+  .msg.user{background:var(--bg);border:1px solid var(--line);margin-left:auto;border-bottom-right-radius:4px}
+  section{padding:44px 0 10px}
+  .secnote{color:var(--muted);max-width:62ch;margin:0 0 24px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .step{font-family:ui-monospace,Menlo,monospace;color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.08em;display:block;margin-bottom:8px}
+  .big{font-size:clamp(26px,5vw,40px);font-weight:800;letter-spacing:-.02em;color:var(--accent)}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;align-items:stretch}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:6px}
+  .price.hl{border:2px solid var(--accent)}
+  .price .tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+  .price .amount{font-size:34px;font-weight:800;letter-spacing:-.02em;font-family:ui-monospace,Menlo,monospace}
+  .price .amount small{font-size:14px;font-weight:400;color:var(--muted);font-family:system-ui,sans-serif}
+  .price ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+  .price li{margin:4px 0}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:0 16px}
+  summary{cursor:pointer;font-weight:600;padding:14px 0;font-size:15px}
+  details p{margin:0 0 14px;font-size:14.5px;color:var(--muted)}
+  .impegni{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .imp{border-left:3px solid var(--teal);padding:4px 0 4px 16px}
+  .imp b{display:block;margin-bottom:3px}
+  .imp span{font-size:14px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:52px;padding:26px 0 44px}
+  footer p{font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+  .tbl{overflow-x:auto}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Rispondo · Segreteria telefonica AI per attività locali</p>
+    <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <h1>Il tuo telefono non squilla più <em>a vuoto</em>.</h1>
+    <p class="lede">Un'assistente vocale con intelligenza artificiale risponde quando tu non puoi: pausa pranzo, sera, weekend, poltrona occupata. Fissa gli appuntamenti, gestisce le urgenze e ti manda tutto su WhatsApp.</p>
+    <div class="ctarow">
+      <a class="cta" href="#prezzi">Prova 30 giorni senza impegno</a>
+      <a class="cta sec" href="#come">Come funziona</a>
+    </div>
+    <p class="ctanote" style="margin-top:12px">Nessun costo di attivazione · il tuo centralino non si tocca · disdici quando vuoi</p>
+
+    <div class="phone" role="img" aria-label="Esempio di conversazione gestita dall'assistente">
+      <p class="ph-h">📞 Esempio reale di conversazione · sabato, ore 18:42</p>
+      <p class="msg ai">Studio Dentistico, buonasera! Sono l'assistente virtuale dello studio. Come posso aiutarla?</p>
+      <p class="msg user">Volevo prenotare una pulizia dei denti…</p>
+      <p class="msg ai">Con piacere! Mi dice il suo nome? Le propongo i primi orari liberi della settimana.</p>
+      <p class="msg user">Maria Bianchi, meglio il pomeriggio.</p>
+      <p class="msg ai">Perfetto Maria: martedì 16:30. Riceverà subito un SMS di conferma. Buona serata!</p>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="problema">
+  <div class="wrap">
+    <h2>Ogni chiamata persa è un cliente che chiama il concorrente</h2>
+    <p class="secnote">Le attività locali ricevono chiamate soprattutto quando non possono rispondere: all'ora di pranzo, dopo la chiusura, mentre stanno lavorando. Chi non riceve risposta raramente richiama: prova il numero successivo su Google.</p>
+    <div class="grid3">
+      <div class="card"><h3>🕐 Fuori orario</h3><p>Sera, weekend e festivi: proprio quando i tuoi clienti hanno tempo di chiamare, tu hai chiuso.</p></div>
+      <div class="card"><h3>🙌 Mani occupate</h3><p>Sei al lavoro su un cliente: il telefono squilla, non puoi staccare, la chiamata cade nel vuoto.</p></div>
+      <div class="card"><h3>📵 Nessun recupero</h3><p>La segreteria tradizionale non fissa appuntamenti: registra un messaggio che spesso nessuno lascia.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="come">
+  <div class="wrap">
+    <h2>Come funziona</h2>
+    <p class="secnote">Attivazione in meno di due ore. Il tuo numero e il tuo centralino restano esattamente come sono.</p>
+    <div class="grid3">
+      <div class="card"><span class="step">PASSO 1</span><h3>Configuriamo insieme</h3><p>Orari, servizi, domande frequenti, tono di voce. L'assistente parla della TUA attività, non a caso.</p></div>
+      <div class="card"><span class="step">PASSO 2</span><h3>Deviazione intelligente</h3><p>Su occupato o senza risposta, la chiamata passa all'assistente AI. Se rispondi tu, lei non interviene mai.</p></div>
+      <div class="card"><span class="step">PASSO 3</span><h3>Tutto su WhatsApp</h3><p>Appuntamento fissato, urgenza segnalata, richiesta annotata: ti arriva subito una notifica con il riepilogo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="report">
+  <div class="wrap">
+    <h2>Ogni mese, il numero che conta</h2>
+    <p class="secnote">Il report mensile ti dice esattamente cosa ha recuperato l'assistente: chiamate gestite fuori orario, appuntamenti fissati e valore stimato. Se non ti conviene, lo vedi dai numeri — e disdici.</p>
+    <div class="grid3">
+      <div class="card"><p class="big">24/7</p><p>Risponde sempre: notte, festivi, agosto compreso.</p></div>
+      <div class="card"><p class="big">&lt;2 h</p><p>Tempo di attivazione, senza toccare il tuo impianto.</p></div>
+      <div class="card"><p class="big">100%</p><p>Delle conversazioni riepilogate per iscritto su WhatsApp.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prezzi">
+  <div class="wrap">
+    <h2>Prezzi semplici, zero sorprese</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA esclusa. Nessun costo di attivazione, nessun vincolo di durata.</p>
+    <div class="prices">
+      <div class="price">
+        <span class="tag">Base</span>
+        <span class="amount">250 €<small>/mese</small></span>
+        <ul><li>Risposta 24/7 con AI</li><li>Appuntamenti in agenda</li><li>Notifiche WhatsApp</li><li>Gestione urgenze</li></ul>
+      </div>
+      <div class="price hl">
+        <span class="tag">Pro · consigliato</span>
+        <span class="amount">350 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Base</li><li>Promemoria e richiami clienti</li><li>Report mensile con valore recuperato</li><li>Assistenza prioritaria</li></ul>
+      </div>
+      <div class="price">
+        <span class="tag">A risultato</span>
+        <span class="amount">20 €<small>/appuntamento fissato</small></span>
+        <ul><li>Zero canone fisso</li><li>Paghi solo ciò che l'assistente produce</li><li>Ideale per iniziare senza rischi</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="impegni">
+  <div class="wrap">
+    <h2>I nostri impegni</h2>
+    <div class="impegni">
+      <div class="imp"><b>Prova vera di 30 giorni</b><span>Se nel primo mese l'assistente non ti porta valore misurabile, non paghi nulla e la spegniamo.</span></div>
+      <div class="imp"><b>Trasparenza totale</b><span>L'assistente si presenta sempre come assistente virtuale: i tuoi clienti sanno con chi parlano, come previsto dalla normativa europea sull'AI.</span></div>
+      <div class="imp"><b>I dati restano in Europa</b><span>Conversazioni trattate su infrastruttura UE nel rispetto del GDPR; conserviamo solo i riepiloghi necessari al servizio.</span></div>
+      <div class="imp"><b>Nessun vincolo</b><span>Contratto mensile, disdici quando vuoi. Se non funziona per te, non deve costarti nulla scoprirlo.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Domande frequenti</h2>
+    <details><summary>Sostituisce la mia segretaria?</summary><p>No: lavora quando lei non c'è — pranzo, sera, weekend, picchi di chiamate. Non sostituisce nessuno, raccoglie quello che oggi va perso.</p></details>
+    <details><summary>E se il cliente vuole parlare con una persona?</summary><p>L'assistente lo dice subito e prende nota: tu ricevi la notifica e richiami appena puoi. Le urgenze vengono segnalate immediatamente.</p></details>
+    <details><summary>Capisce il dialetto o gli accenti?</summary><p>L'assistente è progettata per l'italiano parlato reale. Nei casi in cui non capisce, chiede gentilmente di ripetere e, se serve, passa la richiesta a te senza far perdere il cliente.</p></details>
+    <details><summary>Devo cambiare numero o operatore?</summary><p>No. Si attiva una semplice deviazione di chiamata «su occupato / senza risposta»: tutto il resto rimane com'è, e puoi disattivarla in qualsiasi momento.</p></details>
+    <details><summary>Cosa succede ai dati delle telefonate?</summary><p>Vengono trattati in conformità al GDPR su infrastruttura europea. Conserviamo i riepiloghi degli appuntamenti e delle richieste; le registrazioni audio non vengono conservate oltre il tempo tecnico necessario.</p></details>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap">
+    <h2>Parti questa settimana</h2>
+    <p class="secnote">Il servizio è in fase di lancio nella prima area pilota. I canali di contatto e la lista d'attesa vengono attivati con l'apertura al pubblico.</p>
+    <a class="cta" href="#contatti">Entra in lista d'attesa</a>
+    <p class="ctanote" style="margin-top:10px">Lancio: autunno 2026 · prima nicchia: studi dentistici</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «Rispondo» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un servizio in fase di lancio: prezzi indicativi, IVA esclusa; le caratteristiche possono variare alla disponibilità commerciale. Il servizio utilizza intelligenza artificiale e lo dichiara sempre ai chiamanti (Reg. UE 2024/1689, art. 50). Trattamento dati conforme al GDPR (Reg. UE 2016/679); informativa privacy completa disponibile all'attivazione del servizio.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento. Nessun dato personale viene raccolto dalla navigazione.</p>
+    <p>© 2026 Progetto Rispondo — pagina dimostrativa.</p>
+  </div>
+</footer>

@@ -1,0 +1,170 @@
+<title>TrovaBandi — I contributi pubblici, senza il mal di testa</title>
+<style>
+  :root{
+    --bg:#F2F4F0; --surface:#FFFFFF; --ink:#1C2B24; --muted:#5D6E63;
+    --line:#D8DFD8; --green:#1E7A46; --green-ink:#166437; --gold:#9A7B2D;
+    --soft:#E8F2EB;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#101613; --surface:#18211C; --ink:#E3EAE4; --muted:#94A498;
+    --line:#2B372F; --green:#4CBF7F; --green-ink:#7BD6A4; --gold:#D3AF5E;
+    --soft:#1C2B22;
+  }}
+  :root[data-theme="light"]{--bg:#F2F4F0;--surface:#FFFFFF;--ink:#1C2B24;--muted:#5D6E63;--line:#D8DFD8;--green:#1E7A46;--green-ink:#166437;--gold:#9A7B2D;--soft:#E8F2EB}
+  :root[data-theme="dark"]{--bg:#101613;--surface:#18211C;--ink:#E3EAE4;--muted:#94A498;--line:#2B372F;--green:#4CBF7F;--green-ink:#7BD6A4;--gold:#D3AF5E;--soft:#1C2B22}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  a{color:var(--green-ink)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+  h1{font-size:clamp(30px,6vw,48px);line-height:1.1;letter-spacing:-.02em;font-weight:800;margin:0 0 16px;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--green)}
+  h2{font-size:clamp(21px,3.5vw,28px);letter-spacing:-.015em;margin:0 0 8px;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);max-width:58ch;margin:0 0 26px}
+  .hero{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+  .cta{display:inline-block;background:var(--green);color:#fff;text-decoration:none;font-weight:700;padding:13px 26px;border-radius:8px}
+  .cta.sec{background:transparent;color:var(--green-ink);border:2px solid var(--green)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap}
+  .ctanote{font-size:13px;color:var(--muted);margin-top:12px}
+  .ledger{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-top:34px;overflow:hidden}
+  .ledger .lh{padding:12px 16px;border-bottom:2px solid var(--line);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+  .tbl{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+  th,td{text-align:left;padding:10px 16px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  td.num{text-align:right;font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--green-ink);font-weight:600}
+  .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--green-ink)}
+  section{padding:44px 0 10px}
+  .secnote{color:var(--muted);max-width:62ch;margin:0 0 24px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .step{font-family:ui-monospace,Menlo,monospace;color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.08em;display:block;margin-bottom:8px}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:6px}
+  .price.hl{border:2px solid var(--green)}
+  .price .tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green-ink)}
+  .price .amount{font-size:32px;font-weight:800;font-family:ui-monospace,Menlo,monospace;letter-spacing:-.02em}
+  .price .amount small{font-size:14px;font-weight:400;color:var(--muted);font-family:system-ui,sans-serif}
+  .price ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+  .price li{margin:4px 0}
+  .garanzia{background:var(--soft);border-radius:14px;padding:24px;border:1px solid var(--line)}
+  .garanzia h2{color:var(--green-ink)}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:0 0 10px;padding:0 16px}
+  summary{cursor:pointer;font-weight:600;padding:14px 0;font-size:15px}
+  details p{margin:0 0 14px;font-size:14.5px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:52px;padding:26px 0 44px}
+  footer p{font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">TrovaBandi · Contributi e fondi pubblici per PMI, chiavi in mano</p>
+    <h1>Ogni anno miliardi di contributi restano <em>non richiesti</em>. Anche i tuoi.</h1>
+    <p class="lede">Bandi regionali, camerali, nazionali ed europei: esistono, ma leggerli e rispondere richiede decine di ore che un imprenditore non ha. Noi li troviamo, li filtriamo per la tua azienda e prepariamo la domanda. Tu firmi.</p>
+    <div class="ctarow">
+      <a class="cta" href="#prezzi">Richiedi la lista gratuita dei tuoi bandi</a>
+      <a class="cta sec" href="#come">Come lavoriamo</a>
+    </div>
+    <p class="ctanote">Se non troviamo nemmeno un bando per cui sei idoneo, non ci devi nulla.</p>
+
+    <div class="ledger">
+      <p class="lh">Esempi illustrativi di tipologie di bando che monitoriamo</p>
+      <div class="tbl"><table>
+        <tr><th>Tipologia</th><th>Per chi</th><th class="num">Copertura tipica</th><th></th></tr>
+        <tr><td>Digitalizzazione e software</td><td>PMI e microimprese</td><td class="num">40–70%</td><td><span class="badge">fondo perduto</span></td></tr>
+        <tr><td>Macchinari e beni strumentali</td><td>Manifattura, artigianato</td><td class="num">fino al 50%</td><td><span class="badge">fondo perduto</span></td></tr>
+        <tr><td>Internazionalizzazione</td><td>Aziende che esportano</td><td class="num">50–80%</td><td><span class="badge">voucher</span></td></tr>
+        <tr><td>Formazione del personale</td><td>Tutte</td><td class="num">fino al 100%</td><td><span class="badge">fondi paritetici</span></td></tr>
+      </table></div>
+      <p class="lh" style="border-top:1px solid var(--line);border-bottom:0">⚠ Valori orientativi a scopo illustrativo: ogni bando ha requisiti, massimali e scadenze propri.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="come">
+  <div class="wrap">
+    <h2>Come lavoriamo</h2>
+    <p class="secnote">Tecnologia per la velocità, persone per la qualità: i nostri sistemi leggono ogni giorno le nuove pubblicazioni, un consulente verifica ogni domanda prima dell'invio.</p>
+    <div class="grid3">
+      <div class="card"><span class="step">1 · RADAR</span><h3>Monitoraggio continuo</h3><p>I nostri sistemi analizzano quotidianamente le fonti ufficiali: regioni, camere di commercio, ministeri, UE.</p></div>
+      <div class="card"><span class="step">2 · MATCH</span><h3>Filtro sulla tua azienda</h3><p>Codice ATECO, dimensione, sede, investimenti in programma: ti presentiamo solo i bandi per cui sei davvero idoneo, con una scheda di una pagina.</p></div>
+      <div class="card"><span class="step">3 · DOMANDA</span><h3>Prepariamo noi, firmi tu</h3><p>Progetto, formulari, allegati: prepariamo la domanda completa. La success fee ci lega al tuo risultato.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prezzi">
+  <div class="wrap">
+    <h2>Tre modi di lavorare insieme</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA esclusa. Il fisso è volutamente basso: guadagniamo davvero solo se vinci.</p>
+    <div class="prices">
+      <div class="price">
+        <span class="tag">Radar</span>
+        <span class="amount">190 €<small>/mese</small></span>
+        <ul><li>Report mensile dei bandi idonei</li><li>Alert immediato sulle scadenze</li><li>Scheda di sintesi per ogni bando</li></ul>
+      </div>
+      <div class="price hl">
+        <span class="tag">Caccia · consigliato</span>
+        <span class="amount">390 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Radar</li><li>2 domande complete l'anno</li><li>Success fee 5% sul contributo erogato</li></ul>
+      </div>
+      <div class="price">
+        <span class="tag">Partner</span>
+        <span class="amount">690 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Caccia</li><li>6 domande complete l'anno</li><li>Success fee ridotta al 3%</li><li>Referente dedicato</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="garanzia">
+  <div class="wrap">
+    <div class="garanzia">
+      <h2>La garanzia dei 90 giorni</h2>
+      <p style="margin:0;max-width:64ch">Se nei primi 90 giorni non ti presentiamo <b>almeno un bando per cui la tua azienda risulta idonea</b>, rimborsiamo integralmente quanto pagato. Preferiamo dirti subito «per ora non c'è nulla per te» che farti perdere tempo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="onesta">
+  <div class="wrap">
+    <h2>Quello che ti diciamo con onestà</h2>
+    <div class="grid3">
+      <div class="card"><h3>Nessuna vittoria garantita</h3><p>L'esito di un bando dipende da graduatorie, fondi disponibili e valutazioni dell'ente. Nessun consulente serio può garantirti la vittoria: chi lo fa, evitalo.</p></div>
+      <div class="card"><h3>Solo bandi veri</h3><p>Lavoriamo esclusivamente su fonti ufficiali e pubbliche. Ogni scheda cita l'atto e il link alla pubblicazione originale, sempre verificabile.</p></div>
+      <div class="card"><h3>Niente anticipi gonfiati</h3><p>Non chiediamo migliaia di euro «per provarci». Il fisso copre il monitoraggio; il grosso lo incassiamo solo a contributo erogato.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Domande frequenti</h2>
+    <details><summary>La mia azienda è troppo piccola per i bandi?</summary><p>Quasi mai: moltissime misure sono pensate proprio per micro e piccole imprese, incluse ditte individuali. È uno dei falsi miti che ci sentiamo ripetere più spesso.</p></details>
+    <details><summary>Quanto dura l'impegno?</summary><p>Il contratto è mensile e puoi disdire quando vuoi. La success fee si applica solo alle domande preparate da noi ed effettivamente finanziate.</p></details>
+    <details><summary>Chi prepara materialmente la domanda?</summary><p>I nostri sistemi generano la struttura e la prima stesura a partire dai tuoi documenti; un consulente la rivede, la completa e la valida con te prima dell'invio. Nulla parte senza la tua firma.</p></details>
+    <details><summary>Usate l'intelligenza artificiale?</summary><p>Sì, per leggere le pubblicazioni e preparare le bozze: è il motivo per cui costiamo meno di una consulenza tradizionale. Ogni output è sempre verificato da una persona prima di arrivare a te.</p></details>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap">
+    <h2>Scopri cosa c'è per la tua azienda</h2>
+    <p class="secnote">Il servizio è in fase di lancio. I canali di contatto e il modulo per la lista gratuita vengono attivati con l'apertura al pubblico.</p>
+    <a class="cta" href="#contatti">Richiedi la lista gratuita</a>
+    <p class="ctanote">Lancio: autunno 2026 · prime regioni: Lombardia, Veneto, Emilia-Romagna</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «TrovaBandi» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un servizio in fase di lancio: prezzi indicativi, IVA esclusa. Il servizio consiste in attività di informazione, monitoraggio e supporto alla predisposizione di domande di agevolazione; non costituisce consulenza finanziaria né garanzia di ottenimento dei contributi, il cui esito dipende esclusivamente dagli enti eroganti. Gli esempi in tabella sono illustrativi e non riferiti a specifici bandi aperti.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento. Trattamento dati conforme al GDPR; informativa completa disponibile all'attivazione del servizio.</p>
+    <p>© 2026 Progetto TrovaBandi — pagina dimostrativa.</p>
+  </div>
+</footer>

@@ -36,6 +36,22 @@
 
 **Legenda fasi:** ⚪ Validazione → 🔵 Incubazione → 🟡 Fondamenta → 🟢 Sviluppo attivo → 🚀 Sul mercato
 
+## 🌐 Le homepage
+
+Ogni progetto ha la sua **homepage completa** (`homepage.html` nella cartella del progetto): identità visiva propria, copy di vendita, prezzi, FAQ e note legali prudenziali (nessuna testimonianza inventata, nessuna promessa di risultato, disclaimer di settore, zero cookie). Prima di metterle online su un dominio reale: **[LEGAL-CHECKLIST.md](LEGAL-CHECKLIST.md)**.
+
+| # | Progetto | Nome pubblico (provvisorio) | Homepage |
+|---|---|---|---|
+| 1 | Voice AI | **Rispondo** | [`homepage.html`](01-voice-receptionist/homepage.html) |
+| 2 | Servizio bandi | **TrovaBandi** | [`homepage.html`](02-servizio-produttizzato/homepage.html) |
+| 3 | AI Act | **Conforme** | [`homepage.html`](03-ai-act-compliance/homepage.html) |
+| 4 | SaaS officine | **Ponte** | [`homepage.html`](04-micro-saas-officine/homepage.html) |
+| 5 | Knowledge | **Cantiere Aperto** | [`homepage.html`](05-prodotti-digitali/homepage.html) |
+| 6 | Silver tech | **FiloDiretto** | [`homepage.html`](06-silver-tech/homepage.html) |
+| 7 | Agent infra | **AgentLens** | [`homepage.html`](07-agent-infra/homepage.html) |
+| 8 | Roll-up PMI | **Continuità** | [`homepage.html`](08-rollup-pmi/homepage.html) |
+| 9 | Vertical AI | **Perizia** | [`homepage.html`](09-vertical-ai-legale/homepage.html) |
+
 ## Principi di sviluppo del portfolio
 
 1. **Zero dipendenze finché possibile** — ogni prototipo gira con `node` o `python3` liofilizzati, niente `npm install` per provare l'idea. La velocità di iterazione È il vantaggio competitivo.

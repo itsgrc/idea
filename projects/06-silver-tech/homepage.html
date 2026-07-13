@@ -1,0 +1,164 @@
+<title>FiloDiretto — Una voce gentile, ogni giorno, per chi ami</title>
+<style>
+  :root{
+    --bg:#FBF6EF; --surface:#FFFFFF; --ink:#3A3230; --muted:#7A6E68;
+    --line:#E7DCCF; --sage:#5B7B6C; --sage-ink:#46614F; --apricot:#D98E5F;
+    --soft:#EFF4F0; --alertbg:#FBEFE9; --alert:#A44A2A;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#201B17; --surface:#2A241F; --ink:#EFE8E0; --muted:#B3A79D;
+    --line:#403830; --sage:#8FB3A0; --sage-ink:#A9C9B8; --apricot:#E0A47C;
+    --soft:#26302A; --alertbg:#39281F; --alert:#E5A283;
+  }}
+  :root[data-theme="light"]{--bg:#FBF6EF;--surface:#FFFFFF;--ink:#3A3230;--muted:#7A6E68;--line:#E7DCCF;--sage:#5B7B6C;--sage-ink:#46614F;--apricot:#D98E5F;--soft:#EFF4F0;--alertbg:#FBEFE9;--alert:#A44A2A}
+  :root[data-theme="dark"]{--bg:#201B17;--surface:#2A241F;--ink:#EFE8E0;--muted:#B3A79D;--line:#403830;--sage:#8FB3A0;--sage-ink:#A9C9B8;--apricot:#E0A47C;--soft:#26302A;--alertbg:#39281F;--alert:#E5A283}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;line-height:1.7;font-size:17px}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px}
+  a{color:var(--sage-ink)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
+  .sans{font-family:system-ui,"Segoe UI",Roboto,sans-serif}
+  .eyebrow{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--apricot);margin:0 0 14px;font-weight:700}
+  h1{font-size:clamp(30px,6vw,48px);line-height:1.15;font-weight:700;margin:0 0 18px;letter-spacing:-.01em;text-wrap:balance}
+  h1 em{font-style:italic;color:var(--sage-ink)}
+  h2{font-size:clamp(22px,3.6vw,30px);margin:0 0 10px;font-weight:700;text-wrap:balance}
+  .lede{font-size:19px;color:var(--muted);max-width:56ch;margin:0 0 28px}
+  .hero{padding:64px 0 40px}
+  .cta{display:inline-block;background:var(--sage);color:#fff;text-decoration:none;font-weight:700;padding:15px 30px;border-radius:999px;font-family:system-ui,sans-serif;font-size:16.5px}
+  .cta.sec{background:transparent;color:var(--sage-ink);border:2px solid var(--sage)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap}
+  .ctanote{font-family:system-ui,sans-serif;font-size:13.5px;color:var(--muted);margin-top:12px}
+  .call{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;max-width:520px;margin:36px 0 0;box-shadow:0 2px 12px rgba(58,50,48,.06)}
+  .call .ch{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px}
+  .line{margin:10px 0;font-size:16.5px}
+  .line b{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:2px}
+  .line.filo b{color:var(--sage-ink)} .line.nonna b{color:var(--apricot)}
+  section{padding:46px 0 10px}
+  .secnote{color:var(--muted);max-width:60ch;margin:0 0 26px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .card h3{margin:0 0 8px;font-size:18px}
+  .card p{margin:0;font-size:15px;color:var(--muted);font-family:system-ui,sans-serif}
+  .step{font-family:system-ui,sans-serif;color:var(--apricot);font-weight:800;font-size:13px;letter-spacing:.1em;display:block;margin-bottom:10px}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px}
+  .price.hl{border:2px solid var(--sage)}
+  .price .tag{font-family:system-ui,sans-serif;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--sage-ink)}
+  .price .amount{font-size:38px;font-weight:700;display:block;margin:8px 0}
+  .price .amount small{font-size:15px;color:var(--muted)}
+  .price ul{margin:10px 0 0;padding-left:20px;font-size:15px;color:var(--muted);font-family:system-ui,sans-serif}
+  .price li{margin:5px 0}
+  .alertbox{background:var(--alertbg);border:1.5px solid var(--alert);border-radius:14px;padding:20px 24px;font-family:system-ui,sans-serif}
+  .alertbox b{color:var(--alert)}
+  .alertbox p{margin:6px 0 0;font-size:15px}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:0 18px}
+  summary{cursor:pointer;font-weight:700;padding:15px 0;font-size:16px}
+  details p{margin:0 0 16px;font-size:15px;color:var(--muted);font-family:system-ui,sans-serif}
+  footer{border-top:1px solid var(--line);margin-top:54px;padding:26px 0 46px}
+  footer p{font-family:system-ui,sans-serif;font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">FiloDiretto · Compagnia quotidiana e serenità per le famiglie</p>
+    <h1>Una voce gentile che ogni giorno chiede: <em>«Come sta oggi?»</em></h1>
+    <p class="lede">FiloDiretto telefona ogni giorno al tuo genitore che vive solo: due minuti di conversazione affettuosa sul telefono di casa che usa da sempre. Se qualcosa non va — o se non risponde — tu lo sai subito. Tutti gli altri giorni, sai che va tutto bene senza dover essere tu a chiamare sempre.</p>
+    <div class="ctarow">
+      <a class="cta" href="#prezzi">Regala serenità — da 29 €/mese</a>
+      <a class="cta sec" href="#come">Come funziona</a>
+    </div>
+    <p class="ctanote">Niente da installare · niente app per l'anziano · funziona sul telefono fisso di sempre</p>
+
+    <div class="call" role="img" aria-label="Esempio della telefonata quotidiana">
+      <p class="ch">📞 La chiamata delle 10:00 — esempio</p>
+      <p class="line filo"><b>Filo</b>Buongiorno signora Maria, sono Filo! Come sta stamattina?</p>
+      <p class="line nonna"><b>Maria</b>Eh, oggi meglio, ha smesso di piovere…</p>
+      <p class="line filo"><b>Filo</b>Che bello! Ha preso la pastiglia della pressione? E mi raccomando, oggi passa il nipotino, mi racconterà domani!</p>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="perche">
+  <div class="wrap">
+    <h2>Per il figlio che vive lontano — e chiama quando può</h2>
+    <p class="secnote">Quattordici milioni di italiani hanno più di 65 anni, e tantissimi vivono soli. I figli si dividono tra lavoro, famiglia e chilometri di distanza. FiloDiretto non sostituisce il tuo affetto: lo moltiplica, un giorno alla volta.</p>
+    <div class="grid3">
+      <div class="card"><h3>🌅 Ogni giorno, alla stessa ora</h3><p>La routine fa bene: la chiamata arriva sempre alla stessa ora, con la stessa voce. Dopo una settimana, è un'abitudine attesa con piacere.</p></div>
+      <div class="card"><h3>💬 Una vera conversazione</h3><p>Filo ricorda i discorsi dei giorni prima: il nipotino, l'orto, la ricetta del medico. Non è un questionario, è una compagnia.</p></div>
+      <div class="card"><h3>🔔 Se qualcosa non va, lo sai</h3><p>Nessuna risposta per due volte, o un malessere raccontato a Filo: ti arriva subito una chiamata e un messaggio. Sempre.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="come">
+  <div class="wrap">
+    <h2>Come funziona</h2>
+    <div class="grid3">
+      <div class="card"><span class="step">PASSO 1</span><h3>Ci racconti di lui, o di lei</h3><p>Abitudini, farmaci da ricordare, orario preferito, cosa ama raccontare. Dieci minuti al telefono con noi, insieme al tuo genitore.</p></div>
+      <div class="card"><span class="step">PASSO 2</span><h3>Filo inizia a chiamare</h3><p>Ogni giorno, all'ora concordata, sul telefono di casa o sul cellulare. Filo si presenta sempre per quello che è: l'assistente della famiglia.</p></div>
+      <div class="card"><span class="step">PASSO 3</span><h3>Tu ricevi il filo diretto</h3><p>Un semaforo verde ogni giorno sul tuo telefono, il resoconto settimanale il sabato, e l'allerta immediata solo quando serve davvero.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prezzi">
+  <div class="wrap">
+    <h2>Quanto costa la serenità quotidiana</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA inclusa. Meno di un caffè al giorno. Disdici quando vuoi, senza penali.</p>
+    <div class="prices">
+      <div class="price">
+        <span class="tag">Base</span>
+        <span class="amount">29 €<small>/mese</small></span>
+        <ul><li>1 chiamata al giorno, 7 giorni su 7</li><li>Allerta immediata alla famiglia</li><li>Resoconto settimanale</li><li>Promemoria farmaci</li></ul>
+      </div>
+      <div class="price hl">
+        <span class="tag">Sereno · consigliato</span>
+        <span class="amount">49 €<small>/mese</small></span>
+        <ul><li>2 chiamate al giorno (mattina e sera)</li><li>Fino a 3 familiari avvisati</li><li>Chiamata extra su richiesta della famiglia</li><li>Promemoria visite e ricette</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sicurezza">
+  <div class="wrap">
+    <h2>Chiarezza prima di tutto</h2>
+    <div class="alertbox">
+      <b>⚠️ FiloDiretto non è un dispositivo medico né un servizio di emergenza.</b>
+      <p>Non effettua diagnosi, non sostituisce il medico, la badante né i servizi di emergenza. <b>In caso di emergenza va sempre chiamato il 112.</b> FiloDiretto è un servizio di compagnia e di notifica alla famiglia: il suo valore è accorgersi presto che qualcosa non va e avvisare chi può intervenire.</p>
+    </div>
+    <div class="grid3" style="margin-top:16px">
+      <div class="card"><h3>🤝 Onestà con chi risponde</h3><p>Filo non finge mai di essere una persona: si presenta come assistente virtuale della famiglia, come previsto dalla normativa europea. Gli anziani apprezzano l'onestà — e si affezionano lo stesso.</p></div>
+      <div class="card"><h3>🔒 I dati restano in Europa</h3><p>Le conversazioni sono trattate secondo il GDPR su infrastruttura europea. Conserviamo solo le sintesi necessarie al servizio; l'audio non viene conservato.</p></div>
+      <div class="card"><h3>👛 Il consenso è suo</h3><p>Il servizio si attiva solo con il consenso esplicito dell'anziano, raccolto alla prima chiamata insieme alla famiglia. La dignità prima del prodotto, sempre.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Le domande delle famiglie</h2>
+    <details><summary>Mia madre non usa lo smartphone. Va bene lo stesso?</summary><p>È esattamente il motivo per cui esiste FiloDiretto: basta il telefono fisso che usa da quarant'anni. Niente app, niente installazioni, niente da imparare.</p></details>
+    <details><summary>E se non risponde perché è semplicemente uscita?</summary><p>Filo riprova dopo mezz'ora. Solo alla seconda mancata risposta avvisa la famiglia. Le abitudini (il mercato del giovedì, la messa della domenica) si impostano nel profilo, così gli orari si adattano.</p></details>
+    <details><summary>Posso sentire cosa si sono dette?</summary><p>Ricevi una sintesi rispettosa («ha dormito bene, oggi passa la vicina»), non la trascrizione integrale: anche tua madre ha diritto alle sue confidenze. In caso di allerta, invece, ricevi il dettaglio di ciò che è rilevante.</p></details>
+    <details><summary>Come reagiscono gli anziani a un'assistente vocale?</summary><p>Con più affetto di quanto si immagini, se il servizio è fatto con garbo: la chiamata quotidiana diventa un appuntamento atteso. E Filo non si offende se le si racconta la stessa storia due volte.</p></details>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap">
+    <h2>Il progetto pilota parte in autunno</h2>
+    <p class="secnote">Stiamo selezionando le prime 20 famiglie per il programma pilota, seguite personalmente una a una. I canali di adesione vengono attivati a breve.</p>
+    <a class="cta" href="#contatti">Candida la tua famiglia al pilota</a>
+    <p class="ctanote">Autunno 2026 · prime 20 famiglie · prezzo pilota bloccato per sempre</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «FiloDiretto» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un servizio in fase di lancio con programma pilota: prezzi indicativi; caratteristiche soggette a evoluzione. FiloDiretto <b>non è un dispositivo medico</b> ai sensi del Reg. UE 2017/745, non fornisce prestazioni sanitarie né gestione delle emergenze; in caso di emergenza contattare il 112. Il servizio utilizza intelligenza artificiale e lo dichiara sempre agli interlocutori (Reg. UE 2024/1689, art. 50). Trattamento dei dati, incluse le categorie particolari eventualmente emergenti dalle conversazioni, conforme al GDPR con consenso esplicito degli interessati; informativa completa all'attivazione.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento.</p>
+    <p>© 2026 Progetto FiloDiretto — pagina dimostrativa.</p>
+  </div>
+</footer>
