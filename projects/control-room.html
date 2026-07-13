@@ -1,4 +1,4 @@
-<title>Control Room — Stato del Portfolio</title>
+<title>Control Room — Portfolio 9 Idee 2026</title>
 <style>
   :root {
     --bg:#F4F6F5; --surface:#FFFFFF; --ink:#17221F; --muted:#5B6B66;
@@ -20,24 +20,25 @@
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.55;font-size:15.5px}
   .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
-  a{color:var(--accent)} a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+  a{color:var(--accent)} a:focus-visible,summary:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
   .wrap{max-width:980px;margin:0 auto;padding:0 20px}
 
   .hero{padding:44px 0 26px;border-bottom:1px solid var(--line)}
   .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
   h1{font-size:clamp(26px,5vw,40px);line-height:1.12;letter-spacing:-.02em;font-weight:800;margin:0 0 10px;text-wrap:balance}
   h1 em{font-style:normal;color:var(--accent)}
-  .lede{color:var(--muted);max-width:64ch;margin:0 0 20px;font-size:16px}
+  .lede{color:var(--muted);max-width:66ch;margin:0 0 20px;font-size:16px}
   .stats{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
   .stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 14px;box-shadow:var(--shadow)}
   .stat b{display:block;font-size:19px;font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
   .stat span{font-size:12px;color:var(--muted)}
   .btnrow{display:flex;gap:10px;flex-wrap:wrap}
   .btn{display:inline-block;text-decoration:none;font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:8px;border:1px solid var(--accent);color:var(--accent)}
+  .btn.primary{background:var(--accent);color:#fff}
 
   .topnav{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
   .topnav .wrap{display:flex;gap:4px;overflow-x:auto}
-  .topnav a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:600;padding:11px 11px;white-space:nowrap;border-bottom:2px solid transparent}
+  .topnav a{text-decoration:none;color:var(--muted);font-size:12.8px;font-weight:600;padding:11px 10px;white-space:nowrap;border-bottom:2px solid transparent}
   .topnav a:hover{color:var(--ink);border-bottom-color:var(--gold)}
 
   section{padding:36px 0 8px}
@@ -85,7 +86,7 @@
   .sq li{margin:4px 0}
   .sq li b{font-weight:700}
 
-  /* ---- project cards ---- */
+  /* ---- project cards (dettaglio) ---- */
   .proj{background:var(--surface);border:1px solid var(--line);border-radius:11px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden}
   .proj summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;grid-template-columns:1fr 130px 46px;gap:12px;align-items:center}
   .proj summary::-webkit-details-marker{display:none}
@@ -107,31 +108,102 @@
   .mswot .mo b{color:var(--accent)} .mswot .mt b{color:var(--warn)}
   .next{font-size:13.5px;background:var(--accent-soft);border-radius:8px;padding:10px 13px}
   .next b{color:var(--accent)}
+  .trycmd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 10px;overflow-x:auto;white-space:nowrap}
+
+  /* ---- classifica idee (dossier) ---- */
+  .idea{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:0 0 12px;box-shadow:var(--shadow);overflow:hidden}
+  .idea[open]{border-color:var(--accent)}
+  .idea summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:16px 18px}
+  .idea summary::-webkit-details-marker{display:none}
+  .rank{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:26px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+  .idea-title{font-size:17px;font-weight:700;margin:0 0 3px;letter-spacing:-.01em}
+  .idea-sub{margin:0 0 8px;font-size:13.5px;color:var(--muted);max-width:58ch}
+  .scorebar{height:5px;border-radius:3px;background:var(--line);max-width:340px;overflow:hidden}
+  .scorebar i{display:block;height:100%;background:var(--accent);border-radius:3px;width:var(--w,50%)}
+  .idea-right{text-align:right}
+  .score{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:22px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;display:block;line-height:1.1}
+  .idea-meta{font-size:12px;color:var(--muted);white-space:nowrap}
+  .openhint{font-size:11.5px;color:var(--gold);font-weight:600}
+  .idea[open] .openhint::after{content:" ▴"} .idea:not([open]) .openhint::after{content:" ▾"}
+  .idea-body{border-top:1px solid var(--line);padding:18px 18px 20px;display:grid;gap:18px}
+  .blk h4{margin:0 0 8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:600}
+  .markets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .mkt{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .mkt b{display:block;font-size:12px;color:var(--gold);margin-bottom:2px}
+  .mkt span{font-size:13.5px}
+  .tscroll{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)}
+  td.num,th.num{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:baseline}
+  .dot.fail{background:var(--muted)} .dot.cons{background:var(--bad)}
+  .dot.real{background:var(--warn)} .dot.ott{background:var(--good)}
+  tr.hl td{background:var(--accent-soft)}
+  .pc{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .pc ul{margin:0;padding:0 0 0 2px;list-style:none;font-size:13.5px}
+  .pc li{padding:3px 0 3px 22px;position:relative}
+  .pc .pro li::before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:700}
+  .pc .con li::before{content:"✕";position:absolute;left:0;color:var(--bad);font-weight:700}
+  .infoline{font-size:13.5px;color:var(--muted);background:var(--bg);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 8px 8px 0}
+  .azione{font-size:14px;background:var(--accent-soft);border-radius:8px;padding:12px 14px}
+  .azione b{color:var(--accent)}
+  .ghlink{font-size:13.5px;font-weight:600}
+
+  /* ---- flywheel ---- */
+  .fly{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:var(--shadow)}
+  .fly-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin:6px 0}
+  .fly-node{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600}
+  .fly-node small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+  .fly-link{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--gold);text-align:center;white-space:nowrap}
+
+  /* ---- roadmap ---- */
+  .phases{display:grid;gap:0}
+  .phase{display:grid;grid-template-columns:90px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border-bottom:0}
+  .phase .when{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--gold);padding-top:2px}
+  .phase h3{margin:0 0 4px;font-size:15.5px}
+  .phase p{margin:0;font-size:14px;color:var(--muted);max-width:62ch}
+
+  /* ---- italia / fonti ---- */
+  .notes{display:grid;gap:10px}
+  .note{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px}
+  .note b{color:var(--accent)}
+  .fonti{columns:2;column-gap:28px;font-size:13.5px;margin:0;padding-left:18px}
+  .fonti li{margin-bottom:7px;break-inside:avoid}
 
   footer{border-top:1px solid var(--line);margin-top:40px;padding:20px 0 40px}
   footer p{color:var(--muted);font-size:12.5px;max-width:76ch;margin:0 0 6px}
 
   @media (max-width:640px){
-    .cando,.swot,.pcd{grid-template-columns:1fr}
+    .cando,.swot,.pcd,.markets,.pc{grid-template-columns:1fr}
     .crow{grid-template-columns:1fr 60px;grid-template-rows:auto auto}
     .crow .bar{grid-column:1/-1;grid-row:2}
     .proj summary{grid-template-columns:1fr 90px}
+    .idea summary{grid-template-columns:40px 1fr}
+    .rank{font-size:20px}
+    .idea-right{grid-column:2;text-align:left;display:flex;gap:14px;align-items:baseline}
+    .fonti{columns:1}
+    .fly-row{grid-template-columns:1fr}
+    .fly-link{text-align:left;padding-left:6px}
   }
 </style>
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">Control Room · aggiornata al 13 luglio 2026</p>
-    <h1>Cosa si può fare oggi. Cosa no. <em>E quanto manca.</em></h1>
-    <p class="lede">Lo stato reale del portfolio, senza filtri: capacità operative attuali, percentuale di completamento verso il primo cliente pagante, analisi SWOT del portfolio e di ogni progetto.</p>
+    <p class="eyebrow">Control Room · dossier completo · aggiornata al 13 luglio 2026</p>
+    <h1>Cosa si può fare oggi. Cosa no. <em>Quanto manca. E perché.</em></h1>
+    <p class="lede">La pagina unica del portfolio: capacità operative attuali, percentuale di completamento verso il primo cliente pagante, SWOT del portfolio, la classifica pesata delle 9 idee con mercati e scenari di fatturato, il flywheel e la roadmap. Tutto in un posto solo.</p>
     <div class="stats">
       <div class="stat"><b>37%</b><span>completamento medio portfolio</span></div>
       <div class="stat"><b>8/9</b><span>prototipi funzionanti e testati</span></div>
       <div class="stat"><b>9/9</b><span>homepage pronte</span></div>
+      <div class="stat"><b>8.2</b><span>score migliore (Voice AI)</span></div>
       <div class="stat"><b>0</b><span>clienti paganti (fase pre-lancio)</span></div>
     </div>
     <div class="btnrow">
-      <a class="btn" href="https://claude.ai/code/artifact/c7fcc66c-7bd7-457b-9126-8e7a80e4768e" target="_blank" rel="noopener">📔 Dossier completo delle 9 idee</a>
+      <a class="btn primary" href="#adesso">Cosa si può fare oggi ↓</a>
+      <a class="btn" href="#classifica">Classifica delle 9 idee ↓</a>
       <a class="btn" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq" target="_blank" rel="noopener">📁 Repository</a>
     </div>
   </div>
@@ -139,10 +211,15 @@
 
 <nav class="topnav" aria-label="Sezioni">
   <div class="wrap">
-    <a href="#adesso">Si può / Non si può</a>
+    <a href="#adesso">Si può / Non può</a>
     <a href="#completamento">% Completamento</a>
     <a href="#swot">SWOT Portfolio</a>
+    <a href="#classifica">Classifica idee</a>
+    <a href="#flywheel">Flywheel</a>
     <a href="#progetti">Progetti in dettaglio</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#italia">Partire in Italia</a>
+    <a href="#fonti">Fonti</a>
   </div>
 </nav>
 
@@ -251,14 +328,515 @@
   </div>
 </section>
 
+<section id="classifica">
+  <div class="wrap">
+    <h2><span class="snum">04</span>La classifica delle 9 idee</h2>
+    <p class="secnote">Punteggio pesato: velocità di lancio 25% · costo iniziale 20% · velocità acquisizione clienti 25% · scala 15% · probabilità 15%. Tocca una card per aprire mercati, scenari economici, pro &amp; contro.</p>
+
+    <details class="idea" id="idea-1">
+      <summary>
+        <span class="rank">1</span>
+        <div>
+          <p class="idea-title">🎙️ Voice AI Receptionist per PMI locali</p>
+          <p class="idea-sub">Agenti vocali che rispondono al telefono 24/7 per dentisti, officine, studi medici: appuntamenti fissati, chiamate perse recuperate.</p>
+          <div class="scorebar"><i style="--w:82%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">8.2</span>
+          <span class="idea-meta">MVP 2–4 sett · 1–5 k€</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>~80–150 M€ (2026, stima) — 4,4 mln PMI</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>~1–1,4 mld $ · DACH +34%/anno</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>3,5 mld $ → 35 mld $ (2033)</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari · fatturato e utile</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">30%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">30%</td><td class="num">30 k€</td><td class="num">100 k€</td><td class="num">40 k€</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">30%</td><td class="num">80–120 k€</td><td class="num">400–600 k€</td><td class="num">160–280 k€</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">10%</td><td class="num">300 k€</td><td class="num">2–3 M€</td><td class="num">0,8–1,2 M€</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>ROI dimostrabile in numeri semplici («23 chiamate recuperate questo mese»)</li>
+            <li>MVP in 2–4 settimane su piattaforme esistenti</li>
+            <li>Ricavi ricorrenti, churn basso se funziona</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Vendita locale porta-a-porta all'inizio</li>
+            <li>Barriere tecnologiche basse → concorrenza in arrivo</li>
+            <li>Dipendenza da provider AI terzi</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Break-even 2–4 mesi · margine lordo 70–80% · ticket 150–500 €/mese · canale: vendita territoriale + web agency partner. <b>Completamento attuale: 45%</b> — vedi dettaglio in "Progetti in dettaglio".</p>
+        <p class="azione"><b>Prima azione oggi:</b> chiama 5 dentisti della tua zona alle 13:30. Conta quanti non rispondono: è la tua prima slide di vendita.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/01-voice-receptionist" target="_blank" rel="noopener">→ Prototipo funzionante e playbook su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-2">
+      <summary>
+        <span class="rank">2</span>
+        <div>
+          <p class="idea-title">🛠️ Servizio produttizzato potenziato da AI</p>
+          <p class="idea-sub">Un servizio ripetitivo (es. risposta a bandi per PMI) venduto a prezzo fisso, erogato con l'80% del lavoro automatizzato. Cashflow in 14 giorni.</p>
+          <div class="scorebar"><i style="--w:78%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">7.8</span>
+          <span class="idea-meta">MVP 1–2 sett · &lt;1 k€</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>0,5–2 mld € per nicchia tipica</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>~90–120 mld $ servizi B2B</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>~350 mld $ (BPO/servizi)</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari · fatturato e utile</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">25%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">35%</td><td class="num">25 k€</td><td class="num">80 k€</td><td class="num">45 k€</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">30%</td><td class="num">60–100 k€</td><td class="num">250–400 k€</td><td class="num">120–250 k€</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">10%</td><td class="num">250 k€</td><td class="num">1–1,5 M€</td><td class="num">400–700 k€</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>Costo di partenza quasi zero, primo cliente in 7 giorni</li>
+            <li>Cashflow immediato, nessun funding necessario</li>
+            <li>I dati accumulati diventano il SaaS futuro (#4)</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Scala limitata finché c'è componente umana</li>
+            <li>È «un lavoro» finché non si sistematizza</li>
+            <li>Moat difficile da difendere</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Break-even &lt; 1 mese · margine lordo 70–90% · ticket 300–2.000 €/mese in retainer · canale: outreach diretto + passaparola. <b>Completamento attuale: 55%</b> — il più vicino all'incasso.</p>
+        <p class="azione"><b>Prima azione oggi:</b> 10 titolari di PMI su LinkedIn, template n.1 della cartella outreach. Obiettivo: 2 call entro venerdì.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/02-servizio-produttizzato" target="_blank" rel="noopener">→ Offerta, template email e generatore ROI su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-3">
+      <summary>
+        <span class="rank">3</span>
+        <div>
+          <p class="idea-title">⚖️ Compliance-as-a-Service · EU AI Act</p>
+          <p class="idea-sub">Classificazione, documentazione e monitoraggio per le aziende che usano AI. L'enforcement per l'alto rischio scatta ad agosto 2026: timing perfetto.</p>
+          <div class="scorebar"><i style="--w:75%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">7.5</span>
+          <span class="idea-meta">MVP 1–2 mesi · 3–10 k€</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>~60–100 M€, crescita &gt;35%/anno</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>~0,6–0,8 mld $ · quota dominante</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>1,4 mld $ → 5,8 mld $ (2029)</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari · fatturato e utile</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">40%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">25%</td><td class="num">40 k€</td><td class="num">150 k€</td><td class="num">50 k€</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">25%</td><td class="num">100–180 k€</td><td class="num">500 k–1 M€</td><td class="num">150–350 k€</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">10%</td><td class="num">500 k€</td><td class="num">3–5 M€</td><td class="num">1–1,5 M€</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>Domanda guidata dalla legge, non dal marketing</li>
+            <li>Multe fino al 7% del fatturato = budget già stanziato</li>
+            <li>Essere italiani/europei qui è un vantaggio</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Serve competenza normativa (o partner legale)</li>
+            <li>Le Big4 presidieranno l'enterprise</li>
+            <li>Picco di domanda-panico esauribile in 24–36 mesi</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Break-even 3–6 mesi · audit 3–15 k€ una tantum + SaaS 500–5.000 €/mese · sweet spot: mid-market 500–5.000 dipendenti. <b>Completamento attuale: 50%.</b></p>
+        <p class="azione"><b>Prima azione oggi:</b> esegui il classificatore su 3 aziende che conosci. Se una risulta «alto rischio» (basta un software HR), hai il primo prospect.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/03-ai-act-compliance" target="_blank" rel="noopener">→ Classificatore, Registro e gap analysis su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-4">
+      <summary>
+        <span class="rank">4</span>
+        <div>
+          <p class="idea-title">🔧 Micro-SaaS verticale per settori «noiosi»</p>
+          <p class="idea-sub">Gestionale + agenti AI per una nicchia ignorata dalla Silicon Valley (prima ipotesi: autofficine). Il playbook ServiceTitan, in Europa.</p>
+          <div class="scorebar"><i style="--w:73%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">7.3</span>
+          <span class="idea-meta">MVP 1–3 mesi · 2–8 k€</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>300–500 M€ · singola nicchia 20–100 M€</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>micro-SaaS ~4–5 mld $</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>15,7 → 59,6 mld $ (2030)</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari · fatturato e utile</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">40%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">25%</td><td class="num">10 k€</td><td class="num">60 k€</td><td class="num">25 k€</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">25%</td><td class="num">30–60 k€</td><td class="num">240–500 k€</td><td class="num">100–300 k€</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">10%</td><td class="num">150 k€</td><td class="num">1,5 M€</td><td class="num">600–800 k€</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>Concorrenza quasi nulla nella nicchia scelta</li>
+            <li>Churn bassissimo (&lt;1,5%/mese) una volta adottato</li>
+            <li>Exit possibile a 4–8× ARR</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Acquisizione lenta: settori poco digitali</li>
+            <li>Serve conoscere davvero il settore</li>
+            <li>Mercato per singola nicchia limitato</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Break-even 6–12 mesi · ticket 50–300 €/mese · canale: associazioni di categoria, fiere, passaparola tra colleghi. <b>Completamento attuale: 40%.</b></p>
+        <p class="azione"><b>Prima azione oggi:</b> porta l'auto a fare il tagliando e chiedi al titolare quanto tempo perde al telefono. La risposta vale più di un mese di sviluppo.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/04-micro-saas-officine" target="_blank" rel="noopener">→ App gestionale funzionante e framework nicchia su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-5">
+      <summary>
+        <span class="rank">5</span>
+        <div>
+          <p class="idea-title">🎓 Prodotti digitali / knowledge business</p>
+          <p class="idea-sub">«Costruisco 9 business AI-first in pubblico»: newsletter, template, workshop. La distribuzione è il prodotto — e alimenta gli altri progetti.</p>
+          <div class="scorebar"><i style="--w:71%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">7.1</span>
+          <span class="idea-meta">MVP 1–3 sett · &lt;500 €</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>e-learning ~2–3 mld €</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>~90–110 mld $</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>336–400 mld $ (2026)</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari · fatturato e utile</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">50%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">30%</td><td class="num">3 k€</td><td class="num">10 k€</td><td class="num">9 k€</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">15%</td><td class="num">15–40 k€</td><td class="num">50–120 k€</td><td class="num">40–110 k€</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">5%</td><td class="num">150 k€+</td><td class="num">500 k€+</td><td class="num">400 k€+</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>Lancio in giorni, margine netto 85–95%</li>
+            <li>Scala infinita, nessun cliente da gestire</li>
+            <li>Lead-gen gratuita per i progetti #1–#4</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Mercato saturissimo: senza audience non parte</li>
+            <li>Reddito instabile, varianza altissima</li>
+            <li>L'AI erode il valore dei contenuti generici</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Break-even immediato · scala prodotti: newsletter gratis → template 29–49 € → workshop 149 € → corso 390 € → community 39 €/mese. <b>Completamento attuale: 35%.</b></p>
+        <p class="azione"><b>Prima azione oggi:</b> pubblica il primo post: «Sto lanciando 9 business, in pubblico. Ecco la classifica» — il materiale ce l'hai già.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/05-prodotti-digitali" target="_blank" rel="noopener">→ Numero Zero, post pronti e calendario su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-6">
+      <summary>
+        <span class="rank">6</span>
+        <div>
+          <p class="idea-title">👵 Silver Tech — «FiloDiretto»</p>
+          <p class="idea-sub">Una telefonata AI gentile ogni giorno all'anziano che vive solo; allerta ai figli se qualcosa non va. Zero hardware: il telefono fisso è il dispositivo.</p>
+          <div class="scorebar"><i style="--w:59%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">5.9</span>
+          <span class="idea-meta">MVP 3–6 mesi · 10–30 k€</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>14 mln over-65 · agetech 0,5–1 mld €</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>silver economy ~911 mld $</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>~3.255 mld $ (2026)</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari · fatturato e utile</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">50%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">25%</td><td class="num">20 k€</td><td class="num">100 k€</td><td class="num">negativo</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">15%</td><td class="num">50–100 k€</td><td class="num">0,5–1,5 M€</td><td class="num">≈0 (reinvestito)</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">10%</td><td class="num">300 k€</td><td class="num">5 M€+</td><td class="num">dipende dal funding</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>Il paese più vecchio d'Europa come mercato domestico</li>
+            <li>Riusa lo stack voce del progetto #1: sviluppo quasi gratis</li>
+            <li>Chi paga (il figlio 45-60enne) si raggiunge col marketing digitale</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Break-even lungo (18–30 mesi)</li>
+            <li>Dati sanitari: GDPR e delicatezza</li>
+            <li>Canale B2B2C (comuni, RSA) lento</li>
+          </ul></div>
+        </div>
+        <p class="infoline">29–49 €/mese per famiglia · margine lordo ~90% · confronto: la teleassistenza col bottone SOS è passiva, FiloDiretto è proattivo. <b>Completamento attuale: 30%.</b></p>
+        <p class="azione"><b>Prima azione oggi:</b> chiedi a 10 persone con un genitore anziano solo: «pagheresti 29 €/mese per saperlo ogni giorno al sicuro?». 6+ sì = si parte.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/06-silver-tech" target="_blank" rel="noopener">→ Flusso conversazionale e specifica MVP su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-7">
+      <summary>
+        <span class="rank">7</span>
+        <div>
+          <p class="idea-title">🏗️ AgentLens — infrastruttura per AI agent</p>
+          <p class="idea-sub">La scatola nera degli agenti AI: cosa hanno fatto, quanto è costato, dove sbagliano. In Europa quei log sono anche un obbligo di legge (AI Act, art. 12).</p>
+          <div class="scorebar"><i style="--w:57%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">5.7</span>
+          <span class="idea-meta">MVP 4–8 mesi · 15–50 k€</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>50–100 M€ (ma i dev tool si vendono globali)</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>~1,5–2 mld $ al 2030</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>quota infra 5–8 mld $ al 2030</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari · fatturato e utile</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">60%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">20%</td><td class="num">~0</td><td class="num">50 k€</td><td class="num">negativo</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">15%</td><td class="num">20–50 k€</td><td class="num">300 k–1 M€</td><td class="num">≈0 (reinvestito)</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">5%</td><td class="num">200 k€</td><td class="num">5–10 M€</td><td class="num">scala da VC</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>Posizionamento unico: debugging + conformità AI Act insieme</li>
+            <li>Dogfooding gratuito: lo usano tutti i progetti del portfolio</li>
+            <li>Payoff enorme se diventa standard</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Si compete potenzialmente con i lab AI stessi</li>
+            <li>Vendere a sviluppatori richiede credibilità tecnica</li>
+            <li>Break-even 18–36 mesi, spesso serve VC</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Open source come lead-gen · si paga per dashboard hosted, retention e report AI Act · pricing 49–499 €/mese per team. <b>Completamento attuale: 35%.</b></p>
+        <p class="azione"><b>Prima azione oggi:</b> strumenta il receptionist del progetto #1 con AgentLens (3 righe). Un lavoro, due prodotti.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/07-agent-infra" target="_blank" rel="noopener">→ Libreria, dashboard e demo su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-8">
+      <summary>
+        <span class="rank">8</span>
+        <div>
+          <p class="idea-title">🏢 Roll-up di PMI tradizionali + AI</p>
+          <p class="idea-sub">Comprare aziende di servizi profittevoli da titolari in pensione (a 2–4× l'utile), automatizzarle con l'AI, portare i margini dal 15% al 40%.</p>
+          <div class="scorebar"><i style="--w:55%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">5.5</span>
+          <span class="idea-meta">6–12 mesi · 100 k€+</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>~700 k imprese con titolare over-60</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>la sola Germania: ~500 k in successione</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>playbook dei PE americani, replicabile</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari (capitale iniziale 100–300 k€)</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">50%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">20%</td><td class="num">200–300 k€</td><td class="num">500 k€</td><td class="num">50–100 k€</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">20%</td><td class="num">300–500 k€</td><td class="num">1–3 M€</td><td class="num">200–600 k€</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">10%</td><td class="num">500 k€</td><td class="num">5 M€+</td><td class="num">1 M€+</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>I clienti si comprano già acquisiti (fatturato dal giorno 1)</li>
+            <li>Multipli bassissimi: nessun altro compratore in coda</li>
+            <li>L'AI del portfolio è il vantaggio che gli altri non hanno</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Serve capitale o debito bancario</li>
+            <li>Integrazione e retention clienti delicati</li>
+            <li>Servono competenze M&amp;A (o un partner)</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Regola della casa: DSCR pre-AI ≥ 1,2 — mai comprare contando sull'AI per pagare i debiti. Earn-out legato alla retention clienti. <b>Completamento attuale: 25%.</b></p>
+        <p class="azione"><b>Prima azione oggi:</b> chiedi al tuo commercialista: «hai clienti vicini alla pensione senza eredi per l'attività?». Ne ha sempre 2–3.</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/08-rollup-pmi" target="_blank" rel="noopener">→ Calcolatore, pipeline CRM e LOI su GitHub</a>
+      </div>
+    </details>
+
+    <details class="idea" id="idea-9">
+      <summary>
+        <span class="rank">9</span>
+        <div>
+          <p class="idea-title">🩺 Vertical AI agent — legale / sanità</p>
+          <p class="idea-sub">L'unico progetto «da unicorno»: agenti per le perizie medico-legali assicurative come porta d'ingresso. Fase attuale: validazione, vietato scrivere codice.</p>
+          <div class="scorebar"><i style="--w:54%"></i></div>
+        </div>
+        <div class="idea-right">
+          <span class="score">5.4</span>
+          <span class="idea-meta">6–12 mesi · 50 k€+</span><br>
+          <span class="openhint">dettagli</span>
+        </div>
+      </summary>
+      <div class="idea-body">
+        <div class="blk">
+          <h4>Mercato potenziale</h4>
+          <div class="markets">
+            <div class="mkt"><b>🇮🇹 Italia</b><span>legal tech + AI sanità ~0,4–0,7 mld €</span></div>
+            <div class="mkt"><b>🇪🇺 Europa</b><span>~25% del mercato globale</span></div>
+            <div class="mkt"><b>🌍 Mondo</b><span>legal AI 3–5 mld $ · health AI 35–45 mld $</span></div>
+          </div>
+        </div>
+        <div class="blk">
+          <h4>Scenari (richiede seed 0,5–2 M€)</h4>
+          <div class="tscroll"><table>
+            <tr><th>Scenario</th><th class="num">Prob.</th><th class="num">Fatt. anno 1</th><th class="num">Fatt. anno 3</th><th class="num">Utile anno 3</th></tr>
+            <tr><td><i class="dot fail"></i>Fallimento</td><td class="num">60%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+            <tr><td><i class="dot cons"></i>Conservativo</td><td class="num">20%</td><td class="num">0–50 k€</td><td class="num">100 k€</td><td class="num">negativo</td></tr>
+            <tr class="hl"><td><i class="dot real"></i>Realistico</td><td class="num">15%</td><td class="num">50 k€</td><td class="num">0,5–2 M€</td><td class="num">negativo (crescita)</td></tr>
+            <tr><td><i class="dot ott"></i>Ottimistico</td><td class="num">5%</td><td class="num">200 k€</td><td class="num">10 M€+</td><td class="num">valuation 50–100 M€+</td></tr>
+          </table></div>
+        </div>
+        <div class="blk pc">
+          <div class="pro"><h4>Pro</h4><ul>
+            <li>Monte-premi più alto del portfolio</li>
+            <li>Dominio italiano (tabelle, prassi) = moat che i player US non hanno</li>
+            <li>Pricing a risultato: € per pratica processata</li>
+          </ul></div>
+          <div class="con"><h4>Contro</h4><ul>
+            <li>Cicli di vendita 6–18 mesi</li>
+            <li>Competitor già finanziati con centinaia di M$</li>
+            <li>Serve co-founder di dominio: criterio go/no-go</li>
+          </ul></div>
+        </div>
+        <p class="infoline">Disciplina di fase: 15 interviste prima di qualunque codice · il pilot si vende (5–15 k€), mai regalato · decisione go/no-go scritta al mese 2. <b>Completamento attuale: 15%</b> (per disciplina, non per ritardo).</p>
+        <p class="azione"><b>Prima azione oggi:</b> 5 medici legali e 5 responsabili sinistri su LinkedIn: «20 minuti in cambio dei risultati completi della ricerca?».</p>
+        <a class="ghlink" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq/projects/09-vertical-ai-legale" target="_blank" rel="noopener">→ Piano di validazione e tracker interviste su GitHub</a>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="flywheel">
+  <div class="wrap">
+    <h2><span class="snum">05</span>Il flywheel del portfolio</h2>
+    <p class="secnote">I 9 progetti non sono indipendenti: ognuno abbassa il costo o il rischio di un altro. Regola: un progetto avanza di fase solo se centra il suo KPI, altrimenti la cassa va al successivo in classifica.</p>
+    <div class="fly">
+      <div class="fly-row">
+        <div class="fly-node">#2 Servizio produttizzato<small>vende risultati oggi</small></div>
+        <div class="fly-link">— dati + processi →</div>
+        <div class="fly-node">#4 Micro-SaaS verticale<small>il servizio diventa prodotto</small></div>
+      </div>
+      <div class="fly-row">
+        <div class="fly-node">#1 Voice AI receptionist<small>lo stack vocale</small></div>
+        <div class="fly-link">— stesso motore →</div>
+        <div class="fly-node">#6 FiloDiretto (silver tech)<small>flusso diverso, sviluppo quasi gratis — <b>già dimostrato</b></small></div>
+      </div>
+      <div class="fly-row">
+        <div class="fly-node">#3 AI Act compliance<small>credibilità regolatoria</small></div>
+        <div class="fly-link">— apre le porte →</div>
+        <div class="fly-node">#9 Vertical AI legale/sanità<small>settori regolamentati</small></div>
+      </div>
+      <div class="fly-row">
+        <div class="fly-node">#7 AgentLens<small>osservabilità</small></div>
+        <div class="fly-link">— usato da tutti →</div>
+        <div class="fly-node">#1 #2 #3 #4 in produzione<small>dogfooding a costo zero</small></div>
+      </div>
+      <div class="fly-row">
+        <div class="fly-node">#1 #2 #4 — l'AI già costruita<small>automazione testata sul campo</small></div>
+        <div class="fly-link">— alza i margini di →</div>
+        <div class="fly-node">#8 Roll-up PMI<small>aziende comprate a sconto</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="progetti">
   <div class="wrap">
-    <h2><span class="snum">04</span>Progetti in dettaglio</h2>
+    <h2><span class="snum">06</span>Progetti in dettaglio</h2>
     <p class="secnote">Tocca un progetto per aprire: cosa puoi fare / cosa manca, mini-SWOT e il prossimo passo che sblocca la fase.</p>
 
     <details class="proj" open>
       <summary><span class="pt">🎙️ #1 Rispondo — voice AI receptionist<small>fase: sviluppo attivo · KPI: 3 piloti in 30 gg</small></span><div class="bar"><i style="--w:45%"></i></div><span class="p">45%</span></summary>
       <div class="pbody">
+        <p class="trycmd">node server.js  → demo web su :3000</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Demo completa nel browser e nel terminale</li><li>Configurare un nuovo cliente in un file JSON</li><li>Secondo settore pronto (officine)</li><li>Vendere col playbook porta-a-porta + homepage</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Telefonia reale (numero, SIP, deviazione)</li><li>Voce: STT/TTS a bassa latenza + LLM per l'intent</li><li>Notifiche WhatsApp e calendario reali</li><li>Contratto pilota e informativa privacy</li></ul></div>
@@ -276,6 +854,7 @@
     <details class="proj">
       <summary><span class="pt">🎯 #2 TrovaBandi — servizio produttizzato<small>fase: sviluppo attivo · KPI: 1° cliente in 14 gg</small></span><div class="bar"><i style="--w:55%"></i></div><span class="p">55%</span></summary>
       <div class="pbody">
+        <p class="trycmd">python3 scout.py --demo</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Report bandi personalizzato per qualsiasi prospect</li><li>Pitch con ROI calcolato (roi_pitch.py)</li><li>Outreach: sequenze email pronte</li><li>Offerta e prezzi definiti (RADAR/CACCIA/PARTNER)</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Database bandi REALI (oggi: esempi illustrativi — servono 2–3 ore di curation)</li><li>Entità per fatturare il primo retainer</li><li>I primi 10 contatti inviati davvero</li></ul></div>
@@ -293,6 +872,7 @@
     <details class="proj">
       <summary><span class="pt">⚖️ #3 Conforme — compliance EU AI Act<small>fase: sviluppo attivo · KPI: 5 audit entro ago 2026</small></span><div class="bar"><i style="--w:50%"></i></div><span class="p">50%</span></summary>
       <div class="pbody">
+        <p class="trycmd">python3 registro.py --demo</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Pre-assessment guidato su qualunque azienda</li><li>Registro dei Sistemi AI + gap analysis (il deliverable)</li><li>Homepage con funnel assessment→audit→monitoraggio</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Partner legale abilitato (co-firma degli audit)</li><li>Versione web self-service dell'assessment (lead-gen)</li><li>Primo webinar con associazione di categoria</li></ul></div>
@@ -310,6 +890,7 @@
     <details class="proj">
       <summary><span class="pt">🔧 #4 Ponte — gestionale officine<small>fase: fondamenta · KPI: 10 officine in lista</small></span><div class="bar"><i style="--w:40%"></i></div><span class="p">40%</span></summary>
       <div class="pbody">
+        <p class="trycmd">python3 app.py  → lavagna web su :8000</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Usare la lavagna web in un'officina vera (in locale)</li><li>Accettazione in 30 secondi, stati, riepilogo incassi</li><li>Validare la nicchia col framework a punteggio</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Le 10 interviste in officina (0 fatte — è il KPI)</li><li>Hosting multi-officina con login e backup</li><li>SMS "auto pronta" reale</li></ul></div>
@@ -327,6 +908,7 @@
     <details class="proj">
       <summary><span class="pt">📰 #5 Cantiere Aperto — knowledge business<small>fase: fondamenta · KPI: 1.000 follower in 60 gg</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></summary>
       <div class="pbody">
+        <p class="trycmd">python3 calendario.py  → calendario editoriale 90 gg</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Pubblicare: Numero Zero + 6 post già scritti</li><li>Calendario editoriale di 90 giorni generato</li><li>Funnel e scala prodotti definiti</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Tutto ciò che conta: la costanza (0 post pubblicati)</li><li>Piattaforma newsletter con doppio opt-in GDPR</li><li>60 giorni di ritmo prima di giudicare i numeri</li></ul></div>
@@ -344,6 +926,7 @@
     <details class="proj">
       <summary><span class="pt">👵 #6 FiloDiretto — silver tech<small>fase: incubazione · KPI: 20 famiglie in pilota</small></span><div class="bar low"><i style="--w:30%"></i></div><span class="p">30%</span></summary>
       <div class="pbody">
+        <p class="trycmd">FLOW=../06-silver-tech/flows/filodiretto.json node ../01-voice-receptionist/server.js --demo</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Simulare la chiamata completa (benessere, farmaci, emergenza→allerta)</li><li>Riusare il motore del #1: il flusso è pronto</li><li>Testare la domanda con le 10 telefonate ai figli</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Telefonia reale (arriva "gratis" quando la fa il #1)</li><li>Dashboard famiglia + consenso GDPR operativo</li><li>Concierge test: 10 famiglie con chiamate UMANE</li></ul></div>
@@ -361,6 +944,7 @@
     <details class="proj">
       <summary><span class="pt">🔍 #7 AgentLens — infrastruttura AI<small>fase: incubazione · KPI: 50 stelle / 10 utenti</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></summary>
       <div class="pbody">
+        <p class="trycmd">python3 demo.py && python3 dashboard.py tracce.jsonl</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Tracciare qualsiasi agente (3 righe di codice)</li><li>Report CLI + dashboard HTML con waterfall</li><li>Argomento di vendita unico: log = obbligo AI Act art. 12</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Repo pubblico open source (oggi vive dentro questo repo)</li><li>Dogfooding con dati reali (aspetta i clienti del #1)</li><li>Dashboard hosted (il prodotto a pagamento)</li></ul></div>
@@ -378,6 +962,7 @@
     <details class="proj">
       <summary><span class="pt">🏢 #8 Continuità — roll-up PMI<small>fase: incubazione · KPI: 1 LOI firmata</small></span><div class="bar low"><i style="--w:25%"></i></div><span class="p">25%</span></summary>
       <div class="pbody">
+        <p class="trycmd">python3 valuta.py --esempio && python3 pipeline.py --demo</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Valutare un target in 10 minuti (valuta.py: DSCR, ROI)</li><li>Gestire la pipeline con score automatico</li><li>Negoziare con lo schema LOI + checklist due diligence</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Pipeline REALE (0 conversazioni con commercialisti)</li><li>Capitale o pre-accordo bancario (100–300 k€)</li><li>Track record dei progetti #1–#4 (è il prerequisito)</li></ul></div>
@@ -395,6 +980,7 @@
     <details class="proj">
       <summary><span class="pt">🩺 #9 Perizia — vertical AI legale/sanità<small>fase: validazione · KPI: 15 interviste + 1 pilot</small></span><div class="bar low"><i style="--w:15%"></i></div><span class="p">15%</span></summary>
       <div class="pbody">
+        <p class="trycmd">python3 tracker.py --demo</p>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li>Partire con le interviste: script pronti, domande testate</li><li>Tracciare le evidenze col verdetto go/no-go automatico</li><li>Presentarti con homepage credibile e pilot strutturato</li></ul></div>
           <div class="x"><h4>❌ Manca</h4><ul><li>Le 15 interviste (0 fatte — TUTTO dipende da qui)</li><li>Il co-founder di dominio (medico legale / ex liquidatore)</li><li>Qualsiasi codice prodotto (vietato per disciplina fino al GO)</li></ul></div>
@@ -410,11 +996,70 @@
     </details>
   </div>
 </section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <h2><span class="snum">07</span>Roadmap strategica</h2>
+    <p class="secnote">Prima la cassa, poi il prodotto, poi le scommesse. Ogni fase finanzia la successiva.</p>
+    <div class="phases">
+      <div class="phase">
+        <span class="when">MESI 0–3</span>
+        <div>
+          <h3>Generare cassa</h3>
+          <p>Lancia il #2 (servizio produttizzato) o il #1 (voice AI). Obiettivo: primi 5 clienti paganti, 3–5 k€/mese. Regola dei 90 giorni: primo cliente pagante entro 90 giorni o si cambia idea.</p>
+        </div>
+      </div>
+      <div class="phase">
+        <span class="when">MESI 3–12</span>
+        <div>
+          <h3>Dal servizio al prodotto</h3>
+          <p>Reinvesti la cassa: trasforma il servizio nel micro-SaaS #4 sulla stessa nicchia, oppure aggancia l'onda normativa del #3 (l'AI Act è appena entrato in enforcement).</p>
+        </div>
+      </div>
+      <div class="phase">
+        <span class="when">ANNO 2+</span>
+        <div>
+          <h3>Pensare in grande</h3>
+          <p>Con dati, cassa e track record: scala verso il tier rivoluzionario (#6–#9) o vendi e ricomincia più in grande. È qui che il flywheel paga: ogni progetto ha già abbassato il costo del successivo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="italia">
+  <div class="wrap">
+    <h2><span class="snum">08</span>Partire in Italia — info utili</h2>
+    <div class="notes">
+      <div class="note"><b>Regime forfettario:</b> per validare le idee #1–#5 da soli — flat tax 5% per i primi 5 anni (poi 15%) fino a 85 k€ di ricavi. Si apre in 24 ore.</div>
+      <div class="note"><b>SRL / startup innovativa:</b> sopra ~80–100 k€ di fatturato o con soci/investitori. Le idee #6–#9 nascono come startup innovativa: detrazioni 30–50% per gli investitori.</div>
+      <div class="note"><b>Funding:</b> per il tier «in grande» — Smart&amp;Start Invitalia (fino a 1,5 M€), CDP Venture Capital, bandi regionali. Per le idee #1–#5: il cashflow è il funding, non cercarne altro.</div>
+      <div class="note"><b>Utili indicati:</b> operativi, ante imposte. Nel forfettario il netto reale è ~85–90%; in SRL considera IRES+IRAP (~28%).</div>
+    </div>
+  </div>
+</section>
+
+<section id="fonti">
+  <div class="wrap">
+    <h2><span class="snum">09</span>Fonti principali</h2>
+    <ol class="fonti">
+      <li><a href="https://www.grandviewresearch.com/industry-analysis/ai-voice-agents-market-report" target="_blank" rel="noopener">AI Voice Agents Market Report 2026–2033 — Grand View Research</a></li>
+      <li><a href="https://automaiva.com/vertical-saas-ai-agents-2026/" target="_blank" rel="noopener">Vertical SaaS AI Agents 2026 — Automaiva</a></li>
+      <li><a href="https://actgsys.com/en/blog/vertical-ai-agents-industry-specific-2026" target="_blank" rel="noopener">Vertical AI Agents 2026 — ACTGSYS</a></li>
+      <li><a href="https://preuve.ai/blog/startup-ideas-2026" target="_blank" rel="noopener">AI Startup Ideas 2026: 50 Ranked — Preuve</a></li>
+      <li><a href="https://ideaproof.io/blog/2026-saas-market-trends-and-opportunities-mk7j3hop" target="_blank" rel="noopener">2026 SaaS Market Trends — IdeaProof</a></li>
+      <li><a href="https://www.businessresearchinsights.com/market-reports/silver-economy-market-119281" target="_blank" rel="noopener">Silver Economy Market 2026–2035 — Business Research Insights</a></li>
+      <li><a href="https://bigideasdb.com/guides/low-cost-high-margin-business-ideas-2026" target="_blank" rel="noopener">Low Cost High Margin Business Ideas 2026 — BigIdeasDB</a></li>
+      <li><a href="https://www.uschamber.com/co/start/business-ideas/top-trending-business-ideas" target="_blank" rel="noopener">50 Business Ideas for 2026 — US Chamber of Commerce</a></li>
+    </ol>
+  </div>
+</section>
 </main>
 
 <footer>
   <div class="wrap">
     <p>Le percentuali sono stime di avanzamento verso il primo cliente pagante, aggiornate manualmente a ogni avanzamento del portfolio. SWOT e capacità riflettono lo stato del repository al 13 luglio 2026 (commit più recente sul branch di lavoro).</p>
+    <p>Le dimensioni di mercato per l'Italia (e alcune per l'Europa) sono stime proporzionali derivate dai report globali citati, non dati ufficiali. Probabilità e scenari di fatturato/utile sono valutazioni qualitative basate su pattern storici: non sono garanzie. Gli scenari assumono esecuzione competente e full-time.</p>
     <p class="mono">Control Room · repo: itsgrc/idea · branch: claude/business-ideas-analysis-vjr0oq</p>
   </div>
 </footer>
