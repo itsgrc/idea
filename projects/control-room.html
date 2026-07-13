@@ -1,0 +1,420 @@
+<title>Control Room — Stato del Portfolio</title>
+<style>
+  :root {
+    --bg:#F4F6F5; --surface:#FFFFFF; --ink:#17221F; --muted:#5B6B66;
+    --line:#DCE3E0; --accent:#0E7A6E; --accent-soft:#E3F0EE; --gold:#A8741A;
+    --good:#2E7D4F; --good-soft:#E5F1E9; --bad:#B3403A; --bad-soft:#F7E9E8;
+    --warn:#B07C1E; --warn-soft:#F6EFDE; --shadow:0 1px 3px rgba(23,34,31,.06);
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg:#0F1614; --surface:#161F1C; --ink:#E4EAE7; --muted:#93A39D;
+    --line:#2A3733; --accent:#43BFAD; --accent-soft:#1B2C28; --gold:#D9A455;
+    --good:#5FBF8A; --good-soft:#17281E; --bad:#E07A72; --bad-soft:#2E1D1B;
+    --warn:#D9A455; --warn-soft:#2A2415; --shadow:none;
+  }}
+  :root[data-theme="light"]{--bg:#F4F6F5;--surface:#FFFFFF;--ink:#17221F;--muted:#5B6B66;--line:#DCE3E0;--accent:#0E7A6E;--accent-soft:#E3F0EE;--gold:#A8741A;--good:#2E7D4F;--good-soft:#E5F1E9;--bad:#B3403A;--bad-soft:#F7E9E8;--warn:#B07C1E;--warn-soft:#F6EFDE;--shadow:0 1px 3px rgba(23,34,31,.06)}
+  :root[data-theme="dark"]{--bg:#0F1614;--surface:#161F1C;--ink:#E4EAE7;--muted:#93A39D;--line:#2A3733;--accent:#43BFAD;--accent-soft:#1B2C28;--gold:#D9A455;--good:#5FBF8A;--good-soft:#17281E;--bad:#E07A72;--bad-soft:#2E1D1B;--warn:#D9A455;--warn-soft:#2A2415;--shadow:none}
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.55;font-size:15.5px}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  a{color:var(--accent)} a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+  .hero{padding:44px 0 26px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+  h1{font-size:clamp(26px,5vw,40px);line-height:1.12;letter-spacing:-.02em;font-weight:800;margin:0 0 10px;text-wrap:balance}
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{color:var(--muted);max-width:64ch;margin:0 0 20px;font-size:16px}
+  .stats{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 14px;box-shadow:var(--shadow)}
+  .stat b{display:block;font-size:19px;font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+  .stat span{font-size:12px;color:var(--muted)}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-block;text-decoration:none;font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:8px;border:1px solid var(--accent);color:var(--accent)}
+
+  .topnav{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+  .topnav .wrap{display:flex;gap:4px;overflow-x:auto}
+  .topnav a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:600;padding:11px 11px;white-space:nowrap;border-bottom:2px solid transparent}
+  .topnav a:hover{color:var(--ink);border-bottom-color:var(--gold)}
+
+  section{padding:36px 0 8px}
+  h2{font-size:clamp(20px,3.2vw,25px);letter-spacing:-.015em;font-weight:800;margin:0 0 6px;text-wrap:balance}
+  h2 .snum{font-family:ui-monospace,Menlo,monospace;color:var(--gold);font-size:.72em;vertical-align:.18em;margin-right:8px}
+  .secnote{color:var(--muted);margin:0 0 20px;max-width:68ch;font-size:14.5px}
+
+  /* ---- SI PUO / NON SI PUO ---- */
+  .cando{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .cd{border-radius:12px;padding:18px 20px;border:1px solid var(--line)}
+  .cd.yes{background:var(--good-soft);border-color:var(--good)}
+  .cd.no{background:var(--bad-soft);border-color:var(--bad)}
+  .cd h3{margin:0 0 10px;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
+  .cd.yes h3{color:var(--good)} .cd.no h3{color:var(--bad)}
+  .cd ul{margin:0;padding:0;list-style:none;font-size:14px}
+  .cd li{padding:5px 0 5px 24px;position:relative;border-bottom:1px dashed var(--line)}
+  .cd li:last-child{border-bottom:0}
+  .cd.yes li::before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:800}
+  .cd.no li::before{content:"✕";position:absolute;left:0;color:var(--bad);font-weight:800}
+  .cd li b{display:block;font-size:13.9px}
+  .cd li span{color:var(--muted);font-size:12.8px}
+
+  /* ---- completamento ---- */
+  .comp{display:grid;gap:9px}
+  .crow{display:grid;grid-template-columns:190px 1fr 52px;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:10px 14px;box-shadow:var(--shadow)}
+  .crow .n{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crow .n small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+  .bar{height:9px;border-radius:5px;background:var(--line);overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:5px;background:var(--accent);width:var(--w)}
+  .bar.low i{background:var(--warn)}
+  .crow .p{font-family:ui-monospace,Menlo,monospace;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:var(--accent)}
+  .crow.tot{border:2px solid var(--gold)}
+  .crow.tot .p{color:var(--gold)}
+  .legend{font-size:12.5px;color:var(--muted);margin-top:10px}
+
+  /* ---- SWOT ---- */
+  .swot{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .sq{border-radius:12px;padding:16px 18px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);border-top:4px solid var(--line)}
+  .sq h3{margin:0 0 8px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-family:ui-monospace,Menlo,monospace}
+  .sq.s{border-top-color:var(--good)} .sq.s h3{color:var(--good)}
+  .sq.w{border-top-color:var(--bad)} .sq.w h3{color:var(--bad)}
+  .sq.o{border-top-color:var(--accent)} .sq.o h3{color:var(--accent)}
+  .sq.t{border-top-color:var(--warn)} .sq.t h3{color:var(--warn)}
+  .sq ul{margin:0;padding-left:16px;font-size:13.5px}
+  .sq li{margin:4px 0}
+  .sq li b{font-weight:700}
+
+  /* ---- project cards ---- */
+  .proj{background:var(--surface);border:1px solid var(--line);border-radius:11px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden}
+  .proj summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;grid-template-columns:1fr 130px 46px;gap:12px;align-items:center}
+  .proj summary::-webkit-details-marker{display:none}
+  .pt{font-size:15px;font-weight:700}
+  .pt small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+  .proj .p{font-family:ui-monospace,Menlo,monospace;font-weight:800;text-align:right;color:var(--accent);font-variant-numeric:tabular-nums}
+  .pbody{border-top:1px solid var(--line);padding:16px;display:grid;gap:14px}
+  .pcd{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pcd div{border-radius:9px;padding:12px 14px;font-size:13px}
+  .pcd .y{background:var(--good-soft)} .pcd .x{background:var(--bad-soft)}
+  .pcd h4{margin:0 0 6px;font-size:11px;letter-spacing:.09em;text-transform:uppercase}
+  .pcd .y h4{color:var(--good)} .pcd .x h4{color:var(--bad)}
+  .pcd ul{margin:0;padding-left:16px}
+  .pcd li{margin:3px 0}
+  .mswot{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+  .mswot span{font-size:12.3px;border:1px solid var(--line);border-radius:7px;padding:7px 10px;background:var(--bg)}
+  .mswot b{font-family:ui-monospace,Menlo,monospace;font-size:11px;margin-right:5px}
+  .mswot .ms b{color:var(--good)} .mswot .mw b{color:var(--bad)}
+  .mswot .mo b{color:var(--accent)} .mswot .mt b{color:var(--warn)}
+  .next{font-size:13.5px;background:var(--accent-soft);border-radius:8px;padding:10px 13px}
+  .next b{color:var(--accent)}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:20px 0 40px}
+  footer p{color:var(--muted);font-size:12.5px;max-width:76ch;margin:0 0 6px}
+
+  @media (max-width:640px){
+    .cando,.swot,.pcd{grid-template-columns:1fr}
+    .crow{grid-template-columns:1fr 60px;grid-template-rows:auto auto}
+    .crow .bar{grid-column:1/-1;grid-row:2}
+    .proj summary{grid-template-columns:1fr 90px}
+  }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Control Room · aggiornata al 13 luglio 2026</p>
+    <h1>Cosa si può fare oggi. Cosa no. <em>E quanto manca.</em></h1>
+    <p class="lede">Lo stato reale del portfolio, senza filtri: capacità operative attuali, percentuale di completamento verso il primo cliente pagante, analisi SWOT del portfolio e di ogni progetto.</p>
+    <div class="stats">
+      <div class="stat"><b>37%</b><span>completamento medio portfolio</span></div>
+      <div class="stat"><b>8/9</b><span>prototipi funzionanti e testati</span></div>
+      <div class="stat"><b>9/9</b><span>homepage pronte</span></div>
+      <div class="stat"><b>0</b><span>clienti paganti (fase pre-lancio)</span></div>
+    </div>
+    <div class="btnrow">
+      <a class="btn" href="https://claude.ai/code/artifact/c7fcc66c-7bd7-457b-9126-8e7a80e4768e" target="_blank" rel="noopener">📔 Dossier completo delle 9 idee</a>
+      <a class="btn" href="https://github.com/itsgrc/idea/tree/claude/business-ideas-analysis-vjr0oq" target="_blank" rel="noopener">📁 Repository</a>
+    </div>
+  </div>
+</header>
+
+<nav class="topnav" aria-label="Sezioni">
+  <div class="wrap">
+    <a href="#adesso">Si può / Non si può</a>
+    <a href="#completamento">% Completamento</a>
+    <a href="#swot">SWOT Portfolio</a>
+    <a href="#progetti">Progetti in dettaglio</a>
+  </div>
+</nav>
+
+<main>
+<section id="adesso">
+  <div class="wrap">
+    <h2><span class="snum">01</span>Oggi, concretamente</h2>
+    <p class="secnote">La linea di demarcazione del portfolio in questo momento: tutto ciò che è a sinistra si può fare stamattina; tutto ciò che è a destra richiede i passi indicati.</p>
+    <div class="cando">
+      <div class="cd yes">
+        <h3>✅ Si può fare OGGI</h3>
+        <ul>
+          <li><b>Fare una demo a un dentista dal browser</b><span>chat della telefonata su localhost:3000 — motore #1 funzionante</span></li>
+          <li><b>Generare il report bandi per un prospect reale</b><span>scout.py: matching, priorità e schede pronte da inviare</span></li>
+          <li><b>Fare un pre-audit AI Act a un'azienda</b><span>classificatore + Registro + gap analysis: il deliverable esiste</span></li>
+          <li><b>Gestire un'officina vera (in locale)</b><span>lavagna web: accettazione, stati, riepilogo incassi</span></li>
+          <li><b>Pubblicare il primo post e il Numero Zero</b><span>contenuti già scritti, calendario editoriale generato</span></li>
+          <li><b>Simulare la chiamata FiloDiretto completa</b><span>scenari benessere/emergenza testati sul motore condiviso</span></li>
+          <li><b>Valutare un'azienda da acquisire in 10 minuti</b><span>valuta.py + pipeline.py + checklist due diligence + schema LOI</span></li>
+          <li><b>Iniziare le interviste di validazione (Perizia)</b><span>script pronti, tracker go/no-go automatico</span></li>
+        </ul>
+      </div>
+      <div class="cd no">
+        <h3>❌ Non si può ancora</h3>
+        <ul>
+          <li><b>Ricevere una telefonata vera</b><span>manca l'integrazione telefonia + voce (STT/TTS) — è il prossimo grande passo del #1</span></li>
+          <li><b>Incassare denaro</b><span>manca l'entità (P.IVA/SRL), IBAN, fatturazione — decisione da prendere prima del primo contratto</span></li>
+          <li><b>Firmare contratti coi clienti</b><span>mancano T&C e privacy policy definitive (bozze nei disclaimer, serve il legale)</span></li>
+          <li><b>Raccogliere email o lead dai siti</b><span>le homepage sono senza form di proposito: prima l'informativa GDPR</span></li>
+          <li><b>Usare i nomi in pubblico come marchi</b><span>Rispondo, Ponte, Conforme… da verificare su UIBM/EUIPO (checklist pronta)</span></li>
+          <li><b>Mettere i software in mano a più utenti</b><span>Ponte e AgentLens girano in locale: mancano hosting, login, backup</span></li>
+          <li><b>Inviare SMS/WhatsApp automatici</b><span>manca il provider di messaggistica (si aggiunge col primo pilota)</span></li>
+          <li><b>Vendere Perizia</b><span>vietato per disciplina: prima 15 interviste e go/no-go (oggi: 0/15 reali)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="completamento">
+  <div class="wrap">
+    <h2><span class="snum">02</span>Percentuale di completamento</h2>
+    <p class="secnote">Misurata verso un traguardo concreto: <b>il primo cliente pagante</b> (non "il prodotto finito"). Include prototipo, materiale di vendita, canale e requisiti amministrativi.</p>
+    <div class="comp">
+      <div class="crow"><span class="n">🎯 #2 TrovaBandi<small>motore matching + offerta + outreach pronti</small></span><div class="bar"><i style="--w:55%"></i></div><span class="p">55%</span></div>
+      <div class="crow"><span class="n">⚖️ #3 Conforme<small>il deliverable dell'audit esiste già</small></span><div class="bar"><i style="--w:50%"></i></div><span class="p">50%</span></div>
+      <div class="crow"><span class="n">🎙️ #1 Rispondo<small>demo web + playbook; manca la telefonia reale</small></span><div class="bar"><i style="--w:45%"></i></div><span class="p">45%</span></div>
+      <div class="crow"><span class="n">🔧 #4 Ponte<small>app usabile in locale; manca hosting e validazione</small></span><div class="bar"><i style="--w:40%"></i></div><span class="p">40%</span></div>
+      <div class="crow"><span class="n">📰 #5 Cantiere Aperto<small>contenuti pronti; audience da zero</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></div>
+      <div class="crow"><span class="n">🔍 #7 AgentLens<small>tracer + dashboard; manca il repo pubblico</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></div>
+      <div class="crow"><span class="n">👵 #6 FiloDiretto<small>flusso reale sul motore #1; serve telefonia e pilota</small></span><div class="bar low"><i style="--w:30%"></i></div><span class="p">30%</span></div>
+      <div class="crow"><span class="n">🏢 #8 Continuità<small>strumenti completi; pipeline reale e capitale a zero</small></span><div class="bar low"><i style="--w:25%"></i></div><span class="p">25%</span></div>
+      <div class="crow"><span class="n">🩺 #9 Perizia<small>kit validazione pronto; 0/15 interviste fatte</small></span><div class="bar low"><i style="--w:15%"></i></div><span class="p">15%</span></div>
+      <div class="crow tot"><span class="n">📊 PORTFOLIO<small>media pesata sulla priorità di lancio</small></span><div class="bar"><i style="--w:37%;background:var(--gold)"></i></div><span class="p">37%</span></div>
+    </div>
+    <p class="legend">Verde = sopra il 40% (fase di lancio vicina) · Ambra = sotto il 40% (fase fondamenta/validazione). Le stime sono verso il primo cliente, non verso il prodotto completo.</p>
+  </div>
+</section>
+
+<section id="swot">
+  <div class="wrap">
+    <h2><span class="snum">03</span>SWOT del portfolio</h2>
+    <p class="secnote">L'analisi del portfolio nel suo insieme. La minaccia n.1 è interna: la dispersione su 9 fronti — ed è il motivo delle regole di fase e dei KPI di sblocco.</p>
+    <div class="swot">
+      <div class="sq s">
+        <h3>S · Punti di forza</h3>
+        <ul>
+          <li><b>8 prototipi funzionanti</b> a zero dipendenze, tutti testati end-to-end</li>
+          <li><b>Flywheel dimostrato</b>: FiloDiretto gira sul motore di Rispondo (2° prodotto ≈ costo zero)</li>
+          <li><b>Costi vivi ≈ 0</b>: tutto costruito senza capitale, nessun debito</li>
+          <li>Materiale di vendita pronto: 9 homepage, playbook, report generabili dal vivo</li>
+          <li>Disciplina scritta: KPI di fase, regola dei 90 giorni, checklist legale</li>
+        </ul>
+      </div>
+      <div class="sq w">
+        <h3>W · Debolezze</h3>
+        <ul>
+          <li><b>0 clienti, 0 fatturato</b>: tutto è ancora ipotesi non validata dal mercato</li>
+          <li><b>Un solo paio di mani</b>: il tempo del founder è il collo di bottiglia di tutto</li>
+          <li>Nessuna telefonia reale: il prodotto di punta non riceve ancora chiamate vere</li>
+          <li>Nessuna audience (0 follower), nessuna entità legale, marchi non verificati</li>
+          <li>Nessuna competenza di dominio interna per #9 (serve co-founder)</li>
+        </ul>
+      </div>
+      <div class="sq o">
+        <h3>O · Opportunità</h3>
+        <ul>
+          <li><b>EU AI Act: enforcement agosto 2026</b> — la finestra di Conforme è ADESSO</li>
+          <li>PMI italiane poco digitalizzate: concorrenza quasi nulla nel locale</li>
+          <li>Demografia a favore: silver economy + successioni d'impresa (#6, #8)</li>
+          <li>Tecnologia voce ormai commodity: costo marginale in caduta</li>
+          <li>Build in public (#5) moltiplica gratis la distribuzione di tutti gli altri</li>
+        </ul>
+      </div>
+      <div class="sq t">
+        <h3>T · Minacce</h3>
+        <ul>
+          <li><b>Dispersione su 9 fronti</b>: la minaccia n.1 è non finire niente (mitigazione: regole di fase)</li>
+          <li>Barriere tecnologiche basse → concorrenza rapida su #1 e #4</li>
+          <li>Dipendenza da fornitori AI terzi (prezzi e condizioni fuori controllo)</li>
+          <li>Normativa in evoluzione: l'AI Act cambia = Conforme deve aggiornarsi</li>
+          <li>Big player e Big4 sul segmento enterprise di #3 e #7</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="progetti">
+  <div class="wrap">
+    <h2><span class="snum">04</span>Progetti in dettaglio</h2>
+    <p class="secnote">Tocca un progetto per aprire: cosa puoi fare / cosa manca, mini-SWOT e il prossimo passo che sblocca la fase.</p>
+
+    <details class="proj" open>
+      <summary><span class="pt">🎙️ #1 Rispondo — voice AI receptionist<small>fase: sviluppo attivo · KPI: 3 piloti in 30 gg</small></span><div class="bar"><i style="--w:45%"></i></div><span class="p">45%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Demo completa nel browser e nel terminale</li><li>Configurare un nuovo cliente in un file JSON</li><li>Secondo settore pronto (officine)</li><li>Vendere col playbook porta-a-porta + homepage</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Telefonia reale (numero, SIP, deviazione)</li><li>Voce: STT/TTS a bassa latenza + LLM per l'intent</li><li>Notifiche WhatsApp e calendario reali</li><li>Contratto pilota e informativa privacy</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>ROI spiegabile in 3 secondi</span>
+          <span class="mw"><b>W</b>demo ≠ telefonata vera</span>
+          <span class="mo"><b>O</b>nessuno lo vende al dentista sotto casa</span>
+          <span class="mt"><b>T</b>commoditizzazione rapida</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> integrare un provider voce su un numero di prova e reggere 10 chiamate reali di fila. Sblocca: le demo dal vivo → i 3 piloti.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">🎯 #2 TrovaBandi — servizio produttizzato<small>fase: sviluppo attivo · KPI: 1° cliente in 14 gg</small></span><div class="bar"><i style="--w:55%"></i></div><span class="p">55%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Report bandi personalizzato per qualsiasi prospect</li><li>Pitch con ROI calcolato (roi_pitch.py)</li><li>Outreach: sequenze email pronte</li><li>Offerta e prezzi definiti (RADAR/CACCIA/PARTNER)</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Database bandi REALI (oggi: esempi illustrativi — servono 2–3 ore di curation)</li><li>Entità per fatturare il primo retainer</li><li>I primi 10 contatti inviati davvero</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>cashflow più rapido del portfolio</span>
+          <span class="mw"><b>W</b>scala col tempo del founder</span>
+          <span class="mo"><b>O</b>PMI ignare dei fondi disponibili</span>
+          <span class="mt"><b>T</b>consulenti tradizionali a success fee gonfiata</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> popolare bandi.json con 10 bandi veri della propria regione (fonti ufficiali) e inviare i primi 10 outreach. Sblocca: il primo cliente — è il progetto più vicino all'incasso.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">⚖️ #3 Conforme — compliance EU AI Act<small>fase: sviluppo attivo · KPI: 5 audit entro ago 2026</small></span><div class="bar"><i style="--w:50%"></i></div><span class="p">50%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Pre-assessment guidato su qualunque azienda</li><li>Registro dei Sistemi AI + gap analysis (il deliverable)</li><li>Homepage con funnel assessment→audit→monitoraggio</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Partner legale abilitato (co-firma degli audit)</li><li>Versione web self-service dell'assessment (lead-gen)</li><li>Primo webinar con associazione di categoria</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>domanda creata dalla legge</span>
+          <span class="mw"><b>W</b>serve la sponda legale</span>
+          <span class="mo"><b>O</b>enforcement agosto 2026 = ADESSO</span>
+          <span class="mt"><b>T</b>finestra che si chiude in 24–36 mesi</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> trovare lo studio legale partner (revenue share) e fissare il primo webinar. Sblocca: la credibilità per vendere audit — il timing è la risorsa più scarsa del portfolio.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">🔧 #4 Ponte — gestionale officine<small>fase: fondamenta · KPI: 10 officine in lista</small></span><div class="bar"><i style="--w:40%"></i></div><span class="p">40%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Usare la lavagna web in un'officina vera (in locale)</li><li>Accettazione in 30 secondi, stati, riepilogo incassi</li><li>Validare la nicchia col framework a punteggio</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Le 10 interviste in officina (0 fatte — è il KPI)</li><li>Hosting multi-officina con login e backup</li><li>SMS "auto pronta" reale</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>churn bassissimo una volta adottato</span>
+          <span class="mw"><b>W</b>vendita lenta, settore poco digitale</span>
+          <span class="mo"><b>O</b>playbook ServiceTitan libero in EU</span>
+          <span class="mt"><b>T</b>gestionali legacy che si svegliano</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> le 10 interviste (6/10 devono confermare il dolore) PRIMA di ogni altra riga di codice. Sblocca: la certezza che la nicchia è giusta.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">📰 #5 Cantiere Aperto — knowledge business<small>fase: fondamenta · KPI: 1.000 follower in 60 gg</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Pubblicare: Numero Zero + 6 post già scritti</li><li>Calendario editoriale di 90 giorni generato</li><li>Funnel e scala prodotti definiti</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Tutto ciò che conta: la costanza (0 post pubblicati)</li><li>Piattaforma newsletter con doppio opt-in GDPR</li><li>60 giorni di ritmo prima di giudicare i numeri</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>materia prima unica: il cantiere vero</span>
+          <span class="mw"><b>W</b>zero audience di partenza</span>
+          <span class="mo"><b>O</b>nessuno documenta fallimenti veri in italiano</span>
+          <span class="mt"><b>T</b>saturazione contenuti AI generici</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> pubblicare il post 1 OGGI e fissare l'appuntamento del sabato. Sblocca: il canale di distribuzione gratuito per tutti gli altri 8 progetti.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">👵 #6 FiloDiretto — silver tech<small>fase: incubazione · KPI: 20 famiglie in pilota</small></span><div class="bar low"><i style="--w:30%"></i></div><span class="p">30%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Simulare la chiamata completa (benessere, farmaci, emergenza→allerta)</li><li>Riusare il motore del #1: il flusso è pronto</li><li>Testare la domanda con le 10 telefonate ai figli</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Telefonia reale (arriva "gratis" quando la fa il #1)</li><li>Dashboard famiglia + consenso GDPR operativo</li><li>Concierge test: 10 famiglie con chiamate UMANE</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>zero hardware, zero app da imparare</span>
+          <span class="mw"><b>W</b>dati sanitari = massima delicatezza</span>
+          <span class="mo"><b>O</b>il paese più vecchio d'Europa</span>
+          <span class="mt"><b>T</b>fiducia difficile da conquistare (e facile da perdere)</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> il sondaggio dei 10 sì (genitore anziano solo, 29 €/mese: pagheresti?). Sblocca: il concierge test — che non richiede nemmeno la tecnologia.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">🔍 #7 AgentLens — infrastruttura AI<small>fase: incubazione · KPI: 50 stelle / 10 utenti</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Tracciare qualsiasi agente (3 righe di codice)</li><li>Report CLI + dashboard HTML con waterfall</li><li>Argomento di vendita unico: log = obbligo AI Act art. 12</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Repo pubblico open source (oggi vive dentro questo repo)</li><li>Dogfooding con dati reali (aspetta i clienti del #1)</li><li>Dashboard hosted (il prodotto a pagamento)</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>angolo compliance che i tool US non hanno</span>
+          <span class="mw"><b>W</b>vendere a sviluppatori richiede reputazione</span>
+          <span class="mo"><b>O</b>ogni agente in produzione è un cliente potenziale</span>
+          <span class="mt"><b>T</b>i lab AI possono integrarlo nativamente</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> pubblicare il repo open source con README in inglese. Sblocca: il contatore delle 50 stelle — prima non esiste agli occhi degli sviluppatori.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">🏢 #8 Continuità — roll-up PMI<small>fase: incubazione · KPI: 1 LOI firmata</small></span><div class="bar low"><i style="--w:25%"></i></div><span class="p">25%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Valutare un target in 10 minuti (valuta.py: DSCR, ROI)</li><li>Gestire la pipeline con score automatico</li><li>Negoziare con lo schema LOI + checklist due diligence</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Pipeline REALE (0 conversazioni con commercialisti)</li><li>Capitale o pre-accordo bancario (100–300 k€)</li><li>Track record dei progetti #1–#4 (è il prerequisito)</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>si comprano clienti già acquisiti</span>
+          <span class="mw"><b>W</b>serve capitale che oggi non c'è</span>
+          <span class="mo"><b>O</b>ondata di successioni senza compratori</span>
+          <span class="mt"><b>T</b>integrazione post-acquisizione delicata</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> la domanda al commercialista («clienti vicini alla pensione senza eredi?») — costa zero e costruisce la pipeline mentre gli altri progetti generano il capitale.</p>
+      </div>
+    </details>
+
+    <details class="proj">
+      <summary><span class="pt">🩺 #9 Perizia — vertical AI legale/sanità<small>fase: validazione · KPI: 15 interviste + 1 pilot</small></span><div class="bar low"><i style="--w:15%"></i></div><span class="p">15%</span></summary>
+      <div class="pbody">
+        <div class="pcd">
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Partire con le interviste: script pronti, domande testate</li><li>Tracciare le evidenze col verdetto go/no-go automatico</li><li>Presentarti con homepage credibile e pilot strutturato</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Le 15 interviste (0 fatte — TUTTO dipende da qui)</li><li>Il co-founder di dominio (medico legale / ex liquidatore)</li><li>Qualsiasi codice prodotto (vietato per disciplina fino al GO)</li></ul></div>
+        </div>
+        <div class="mswot">
+          <span class="ms"><b>S</b>disciplina: si spende in informazione, non in codice</span>
+          <span class="mw"><b>W</b>zero accesso al settore, oggi</span>
+          <span class="mo"><b>O</b>l'unico progetto da exit a 8-9 cifre</span>
+          <span class="mt"><b>T</b>competitor con centinaia di milioni raccolti</span>
+        </div>
+        <p class="next"><b>Prossimo passo:</b> 10 messaggi LinkedIn (5 medici legali + 5 responsabili sinistri). Sblocca: le prime 3 interviste — che diranno se il progetto esiste.</p>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Le percentuali sono stime di avanzamento verso il primo cliente pagante, aggiornate manualmente a ogni avanzamento del portfolio. SWOT e capacità riflettono lo stato del repository al 13 luglio 2026 (commit più recente sul branch di lavoro).</p>
+    <p class="mono">Control Room · repo: itsgrc/idea · branch: claude/business-ideas-analysis-vjr0oq</p>
+  </div>
+</footer>
