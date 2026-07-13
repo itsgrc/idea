@@ -1,0 +1,90 @@
+{
+  "nome": "Officina Demo",
+  "orari": "lun-ven 8:00-18:30, sab 8:00-12:30",
+  "stati": {
+    "saluto": {
+      "messaggio": "Officina Demo, buongiorno! Sono l'assistente virtuale dell'officina. Come posso aiutarla?",
+      "vai_a": "intento"
+    },
+    "intento": {
+      "intenti": {
+        "stato_auto": {
+          "parole": ["pronta", "pronto", "finito", "ritirare", "quando", "stato"],
+          "vai_a": "stato_auto"
+        },
+        "appuntamento": {
+          "parole": ["appuntamento", "prenotare", "portare", "tagliando", "revisione", "gomme", "cambio", "freni", "controllo"],
+          "vai_a": "raccolta_targa"
+        },
+        "urgenza": {
+          "parole": ["panne", "guasto", "ferma", "fermo", "strada", "spia", "fumo", "traino"],
+          "vai_a": "urgenza"
+        },
+        "info": {
+          "parole": ["orari", "aperto", "chiuso", "dove", "indirizzo", "costo", "prezzo", "quanto"],
+          "vai_a": "info"
+        }
+      },
+      "fallback": "Posso dirle se la sua auto è pronta, fissare un appuntamento o passare un'urgenza all'officina. Cosa le serve?"
+    },
+    "stato_auto": {
+      "messaggio": "Certo! Mi può dire la targa del veicolo?",
+      "salva_in": "targa",
+      "vai_a": "stato_risposta"
+    },
+    "stato_risposta": {
+      "messaggio": "Grazie. Ho registrato la richiesta per la targa {targa}: l'officina la sta verificando e riceverà un SMS con lo stato entro pochi minuti. Ha bisogno d'altro?",
+      "azione": "verifica_stato_veicolo",
+      "vai_a": "fine"
+    },
+    "urgenza": {
+      "messaggio": "Mi dispiace! Avviso subito l'officina. Mi lascia nome e dove si trova il veicolo? La richiamiamo entro 10 minuti.",
+      "salva_in": "nome",
+      "azione": "notifica_urgente_titolare",
+      "vai_a": "chiusura_urgenza"
+    },
+    "chiusura_urgenza": {
+      "messaggio": "Perfetto {nome}, ho avvisato l'officina: la richiamano entro 10 minuti a questo numero. Nel frattempo, se è in strada, metta il triangolo e resti in sicurezza.",
+      "vai_a": "fine"
+    },
+    "info": {
+      "messaggio": "Siamo aperti {orari}, in via delle Botteghe 12. Per i preventivi serve vedere il veicolo: vuole fissare un passaggio veloce in officina?",
+      "vai_a": "conferma_appuntamento_se_si"
+    },
+    "conferma_appuntamento_se_si": {
+      "intenti": {
+        "si": { "parole": ["sì", "si", "ok", "va bene", "certo", "volentieri"], "vai_a": "raccolta_targa" },
+        "no": { "parole": ["no", "non", "ci penso"], "vai_a": "fine_cortese" }
+      },
+      "fallback": "Mi dica pure: vuole che le fissi un passaggio in officina?"
+    },
+    "raccolta_targa": {
+      "messaggio": "Perfetto. Mi dice la targa e il modello del veicolo?",
+      "salva_in": "targa",
+      "vai_a": "raccolta_nome"
+    },
+    "raccolta_nome": {
+      "messaggio": "Grazie. Il suo nome?",
+      "salva_in": "nome",
+      "vai_a": "raccolta_orario"
+    },
+    "raccolta_orario": {
+      "messaggio": "Preferisce mattina o pomeriggio, {nome}?",
+      "salva_in": "preferenza_orario",
+      "vai_a": "conferma"
+    },
+    "conferma": {
+      "messaggio": "Segnato: {targa}, preferenza {preferenza_orario}. L'officina le conferma data e ora con un SMS. Ha bisogno d'altro?",
+      "azione": "crea_appuntamento",
+      "vai_a": "fine"
+    },
+    "fine_cortese": {
+      "messaggio": "Va benissimo! Ci trova {orari}. Buona giornata!",
+      "terminale": true
+    },
+    "fine": {
+      "messaggio": "Grazie per aver chiamato l'Officina Demo. Buona giornata!",
+      "terminale": true
+    }
+  }
+}

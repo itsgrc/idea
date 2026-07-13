@@ -1,0 +1,70 @@
+{
+  "nome": "FiloDiretto — chiamata quotidiana",
+  "orari": "ogni giorno alle 10:00",
+  "assistito": "signora Maria",
+  "stati": {
+    "saluto": {
+      "messaggio": "Buongiorno {assistito}, sono Filo, l'assistente della sua famiglia! Come sta stamattina?",
+      "vai_a": "valuta_benessere"
+    },
+    "valuta_benessere": {
+      "intenti": {
+        "sta_bene": {
+          "parole": ["bene", "benone", "benissimo", "meglio", "non c'è male", "si tira avanti", "tutto a posto"],
+          "vai_a": "farmaci"
+        },
+        "segnale_debole": {
+          "parole": ["stanca", "stanco", "poco", "male dormito", "non ho mangiato", "giù", "sola", "solo", "triste"],
+          "vai_a": "approfondisci_debole"
+        },
+        "segnale_forte": {
+          "parole": ["caduta", "caduto", "male forte", "dolore", "petto", "respiro", "confusa", "confuso", "aiuto", "ospedale"],
+          "vai_a": "protocollo_allerta"
+        }
+      },
+      "fallback": "Mi fa piacere sentirla! Mi dica, come si sente oggi: bene, così così?"
+    },
+    "approfondisci_debole": {
+      "messaggio": "Oh, mi dispiace. Mi vuole raccontare un po' meglio? Sono qui apposta.",
+      "salva_in": "dettaglio_malessere",
+      "azione": "registra_segnale_debole",
+      "vai_a": "farmaci"
+    },
+    "protocollo_allerta": {
+      "messaggio": "La ringrazio di avermelo detto, {assistito}. Adesso avviso subito la sua famiglia, che la chiamerà tra pochissimo. Se si sente male in questo momento, riagganci e chiami il 112, oppure resti con me al telefono finché non arriva la chiamata. D'accordo?",
+      "salva_in": "conferma_allerta",
+      "azione": "allerta_famiglia_immediata",
+      "vai_a": "chiusura_allerta"
+    },
+    "chiusura_allerta": {
+      "messaggio": "Ho avvisato la famiglia, {assistito}: la chiameranno subito. Le resto vicina col pensiero, e ci sentiamo più tardi per sapere come va.",
+      "terminale": true
+    },
+    "farmaci": {
+      "messaggio": "Mi raccomando le sue medicine: ha già preso la pastiglia della pressione stamattina?",
+      "vai_a": "valuta_farmaci"
+    },
+    "valuta_farmaci": {
+      "intenti": {
+        "presi": { "parole": ["sì", "si", "presa", "preso", "già", "certo", "appena"], "vai_a": "aggancio" },
+        "non_presi": { "parole": ["no", "non ancora", "dimenticata", "dimenticato", "dopo"], "vai_a": "promemoria_farmaci" }
+      },
+      "fallback": "La pastiglia della pressione, quella di stamattina: l'ha presa?"
+    },
+    "promemoria_farmaci": {
+      "messaggio": "Allora gliela ricordo io: la prenda appena mettiamo giù, con un bel bicchiere d'acqua. Segno di ricordarglielo anche domani!",
+      "azione": "registra_promemoria_farmaco",
+      "vai_a": "aggancio"
+    },
+    "aggancio": {
+      "messaggio": "Senta, ieri mi raccontava del nipotino che doveva venire a trovarla: com'è andata poi?",
+      "salva_in": "racconto_del_giorno",
+      "vai_a": "chiusura"
+    },
+    "chiusura": {
+      "messaggio": "Che bello sentirla, {assistito}! Io la saluto e le auguro una giornata serena. Ci sentiamo domani alle dieci, come sempre. Un caro saluto!",
+      "azione": "registra_esito_ok",
+      "terminale": true
+    }
+  }
+}

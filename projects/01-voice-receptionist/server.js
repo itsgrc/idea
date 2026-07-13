@@ -57,6 +57,9 @@ const Azioni = {
   notifica_urgente_titolare(sessione) {
     sessione.eventi.push({ tipo: 'urgenza_notificata', numero: sessione.id });
   },
+  verifica_stato_veicolo(sessione) {
+    sessione.eventi.push({ tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa });
+  },
 };
 
 /* ------------------------------------------------------------------ *
@@ -82,7 +85,12 @@ function avanza(sessione, risposte) {
     if (!stato) throw new Error(`Stato sconosciuto: ${sessione.stato}`);
 
     if (stato.messaggio) risposte.push(interpola(stato.messaggio, sessione));
-    if (stato.azione && Azioni[stato.azione]) Azioni[stato.azione](sessione);
+    if (stato.azione) {
+      // Azioni note = side effect dedicato; azioni solo dichiarate nel flusso
+      // diventano comunque eventi tracciati (il flusso comanda, non il codice).
+      if (Azioni[stato.azione]) Azioni[stato.azione](sessione);
+      else sessione.eventi.push({ tipo: stato.azione, dati: { ...sessione.dati } });
+    }
     if (stato.terminale) {
       sessione.finita = true;
       return;
@@ -167,7 +175,44 @@ function test() {
 }
 
 /* ------------------------------------------------------------------ *
+ * Demo web — chat nel browser su GET /, per far provare la demo ai
+ * clienti senza terminale. Usa la stessa API del webhook telefonico.
+ * ------------------------------------------------------------------ */
+const WEB_HTML = `<!doctype html><html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Demo — ${flow.nome}</title><style>
+:root{--bg:#F7F9FB;--card:#fff;--ink:#12263A;--muted:#5A6B7C;--acc:#E4572E;--soft:#FDEEE8;--line:#DCE4EC}
+@media(prefers-color-scheme:dark){:root{--bg:#0D1B29;--card:#132436;--ink:#E8EEF4;--muted:#93A6B8;--acc:#FF7A50;--soft:#27201E;--line:#24384C}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;display:flex;flex-direction:column;min-height:100vh}
+header{padding:16px 20px;border-bottom:1px solid var(--line)}header b{font-size:15px}header span{display:block;font-size:12px;color:var(--muted)}
+#chat{flex:1;max-width:640px;width:100%;margin:0 auto;padding:20px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:82%;padding:10px 14px;border-radius:14px;font-size:15px;line-height:1.5}
+.ai{background:var(--soft);border-bottom-left-radius:4px;align-self:flex-start}
+.me{background:var(--card);border:1px solid var(--line);border-bottom-right-radius:4px;align-self:flex-end}
+form{display:flex;gap:8px;max-width:640px;width:100%;margin:0 auto;padding:0 20px 20px}
+input{flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:15px}
+button{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:12px 20px;font-weight:700;font-size:15px;cursor:pointer}
+#done{display:none;text-align:center;color:var(--muted);font-size:13px;padding:0 0 16px}
+</style></head><body>
+<header><b>📞 Demo chiamata — ${flow.nome}</b><span>Scrivi come se stessi parlando al telefono. In produzione questa conversazione è vocale.</span></header>
+<div id="chat"></div>
+<p id="done">✅ Chiamata conclusa — ricarica la pagina per simularne un'altra.</p>
+<form id="f"><input id="t" autocomplete="off" placeholder="La tua risposta…" autofocus><button>Invia</button></form>
+<script>
+const chat=document.getElementById('chat'),f=document.getElementById('f'),t=document.getElementById('t');
+let sid=null;
+function add(txt,cls){const d=document.createElement('div');d.className='m '+cls;d.textContent=txt;chat.appendChild(d);d.scrollIntoView({block:'end'})}
+async function start(){const r=await fetch('/call/start',{method:'POST'});const j=await r.json();sid=j.session_id;j.messages.forEach(m=>add(m,'ai'))}
+f.addEventListener('submit',async e=>{e.preventDefault();const v=t.value.trim();if(!v||!sid)return;add(v,'me');t.value='';
+const r=await fetch('/call/'+sid+'/message',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:v})});
+const j=await r.json();j.messages.forEach(m=>add(m,'ai'));
+if(j.done){document.getElementById('done').style.display='block';f.style.display='none'}});
+start();
+</script></body></html>`;
+
+/* ------------------------------------------------------------------ *
  * API HTTP — la stessa interfaccia che userà il webhook telefonico.
+ *   GET  /                           → demo web (chat)
  *   POST /call/start                 → { session_id, messages }
  *   POST /call/:id/message {text}    → { messages, done, events }
  * ------------------------------------------------------------------ */
@@ -196,6 +241,10 @@ function api() {
           return rispondi(200, { messages, done: sessione.finita, events: sessione.eventi });
         }
         if (req.url === '/health') return rispondi(200, { ok: true, flow: flow.nome });
+        if (req.method === 'GET' && req.url === '/') {
+          res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+          return res.end(WEB_HTML);
+        }
         rispondi(404, { error: 'not found' });
       } catch (err) {
         rispondi(500, { error: err.message });
