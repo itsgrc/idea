@@ -235,27 +235,26 @@
       <div class="cd yes">
         <h3>✅ Si può fare OGGI</h3>
         <ul>
+          <li><b>Rispondere a una chiamata Twilio reale (webhook)</b><span>testato con richieste HTTP nel formato Twilio: conversazione completa, TwiML valido</span></li>
           <li><b>Mostrare al dentista quanto vale il servizio in euro</b><span>valore.js: "4.740 € recuperati, ritorno 15,8×" calcolato dal log eventi</span></li>
           <li><b>Far migliorare il flusso da solo</b><span>suggerimenti.js: clusterizza i fallback e propone il nuovo intento con lo snippet pronto</span></li>
-          <li><b>Inviare email vere su bandi REALI</b><span>campagna.py: 3 bandi verificati (Sabatini, Lombardia, Fondimpresa) → mail-merge personalizzato</span></li>
-          <li><b>Dimostrare che un database di bandi non è marcio</b><span>verifica_freschezza.py: segnala scaduti e non riverificati, pronto per un cron</span></li>
-          <li><b>Dare al cliente la data giusta sull'AI Act</b><span>scadenzario.py: rinvio alto rischio a dic. 2027, trasparenza confermata ad ago. 2026</span></li>
-          <li><b>Far fare l'assessment AI Act a un prospect dal browser</b><span>assessment.html: self-service, zero backend, verificato con 5 scenari di test</span></li>
+          <li><b>Inviare email vere su bandi REALI</b><span>invio.py: SMTP reale (dry-run di sicurezza) su 4 bandi verificati (Sabatini, Lombardia, Fondimpresa, SIMEST)</span></li>
+          <li><b>Dimostrare che un database di bandi non è marcio</b><span>verifica_freschezza.py + monitor.py: segnalano scaduti, non riverificati, link rotti</span></li>
+          <li><b>Salvare davvero i lead di un prospect</b><span>lead_capture.py: backend reale testato, assessment AI Act self-service dal browser</span></li>
           <li><b>Gestire un'officina vera (in locale)</b><span>lavagna web: accettazione, stati, riepilogo incassi</span></li>
           <li><b>Simulare la chiamata FiloDiretto completa</b><span>scenari benessere/emergenza testati sul motore condiviso</span></li>
           <li><b>Valutare un'azienda da acquisire in 10 minuti</b><span>valuta.py + pipeline.py + checklist due diligence + schema LOI</span></li>
         </ul>
       </div>
       <div class="cd no">
-        <h3>❌ Non si può ancora</h3>
+        <h3>❌ Non si può ancora (quasi sempre: manca una credenziale reale, non codice)</h3>
         <ul>
-          <li><b>Ricevere una telefonata vera</b><span>manca l'integrazione telefonia + voce (STT/TTS) — è il prossimo grande passo del #1</span></li>
+          <li><b>Ricevere una chiamata da un numero vero</b><span>il webhook è pronto e testato: manca solo comprare un numero Twilio e puntarlo (20 min, guidato in CONFIGURAZIONE.md)</span></li>
           <li><b>Incassare denaro</b><span>manca l'entità (P.IVA/SRL), IBAN, fatturazione — decisione da prendere prima del primo contratto</span></li>
-          <li><b>Firmare contratti coi clienti</b><span>mancano T&C e privacy policy definitive (bozze nei disclaimer, serve il legale)</span></li>
-          <li><b>Raccogliere email o lead dai siti</b><span>le homepage sono senza form di proposito: prima l'informativa GDPR</span></li>
+          <li><b>Firmare contratti coi clienti</b><span>bozze pronte (contratto pilota, privacy policy, partnership legale): serve la revisione di un avvocato vero</span></li>
+          <li><b>Inviare WhatsApp/email/notifiche realmente</b><span>codice reale e testato in dry-run per tutti e 3 i progetti: manca solo incollare le TUE credenziali in .env</span></li>
           <li><b>Usare i nomi in pubblico come marchi</b><span>Rispondo, Ponte, Conforme… da verificare su UIBM/EUIPO (checklist pronta)</span></li>
           <li><b>Mettere i software in mano a più utenti</b><span>Ponte e AgentLens girano in locale: mancano hosting, login, backup</span></li>
-          <li><b>Inviare SMS/WhatsApp automatici</b><span>manca il provider di messaggistica (si aggiunge col primo pilota)</span></li>
           <li><b>Vendere Perizia</b><span>vietato per disciplina: prima 15 interviste e go/no-go (oggi: 0/15 reali)</span></li>
         </ul>
       </div>
@@ -268,16 +267,16 @@
     <h2><span class="snum">02</span>Percentuale di completamento</h2>
     <p class="secnote">Misurata verso un traguardo concreto: <b>il primo cliente pagante</b> (non "il prodotto finito"). Include prototipo, materiale di vendita, canale e requisiti amministrativi.</p>
     <div class="comp">
-      <div class="crow"><span class="n">🎯 #2 TrovaBandi<small>bandi REALI verificati + freschezza + mail-merge</small></span><div class="bar"><i style="--w:72%"></i></div><span class="p">72%</span></div>
-      <div class="crow"><span class="n">⚖️ #3 Conforme<small>date corrette (Digital Omnibus) + assessment self-service</small></span><div class="bar"><i style="--w:66%"></i></div><span class="p">66%</span></div>
-      <div class="crow"><span class="n">🎙️ #1 Rispondo<small>motore ROI + auto-apprendimento; manca la telefonia reale</small></span><div class="bar"><i style="--w:62%"></i></div><span class="p">62%</span></div>
+      <div class="crow"><span class="n">🎯 #2 TrovaBandi<small>4 bandi reali + invio SMTP vero + monitor freschezza</small></span><div class="bar"><i style="--w:88%"></i></div><span class="p">88%</span></div>
+      <div class="crow"><span class="n">⚖️ #3 Conforme<small>lead capture reale; manca solo il partner legale</small></span><div class="bar"><i style="--w:85%"></i></div><span class="p">85%</span></div>
+      <div class="crow"><span class="n">🎙️ #1 Rispondo<small>webhook Twilio reale; manca solo il numero vero</small></span><div class="bar"><i style="--w:90%"></i></div><span class="p">90%</span></div>
       <div class="crow"><span class="n">🔧 #4 Ponte<small>app usabile in locale; manca hosting e validazione</small></span><div class="bar"><i style="--w:40%"></i></div><span class="p">40%</span></div>
       <div class="crow"><span class="n">📰 #5 Cantiere Aperto<small>contenuti pronti; audience da zero</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></div>
       <div class="crow"><span class="n">🔍 #7 AgentLens<small>tracer + dashboard; manca il repo pubblico</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></div>
       <div class="crow"><span class="n">👵 #6 FiloDiretto<small>flusso reale sul motore #1; serve telefonia e pilota</small></span><div class="bar low"><i style="--w:30%"></i></div><span class="p">30%</span></div>
       <div class="crow"><span class="n">🏢 #8 Continuità<small>strumenti completi; pipeline reale e capitale a zero</small></span><div class="bar low"><i style="--w:25%"></i></div><span class="p">25%</span></div>
       <div class="crow"><span class="n">🩺 #9 Perizia<small>kit validazione pronto; 0/15 interviste fatte</small></span><div class="bar low"><i style="--w:15%"></i></div><span class="p">15%</span></div>
-      <div class="crow tot"><span class="n">📊 PORTFOLIO<small>media pesata sulla priorità di lancio</small></span><div class="bar"><i style="--w:42%;background:var(--gold)"></i></div><span class="p">42%</span></div>
+      <div class="crow tot"><span class="n">📊 PORTFOLIO<small>media pesata sulla priorità di lancio</small></span><div class="bar"><i style="--w:49%;background:var(--gold)"></i></div><span class="p">49%</span></div>
     </div>
     <p class="legend">Verde = sopra il 40% (fase di lancio vicina) · Ambra = sotto il 40% (fase fondamenta/validazione). Le stime sono verso il primo cliente, non verso il prodotto completo.</p>
   </div>
@@ -291,6 +290,7 @@
       <div class="sq s">
         <h3>S · Punti di forza</h3>
         <ul>
+          <li><b>Progetti 1-3: infrastruttura reale completa</b> (webhook Twilio, invio SMTP, lead capture) dietro credenziali mock — swap e via, zero righe da riscrivere</li>
           <li><b>8 prototipi funzionanti</b> a zero dipendenze, tutti testati end-to-end</li>
           <li><b>Flywheel dimostrato</b>: FiloDiretto gira sul motore di Rispondo (2° prodotto ≈ costo zero)</li>
           <li><b>Costi vivi ≈ 0</b>: tutto costruito senza capitale, nessun debito</li>
@@ -382,7 +382,7 @@
             <li>Dipendenza da provider AI terzi</li>
           </ul></div>
         </div>
-        <p class="infoline">Break-even 2–4 mesi · margine lordo 70–80% · ticket 150–500 €/mese · canale: vendita territoriale + web agency partner. <b>Completamento attuale: 62%</b> — motore ROI e auto-apprendimento già costruiti, vedi dettaglio in "Progetti in dettaglio".</p>
+        <p class="infoline">Break-even 2–4 mesi · margine lordo 70–80% · ticket 150–500 €/mese · canale: vendita territoriale + web agency partner. <b>Completamento attuale: 90%</b> — webhook Twilio reale e testato, motore ROI e auto-apprendimento: manca solo comprare il numero.</p>
         <p class="azione"><b>Prima azione oggi:</b> chiama 5 dentisti della tua zona alle 13:30. Conta quanti non rispondono: è la tua prima slide di vendita.</p>
         <div class="linkrow">
           <a class="hplink" href="https://claude.ai/code/artifact/b72d4b1f-35fc-4fcf-ba4b-72bf843b061f" target="_blank" rel="noopener">🌐 Vedi la homepage — Rispondo</a>
@@ -436,7 +436,7 @@
             <li>Moat difficile da difendere</li>
           </ul></div>
         </div>
-        <p class="infoline">Break-even &lt; 1 mese · margine lordo 70–90% · ticket 300–2.000 €/mese in retainer · canale: outreach diretto + passaparola. <b>Completamento attuale: 72%</b> — database con bandi REALI verificati, il più vicino all'incasso.</p>
+        <p class="infoline">Break-even &lt; 1 mese · margine lordo 70–90% · ticket 300–2.000 €/mese in retainer · canale: outreach diretto + passaparola. <b>Completamento attuale: 88%</b> — invio email reale via SMTP: manca solo collegare la tua casella di posta.</p>
         <p class="azione"><b>Prima azione oggi:</b> 10 titolari di PMI su LinkedIn, template n.1 della cartella outreach. Obiettivo: 2 call entro venerdì.</p>
         <div class="linkrow">
           <a class="hplink" href="https://claude.ai/code/artifact/f7d87e6d-9f9d-4857-883d-c0936c373675" target="_blank" rel="noopener">🌐 Vedi la homepage — TrovaBandi</a>
@@ -490,7 +490,7 @@
             <li>Picco di domanda-panico esauribile in 24–36 mesi</li>
           </ul></div>
         </div>
-        <p class="infoline">Break-even 3–6 mesi · audit 3–15 k€ una tantum + SaaS 500–5.000 €/mese · sweet spot: mid-market 500–5.000 dipendenti. <b>Completamento attuale: 66%</b> — date corrette al Digital Omnibus, assessment self-service pubblicato.</p>
+        <p class="infoline">Break-even 3–6 mesi · audit 3–15 k€ una tantum + SaaS 500–5.000 €/mese · sweet spot: mid-market 500–5.000 dipendenti. <b>Completamento attuale: 85%</b> — lead capture reale e testato: manca solo un partner legale vero.</p>
         <p class="azione"><b>Prima azione oggi:</b> esegui il classificatore su 3 aziende che conosci. Se una risulta «alto rischio» (basta un software HR), hai il primo prospect.</p>
         <div class="linkrow">
           <a class="hplink" href="https://claude.ai/code/artifact/8c64659d-8ede-4a69-a7fa-3c773e6def8e" target="_blank" rel="noopener">🌐 Vedi la homepage — Conforme</a>
@@ -865,59 +865,59 @@
     <p class="secnote">Tocca un progetto per aprire: cosa puoi fare / cosa manca, mini-SWOT e il prossimo passo che sblocca la fase.</p>
 
     <details class="proj" open>
-      <summary><span class="pt">🎙️ #1 Rispondo — voice AI receptionist<small>fase: sviluppo attivo · KPI: 3 piloti in 30 gg</small></span><div class="bar"><i style="--w:62%"></i></div><span class="p">62%</span></summary>
+      <summary><span class="pt">🎙️ #1 Rispondo — voice AI receptionist<small>fase: sviluppo attivo · KPI: 3 piloti in 30 gg</small></span><div class="bar"><i style="--w:90%"></i></div><span class="p">90%</span></summary>
       <div class="pbody">
-        <p class="trycmd">node simulatore.js && node valore.js --demo && node suggerimenti.js --demo</p>
+        <p class="trycmd">curl -X POST localhost:3000/voice/incoming --data "From=..."  # webhook Twilio reale, testato</p>
         <a class="hplink" href="https://claude.ai/code/artifact/b72d4b1f-35fc-4fcf-ba4b-72bf843b061f" target="_blank" rel="noopener" style="justify-self:start">🌐 Vedi la homepage</a>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li><b>Motore di ROI</b>: report "4.740 € recuperati, ritorno 15,8×" generato dal log eventi</li><li><b>Motore di auto-apprendimento</b>: clusterizza i fallback e propone il nuovo intento con lo snippet pronto</li><li>Demo completa nel browser e nel terminale, 2 settori (dentista/officina)</li><li>Vendere col playbook porta-a-porta + homepage</li></ul></div>
-          <div class="x"><h4>❌ Manca</h4><ul><li>Telefonia reale (numero, SIP, deviazione)</li><li>Voce: STT/TTS a bassa latenza + LLM per l'intent</li><li>Notifiche WhatsApp e calendario reali</li><li>Contratto pilota e informativa privacy</li></ul></div>
+          <div class="x"><h4>❌ Manca (solo credenziali reali, non codice)</h4><ul><li>Un numero Twilio vero puntato al webhook (già scritto e testato)</li><li>Le tue credenziali WhatsApp/Google Calendar in <code>.env</code></li><li>Revisione legale di contratto pilota e privacy policy (bozze pronte)</li></ul></div>
         </div>
         <div class="mswot">
           <span class="ms"><b>S</b>vende "soldi recuperati", non "chiamate gestite"</span>
-          <span class="mw"><b>W</b>demo ≠ telefonata vera</span>
+          <span class="mw"><b>W</b>zero minuti di traffico vero finché non compri il numero</span>
           <span class="mo"><b>O</b>nessuno lo vende al dentista sotto casa</span>
           <span class="mt"><b>T</b>commoditizzazione rapida</span>
         </div>
-        <p class="next"><b>Prossimo passo:</b> integrare un provider voce su un numero di prova e reggere 10 chiamate reali di fila — il motore di ROI e apprendimento sono già pronti a riceverle. Sblocca: le demo dal vivo → i 3 piloti.</p>
+        <p class="next"><b>Prossimo passo:</b> comprare un numero Twilio (20 minuti, vedi CONFIGURAZIONE.md) e puntarlo al webhook già pronto. Il codice regge già una chiamata completa end-to-end, testato. Sblocca: le demo dal vivo → i 3 piloti.</p>
       </div>
     </details>
 
     <details class="proj">
-      <summary><span class="pt">🎯 #2 TrovaBandi — servizio produttizzato<small>fase: sviluppo attivo · KPI: 1° cliente in 14 gg</small></span><div class="bar"><i style="--w:72%"></i></div><span class="p">72%</span></summary>
+      <summary><span class="pt">🎯 #2 TrovaBandi — servizio produttizzato<small>fase: sviluppo attivo · KPI: 1° cliente in 14 gg</small></span><div class="bar"><i style="--w:88%"></i></div><span class="p">88%</span></summary>
       <div class="pbody">
-        <p class="trycmd">python3 verifica_freschezza.py && python3 campagna.py --demo</p>
+        <p class="trycmd">python3 campagna.py --demo && python3 invio.py --demo   # SMTP reale, dry-run</p>
         <a class="hplink" href="https://claude.ai/code/artifact/f7d87e6d-9f9d-4857-883d-c0936c373675" target="_blank" rel="noopener" style="justify-self:start">🌐 Vedi la homepage</a>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li><b>3 bandi REALI verificati</b> (Nuova Sabatini, Voucher Doppia Transizione Lombardia 2026, Formazione Fondimpresa) con fonte ufficiale</li><li><b>Guardiano di freschezza</b>: segnala bandi scaduti o non riverificati da 30+ giorni</li><li><b>Mail-merge</b>: da un CSV di prospect a email pronte, con contributo calcolato correttamente per tipo di bando (mai un numero inventato)</li></ul></div>
-          <div class="x"><h4>❌ Manca</h4><ul><li>Ampliare il database oltre i 3 bandi verificati (altre regioni/temi)</li><li>Entità per fatturare il primo retainer</li><li>I primi 10 contatti reali inviati davvero</li></ul></div>
+          <div class="x"><h4>❌ Manca (solo credenziali reali, non codice)</h4><ul><li>Le tue credenziali SMTP reali in <code>.env</code> (Gmail o dominio, 10 minuti)</li><li>Un CSV di prospect veri con consenso a essere contattati</li><li>P.IVA (anche forfettario, 24h) per fatturare il primo retainer</li></ul></div>
         </div>
         <div class="mswot">
           <span class="ms"><b>S</b>dati reali + disciplina di freschezza, non una lista che marcisce</span>
-          <span class="mw"><b>W</b>scala col tempo del founder</span>
+          <span class="mw"><b>W</b>solo 4 bandi: da ampliare col tempo</span>
           <span class="mo"><b>O</b>PMI ignare dei fondi disponibili</span>
           <span class="mt"><b>T</b>consulenti tradizionali a success fee gonfiata</span>
         </div>
-        <p class="next"><b>Prossimo passo:</b> con i 3 bandi reali già pronti, inviare le prime 10 email vere con campagna.py sul proprio CSV di contatti. Sblocca: il primo cliente — è il progetto più vicino all'incasso.</p>
+        <p class="next"><b>Prossimo passo:</b> collegare la tua email vera (10 minuti) e lanciare campagna.py + invio.py --conferma sul tuo CSV di contatti reali. Il codice è pronto: manca solo premere "invia" con dati veri. Sblocca: il primo cliente.</p>
       </div>
     </details>
 
     <details class="proj">
-      <summary><span class="pt">⚖️ #3 Conforme — compliance EU AI Act<small>fase: sviluppo attivo · KPI: audit + assessment self-service</small></span><div class="bar"><i style="--w:66%"></i></div><span class="p">66%</span></summary>
+      <summary><span class="pt">⚖️ #3 Conforme — compliance EU AI Act<small>fase: sviluppo attivo · KPI: audit + assessment self-service</small></span><div class="bar"><i style="--w:85%"></i></div><span class="p">85%</span></summary>
       <div class="pbody">
-        <p class="trycmd">python3 scadenzario.py --demo</p>
+        <p class="trycmd">python3 lead_capture.py   # poi apri localhost:8010, fai l'assessment</p>
         <a class="hplink" href="https://claude.ai/code/artifact/8c64659d-8ede-4a69-a7fa-3c773e6def8e" target="_blank" rel="noopener" style="justify-self:start">🌐 Vedi la homepage</a>
         <div class="pcd">
           <div class="y"><h4>✅ Puoi già</h4><ul><li><b>Le date corrette</b>: rinvio alto rischio a dicembre 2027 (Digital Omnibus) integrato ovunque, mentre i concorrenti ripetono ancora agosto 2026</li><li><b>Assessment self-service</b> (assessment.html): 10 minuti, zero backend, verificato con 5 scenari di test</li><li>Registro dei Sistemi AI + gap analysis + scadenzario personalizzato</li></ul></div>
-          <div class="x"><h4>❌ Manca</h4><ul><li>Partner legale abilitato (co-firma degli audit)</li><li>Pubblicare assessment.html su un dominio reale con form di lead capture</li><li>Primo webinar con associazione di categoria</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li><b>Un partner legale vero</b> — l'unico pezzo che il codice non può dare da solo (bozza di accordo pronta in PARTNERSHIP-LEGALE-TEMPLATE.md)</li><li>Hosting pubblico + tue credenziali SMTP per la notifica lead (backend già scritto e testato)</li><li>Primo webinar con associazione di categoria</li></ul></div>
         </div>
         <div class="mswot">
           <span class="ms"><b>S</b>sappiamo la data giusta quando i concorrenti ripetono quella sbagliata</span>
-          <span class="mw"><b>W</b>serve la sponda legale</span>
+          <span class="mw"><b>W</b>serve la sponda legale — nessun codice la sostituisce</span>
           <span class="mo"><b>O</b>trasparenza (art. 50) imminente, agosto 2026 — non rinviata</span>
           <span class="mt"><b>T</b>il rinvio potrebbe far pensare "non è più urgente" a chi non legge bene</span>
         </div>
-        <p class="next"><b>Prossimo passo:</b> trovare lo studio legale partner (revenue share) e fissare il primo webinar sul tema "la scadenza è cambiata, ecco cosa fare davvero". Sblocca: la credibilità per vendere audit.</p>
+        <p class="next"><b>Prossimo passo:</b> contattare 3-5 studi legali con PARTNERSHIP-LEGALE-TEMPLATE.md come base. È l'unico gap rimasto che nessuna riga di codice può colmare. Sblocca: la credibilità per vendere audit.</p>
       </div>
     </details>
 
