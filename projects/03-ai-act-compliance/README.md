@@ -61,9 +61,20 @@ Mid-market italiano 100–5.000 dipendenti che **usa** AI (HR screening, credit 
 
 ## Partnership che moltiplicano (non vendere da soli)
 
-- **Studi legali** che non hanno competenza tecnica: tu fai la parte tecnica, loro la legale, si divide la fee.
-- **Associazioni di categoria** (Confindustria territoriali, CNA): un webinar "AI Act: siete pronti?" = 30 lead in un'ora.
+- **Studi legali** che non hanno competenza tecnica: tu fai la parte tecnica, loro la legale, si divide la fee. Vedi `PARTNERSHIP-LEGALE-TEMPLATE.md` per la bozza di accordo con cui iniziare la conversazione.
+- **Associazioni di categoria** (Confindustria territoriali, CNA): un webinar "la scadenza è cambiata, ecco cosa fare davvero" = 30 lead in un'ora.
 - **Software house** che devono certificare i propri prodotti per i clienti enterprise.
+
+## ✅ Cosa è completo (con dati mock) vs cosa serve da te
+
+| Livello | Stato | Per andare live serve |
+|---|---|---|
+| Classificatore, Registro, scadenzario, assessment | ✅ Vero al 100% | Niente |
+| Backend lead capture (`lead_capture.py`) | ✅ Codice vero, salvataggio testato | Un hosting pubblico |
+| Notifica nuovo lead via email | 🟡 Codice SMTP vero, credenziali mock | Le tue credenziali in `.env` (`CONFIGURAZIONE.md`) |
+| Partner legale per validare gli audit | ❌ Non esiste — è l'unico pezzo che il codice non può darti | Negoziarlo con uno studio vero (`PARTNERSHIP-LEGALE-TEMPLATE.md`) |
+
+Vedi `CONFIGURAZIONE.md` per la guida passo-passo.
 
 ## Prima azione da fare OGGI
 

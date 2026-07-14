@@ -34,22 +34,34 @@ node server.js --test     # conversazione scriptata automatica (per CI)
 node server.js            # avvia l'API HTTP su :3000
 ```
 
-## Architettura (MVP → produzione)
+## Architettura — completa, con credenziali mock
 
 ```
-FASE MVP (questa repo)          FASE PRODUZIONE (settimana 3-4)
-┌────────────────────┐          ┌─────────┐   ┌──────────────┐
-│ server.js          │          │ Telefono │──▶│ Twilio/Vonage│
-│  ├─ state machine  │   ═══▶   └─────────┘   │  (SIP/PSTN)  │
-│  ├─ session store  │                        └──────┬───────┘
-│  └─ intent matcher │                        STT ──▶ LLM (Claude) ──▶ TTS
-│     (keyword→LLM)  │                               │
-└────────────────────┘                        stessa state machine
-                                              + calendario (Google/Cal.com)
-                                              + notifica WhatsApp al titolare
+Telefono ──▶ Twilio (numero MOCK) ──▶ POST /voice/incoming ──▶ server.js
+                                              │                (state machine)
+                                              ▼
+                                     TwiML: <Say> + <Gather>
+                                              │
+Chiamante parla ──▶ Twilio STT ──▶ POST /voice/gather/:id ──▶ ricevi()
+                                              │
+                                              ▼
+                              integrazioni/notifiche.js (WhatsApp titolare)
+                              integrazioni/calendario.js (evento Google Calendar)
+                              [entrambe MOCK finché le credenziali in .env lo sono]
 ```
 
-Il punto geniale: **la logica di business (stati, regole, escalation) vive nel JSON del flusso, non nel provider**. Cambiare Twilio↔Vonage o un modello LLM con un altro non tocca il prodotto.
+Il punto geniale: **la logica di business (stati, regole, escalation) vive nel JSON del flusso, non nel provider**. Cambiare Twilio↔Vonage o un modello LLM con un altro non tocca il prodotto. Il webhook (`integrazioni/telefonia.js`) è già testato con richieste HTTP che replicano esattamente il formato Twilio — verificato end-to-end: chiamata in arrivo → conversazione completa → conferma appuntamento → notifica WhatsApp + evento calendario (mock).
+
+## ✅ Cosa è completo (con dati mock) vs cosa serve da te
+
+| Livello | Stato | Per andare live serve |
+|---|---|---|
+| Motore, flussi, ROI, apprendimento | ✅ Vero al 100% | Niente |
+| Webhook telefonico (`integrazioni/telefonia.js`) | ✅ Codice vero, testato | Un numero Twilio reale puntato all'URL (`CONFIGURAZIONE.md`) |
+| Notifiche WhatsApp, Google Calendar | 🟡 Codice vero, credenziali mock | Le tue credenziali reali in `.env` (`CONFIGURAZIONE.md`) |
+| Contratto pilota, privacy policy | 📄 Bozze da template | Revisione di un avvocato |
+
+Vedi `CONFIGURAZIONE.md` per la guida passo-passo (account Twilio, hosting, Google Calendar) e `.env.example` per tutte le variabili.
 
 ## Roadmap 90 giorni
 

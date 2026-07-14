@@ -57,6 +57,18 @@ Ogni cliente in più costa ~2 ore/mese di lavoro umano → 20+ clienti gestibili
 | 2. Processo | Giorni 15–45 | SOP scritte, pipeline AI per scouting attiva | 5 clienti, < 3 h/cliente/mese |
 | 3. Scala | Giorni 46–90 | 10–15 clienti, primo collaboratore part-time | 5 k€/mese ricorrenti |
 
+## ✅ Cosa è completo (con dati mock) vs cosa serve da te
+
+| Livello | Stato | Per andare live serve |
+|---|---|---|
+| Matching, freschezza, mail-merge | ✅ Vero al 100% | Niente |
+| Database bandi | ✅ 4 bandi **reali** verificati | Ampliarlo (`CONFIGURAZIONE.md` spiega come, in sicurezza) |
+| Invio email (`invio.py`) | ✅ Codice SMTP vero, testato in dry-run | Le tue credenziali email in `.env` (`CONFIGURAZIONE.md`) |
+| Monitor raggiungibilità fonti | ✅ Codice vero (bloccato solo dal sandbox di sviluppo) | Un hosting reale con un cron |
+| P.IVA / fatturazione | ❌ Non esiste | Apertura regime forfettario (24h) |
+
+Vedi `CONFIGURAZIONE.md` per la guida passo-passo e `.env.example` per le variabili SMTP.
+
 ## Sinergia di portfolio
 
 I processi e i dati di questo servizio sono il **prototipo vivente del micro-SaaS #04**: dopo 6 mesi sai esattamente quale software costruire, e hai già i primi 15 clienti a cui venderlo.

@@ -31,6 +31,7 @@ def leggi_prospects(path):
             prospects.append({
                 "azienda": riga["azienda"],
                 "referente": riga["referente"],
+                "email": riga.get("email", "").strip(),
                 "settori": [s.strip() for s in riga["settore"].split(";")],
                 "regione": riga["regione"],
                 "dipendenti": int(riga["dipendenti"]),
@@ -77,9 +78,10 @@ def genera_email(prospect, bando, motivi, contributo):
     else:
         nota = bando.get("nota_calcolo", "l'importo non è calcolabile come percentuale semplice dell'investimento indicato: verificare i dettagli con il bando ufficiale.")
         corpo_economico = f"Si tratta di {bando['tipo']}: {nota}"
+    email = prospect.get("email") or "(email non fornita)"
     return f"""
 {'=' * 66}
-A: {prospect['referente']} — {prospect['azienda']}
+A: {prospect['referente']} <{email}> — {prospect['azienda']}
 Oggetto: {oggetto}
 {'-' * 66}
 Buongiorno {prospect['referente']},

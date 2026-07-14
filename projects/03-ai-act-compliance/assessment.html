@@ -211,7 +211,11 @@ const SCADENZE = {
   'RISCHIO MINIMO': '⏰ Nessuna scadenza applicabile a questo sistema, ma la classificazione va rivista a ogni modifica sostanziale.',
 };
 
+let ULTIMO_LIVELLO = null, ULTIMO_RIF = null;
+
 function concludi(livello, rif){
+  ULTIMO_LIVELLO = livello;
+  ULTIMO_RIF = rif;
   document.getElementById('quiz').style.display='none';
   const box = document.getElementById('risultato');
   const info = OBBLIGHI[livello];
@@ -229,6 +233,7 @@ function concludi(livello, rif){
         <input id="leadEmail" type="email" placeholder="La tua email" autocomplete="email">
         <button onclick="richiediAudit()">Richiedi l'audit</button>
       </div>
+      <p id="leadStatus" style="font-size:13px;margin:8px 0 0"></p>
       <button class="dlbtn" onclick="scarica('${livello}', '${(rif||'').replace(/'/g,"")}')">⬇ Scarica il report (.txt)</button>
     </div>
     <p class="restart"><a href="#" onclick="location.reload();return false">↺ Rifai l'assessment su un altro sistema</a></p>
@@ -237,11 +242,33 @@ function concludi(livello, rif){
   document.getElementById('bar').style.width='100%';
 }
 
-function richiediAudit(){
+// Prima prova il backend locale (lead_capture.py, /lead): se risponde,
+// il lead è salvato e notificato via email reale (o simulato, se le
+// credenziali SMTP sono ancora mock). Se il backend non gira — es. la
+// pagina è aperta come semplice file, senza server — ripiega su mailto,
+// così il modulo funziona comunque anche a integrazione zero.
+async function richiediAudit(){
   const email = document.getElementById('leadEmail').value.trim();
-  const oggetto = encodeURIComponent('Richiesta audit EU AI Act');
-  const corpo = encodeURIComponent(`Ho completato l'assessment gratuito.\nEmail di contatto: ${email || '(non inserita)'}\n\nVorrei richiedere l'audit completo.`);
-  window.location.href = `mailto:?subject=${oggetto}&body=${corpo}`;
+  const status = document.getElementById('leadStatus');
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    status.textContent = '⚠️ Inserisci un\'email valida.';
+    status.style.color = 'var(--alert)';
+    return;
+  }
+  const lead = { email, livello: ULTIMO_LIVELLO, riferimento: ULTIMO_RIF, pagina: 'assessment.html', quando: new Date().toISOString() };
+  try{
+    const r = await fetch('/lead', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lead) });
+    if(!r.ok) throw new Error('risposta non ok');
+    status.textContent = '✅ Richiesta ricevuta — ti ricontatteremo a breve.';
+    status.style.color = 'var(--good)';
+  }catch(err){
+    // Fallback: nessun backend disponibile, apri il client di posta.
+    const oggetto = encodeURIComponent('Richiesta audit EU AI Act');
+    const corpo = encodeURIComponent(`Ho completato l'assessment gratuito (classificazione: ${ULTIMO_LIVELLO || 'n/d'}).\nEmail di contatto: ${email}\n\nVorrei richiedere l'audit completo.`);
+    window.location.href = `mailto:?subject=${oggetto}&body=${corpo}`;
+    status.textContent = 'Ho aperto il tuo client di posta (backend non raggiungibile).';
+    status.style.color = 'var(--muted)';
+  }
 }
 
 function scarica(livello, rif){

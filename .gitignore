@@ -8,5 +8,9 @@ report-*.md
 REGISTRO-*.md
 CALENDARIO.md
 dashboard.html
+campagna-*.md
+lead.jsonl
+lead-demo.jsonl
+.env
 __pycache__/
 *.pyc

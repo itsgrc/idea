@@ -25,6 +25,29 @@ const FLOW_PATH = process.env.FLOW || path.join(__dirname, 'flows', 'dentista.js
 const flow = JSON.parse(fs.readFileSync(FLOW_PATH, 'utf8'));
 
 /* ------------------------------------------------------------------ *
+ * Integrazioni esterne (WhatsApp, calendario) — vedi integrazioni/.
+ * Disattivate di default (INTEGRAZIONI_ATTIVE=1 per accenderle): così
+ * test, demo e simulatore restano puliti e veloci senza doverle
+ * disabilitare a mano. In produzione si accendono con una variabile
+ * d'ambiente, zero modifiche al codice. Con credenziali ancora mock,
+ * "attive" significa comunque solo simulare (loggare), mai spendere
+ * credito o chiamare API vere per sbaglio.
+ * ------------------------------------------------------------------ */
+const INTEGRAZIONI_ATTIVE = process.env.INTEGRAZIONI_ATTIVE === '1';
+const { inviaWhatsAppTitolare, messaggioPerEvento } = require('./integrazioni/notifiche');
+const { creaEventoAppuntamento } = require('./integrazioni/calendario');
+const { gestisciChiamataInArrivo, gestisciRispostaVocale } = require('./integrazioni/telefonia');
+
+function notificaSeAttivo(evento) {
+  if (!INTEGRAZIONI_ATTIVE) return;
+  inviaWhatsAppTitolare(messaggioPerEvento(evento)).catch((err) => console.error('⚠️  notifica fallita:', err.message));
+}
+function creaEventoCalendarioSeAttivo(dettagli) {
+  if (!INTEGRAZIONI_ATTIVE) return;
+  creaEventoAppuntamento(dettagli).catch((err) => console.error('⚠️  evento calendario fallito:', err.message));
+}
+
+/* ------------------------------------------------------------------ *
  * Log eventi — ogni chiamata, appuntamento, urgenza e fallback finisce
  * su un file JSONL. È la materia prima di valore.js (report ROI) e
  * suggerimenti.js (motore di auto-apprendimento): il motore da solo
@@ -72,13 +95,17 @@ const LLMAdapter = {
  * ------------------------------------------------------------------ */
 const Azioni = {
   crea_appuntamento(sessione) {
-    emit(sessione, { tipo: 'appuntamento_creato', dati: { ...sessione.dati } });
+    const evento = emit(sessione, { tipo: 'appuntamento_creato', dati: { ...sessione.dati } });
+    notificaSeAttivo(evento);
+    creaEventoCalendarioSeAttivo(sessione.dati);
   },
   notifica_urgente_titolare(sessione) {
-    emit(sessione, { tipo: 'urgenza_notificata', dati: { ...sessione.dati } });
+    const evento = emit(sessione, { tipo: 'urgenza_notificata', dati: { ...sessione.dati } });
+    notificaSeAttivo(evento);
   },
   verifica_stato_veicolo(sessione) {
-    emit(sessione, { tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa });
+    const evento = emit(sessione, { tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa });
+    notificaSeAttivo(evento);
   },
 };
 
@@ -238,12 +265,18 @@ start();
  *   GET  /                           → demo web (chat)
  *   POST /call/start                 → { session_id, messages }
  *   POST /call/:id/message {text}    → { messages, done, events }
+ *   POST /voice/incoming             → webhook Twilio (TwiML), chiamata reale
+ *   POST /voice/gather/:sessionId    → webhook Twilio (TwiML), risposta vocale
  * ------------------------------------------------------------------ */
 function api() {
   const server = http.createServer((req, res) => {
     const rispondi = (code, body) => {
       res.writeHead(code, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(body));
+    };
+    const rispondiXml = (xml) => {
+      res.writeHead(200, { 'Content-Type': 'text/xml; charset=utf-8' });
+      res.end(xml);
     };
     let corpo = '';
     req.on('data', (c) => (corpo += c));
@@ -262,6 +295,13 @@ function api() {
           const { text } = JSON.parse(corpo || '{}');
           const messages = ricevi(sessione, String(text || ''));
           return rispondi(200, { messages, done: sessione.finita, events: sessione.eventi });
+        }
+        if (req.method === 'POST' && req.url === '/voice/incoming') {
+          return rispondiXml(gestisciChiamataInArrivo(corpo, { nuovaSessione, avanza, sessioni }));
+        }
+        const g = req.url.match(/^\/voice\/gather\/([\w-]+)$/);
+        if (req.method === 'POST' && g) {
+          return rispondiXml(gestisciRispostaVocale(corpo, g[1], { ricevi, sessioni }));
         }
         if (req.url === '/health') return rispondi(200, { ok: true, flow: flow.nome });
         if (req.method === 'GET' && req.url === '/') {

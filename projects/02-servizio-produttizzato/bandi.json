@@ -61,5 +61,25 @@
     "fonte": "https://www.fondimpresa.it",
     "data_verifica": "2026-07-14",
     "note_operative": "prima verificare a quale fondo l'azienda aderisce (o aiutarla ad aderire, gratuito); poi presentare un piano formativo sull'avviso aperto del momento, ~10 giorni di preparazione"
+  },
+  {
+    "titolo": "SIMEST — Fondo 394, sostegno all'internazionalizzazione",
+    "ente": "SIMEST (Gruppo Cassa Depositi e Prestiti)",
+    "territorio": "nazionale",
+    "settori": ["tutti"],
+    "dipendenti_min": 1,
+    "dipendenti_max": 5000,
+    "tema": "export",
+    "tipo": "finanziamento a tasso agevolato (0,319%) + contributo a fondo perduto",
+    "tipo_calcolo": "fondo_perduto",
+    "_intensita_nota": "la parte a fondo perduto è fino al 10% dell'importo finanziato (non dell'intero investimento): calcola_contributo() la applica correttamente sull'investimento_previsto come approssimazione dell'importo finanziabile",
+    "intensita_pct": 10,
+    "massimale_eur": 100000,
+    "modalita_scadenza": "a sportello",
+    "scadenza": "2027-12-31",
+    "_scadenza_nota": "nessuna scadenza fissa: domande in continuità sul portale SIMEST fino a esaurimento risorse. Sei linee di intervento: inserimento mercati esteri, e-commerce, fiere internazionali, e altre — verificare quale si applica al cliente",
+    "fonte": "https://www.simest.it",
+    "data_verifica": "2026-07-14",
+    "note_operative": "domanda telematica sul portale SIMEST; per la quota finanziamento serve un piano di sviluppo export, ~2-3 settimane di preparazione"
   }
 ]
