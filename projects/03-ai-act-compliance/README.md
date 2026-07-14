@@ -76,6 +76,17 @@ Mid-market italiano 100–5.000 dipendenti che **usa** AI (HR screening, credit 
 
 Vedi `CONFIGURAZIONE.md` per la guida passo-passo.
 
+## 🔍 Audit di sicurezza e legale — cosa è stato trovato e corretto
+
+| Problema trovato | Rischio | Correzione |
+|---|---|---|
+| **`GET /leads` non richiedeva alcuna autenticazione** | 🔴 Il più serio dei tre progetti: chiunque scoprisse l'URL poteva leggere email e classificazione di rischio AI Act di ogni prospect | Endpoint protetto da chiave API (`LEAD_API_KEY`), confronto a tempo costante; **con la chiave ancora al valore mock, l'accesso è sempre negato** (di proposito: essendo codice pubblico, un default "reale" sarebbe un segreto noto a chiunque legga il sorgente) |
+| `POST /lead` validava solo che l'email non fosse vuota, non che fosse un indirizzo valido | Dati sporchi nel database lead, bypassabile aggirando la validazione JavaScript lato client | Validazione server-side con regex, difesa in profondità |
+| Nessuna procedura documentata per cancellare un lead su richiesta | Rischio di non poter evadere una richiesta di cancellazione (Art. 17 GDPR) nei tempi di legge | Procedura documentata in `CONFIGURAZIONE.md` |
+| `assessment.html` dichiarava "nessun dato inviato a un server" in modo assoluto, ma il modulo di contatto invia davvero l'email al backend | Incoerenza tra due punti della stessa pagina | Testo allineato: il calcolo resta nel browser, l'invio avviene solo se l'utente lo richiede esplicitamente |
+
+Tutte le correzioni sono testate (richieste HTTP reali con chiave assente, chiave mock, chiave reale corretta e chiave reale sbagliata).
+
 ## Prima azione da fare OGGI
 
 Esegui `python3 classifica.py --demo`, poi fai il questionario su 3 aziende che conosci. Se almeno una risulta "alto rischio" (probabile: basta un software HR), hai il tuo primo prospect e la tua prima case study.

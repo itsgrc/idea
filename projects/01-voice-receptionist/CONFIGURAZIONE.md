@@ -31,7 +31,9 @@ Twilio deve poter raggiungere il tuo server su un URL pubblico HTTPS. Opzioni pi
    TWILIO_ACCOUNT_SID=AC...
    TWILIO_AUTH_TOKEN=...
    TWILIO_PHONE_NUMBER=+39...
+   PUBLIC_URL=https://tuoapp.onrender.com
    ```
+   **`PUBLIC_URL` deve essere IDENTICO all'URL messo nel webhook Twilio** (stesso schema, stesso dominio, nessuno slash finale): il server lo usa per verificare la firma `X-Twilio-Signature` e rifiutare richieste che non arrivano davvero da Twilio. Se le due cose non combaciano, ogni chiamata reale verrà rifiutata con 403 — se questo succede, la prima cosa da controllare è che `PUBLIC_URL` sia scritto esattamente come nella console Twilio.
 
 **Fatto questo, il telefono squilla davvero e la conversazione funziona** — anche prima di configurare WhatsApp o calendario (le Azioni continuano a simulare finché non fai anche i passi 3-4).
 

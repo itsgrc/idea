@@ -70,10 +70,15 @@ def calcola_contributo(prospect, bando):
 def genera_email(prospect, bando, motivi, contributo):
     oggetto = f"{contributo:,.0f} € potenziali per {prospect['azienda']}" if contributo is not None else f"Un'agevolazione per {prospect['azienda']}: {bando['titolo']}"
     if contributo is not None:
+        # "Stimato", non "spettante": l'importo dipende da graduatoria,
+        # ammissibilità della spesa e fondi residui dell'ente — mai
+        # presentarlo come un numero certo, nemmeno quando la % è chiara.
         corpo_economico = (
             f"Si tratta di {bando['tipo']} fino al {bando['intensita_pct']}% — sul suo\n"
             f"investimento previsto di {prospect['investimento_previsto']:,} € parliamo di\n"
-            f"circa **{contributo:,.0f} €** di contributo a fondo perduto."
+            f"circa **{contributo:,.0f} € stimati** di contributo a fondo perduto\n"
+            f"(l'importo definitivo dipende da graduatoria, ammissibilità della spesa\n"
+            f"e fondi residui dell'ente: nessun contributo è garantito prima dell'esito)."
         )
     else:
         nota = bando.get("nota_calcolo", "l'importo non è calcolabile come percentuale semplice dell'investimento indicato: verificare i dettagli con il bando ufficiale.")

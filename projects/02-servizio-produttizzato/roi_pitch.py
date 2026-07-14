@@ -51,14 +51,16 @@ ROI per il cliente:                     {roi:>12.1f}x
 
 ✉️  EMAIL PRONTA DA INVIARE
 {'-' * 62}
-Oggetto: {contributo:,.0f} € di fondo perduto per {d['azienda']}
+Oggetto: {contributo:,.0f} € potenziali di fondo perduto per {d['azienda']}
 
 Buongiorno {d['nome']},
 
 lei ha in programma un investimento di circa {d['investimento_previsto']:,.0f} €
 ({d['settore']}). In {d['regione']} i bandi attivi coprono in media il
 {d['percentuale_fondo_perduto']}% di investimenti come il suo: parliamo di
-{contributo:,.0f} € che potrebbe non spendere di tasca sua.
+circa {contributo:,.0f} € stimati che potrebbe non spendere di tasca sua
+(cifra indicativa: l'importo definitivo dipende da graduatoria e esito
+della domanda, nessun contributo è garantito prima dell'erogazione).
 
 Il nostro servizio {d['pacchetto']} le costa {d['prezzo_mensile']} €/mese più il
 {d['success_fee_pct']}% SOLO se il contributo viene erogato. Fatti due conti:

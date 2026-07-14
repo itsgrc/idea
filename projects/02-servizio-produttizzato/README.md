@@ -73,6 +73,14 @@ Vedi `CONFIGURAZIONE.md` per la guida passo-passo e `.env.example` per le variab
 
 I processi e i dati di questo servizio sono il **prototipo vivente del micro-SaaS #04**: dopo 6 mesi sai esattamente quale software costruire, e hai già i primi 15 clienti a cui venderlo.
 
+## 🔍 Audit di sicurezza e legale — cosa è stato trovato e corretto
+
+| Problema trovato | Rischio | Correzione |
+|---|---|---|
+| Le email generate (sia `roi_pitch.py` che `campagna.py`) presentavano il contributo stimato come un numero certo ("X € di fondo perduto") | Rischio di pubblicità ingannevole: nessun contributo pubblico è garantito prima dell'erogazione | Aggiunta esplicita "stimati" nel corpo e disclaimer che l'importo dipende da graduatoria, ammissibilità e fondi residui — sia nell'oggetto che nel corpo di entrambi gli strumenti |
+
+Nessuna vulnerabilità tecnica rilevante: questo progetto non espone endpoint HTTP (solo script CLI/offline), quindi la superficie di attacco è minima. `invio.py` usa STARTTLS con verifica del certificato attiva di default (comportamento standard di `smtplib`/`ssl` in Python).
+
 ## Prima azione da fare OGGI
 
 Apri LinkedIn, cerca 10 titolari di PMI manifatturiere della tua regione, manda il template n.1 di `outreach/email-templates.md`. Obiettivo: 2 call fissate entro venerdì.

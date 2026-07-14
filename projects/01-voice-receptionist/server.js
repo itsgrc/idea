@@ -36,7 +36,8 @@ const flow = JSON.parse(fs.readFileSync(FLOW_PATH, 'utf8'));
 const INTEGRAZIONI_ATTIVE = process.env.INTEGRAZIONI_ATTIVE === '1';
 const { inviaWhatsAppTitolare, messaggioPerEvento } = require('./integrazioni/notifiche');
 const { creaEventoAppuntamento } = require('./integrazioni/calendario');
-const { gestisciChiamataInArrivo, gestisciRispostaVocale } = require('./integrazioni/telefonia');
+const { gestisciChiamataInArrivo, gestisciRispostaVocale, parseCorpoForm, validaFirmaTwilio } = require('./integrazioni/telefonia');
+const { CONFIG, modalitaSimulata } = require('./integrazioni/config');
 
 function notificaSeAttivo(evento) {
   if (!INTEGRAZIONI_ATTIVE) return;
@@ -95,16 +96,16 @@ const LLMAdapter = {
  * ------------------------------------------------------------------ */
 const Azioni = {
   crea_appuntamento(sessione) {
-    const evento = emit(sessione, { tipo: 'appuntamento_creato', dati: { ...sessione.dati } });
+    const evento = emit(sessione, { tipo: 'appuntamento_creato', dati: { ...sessione.dati }, numero_chiamante: sessione.numeroChiamante });
     notificaSeAttivo(evento);
     creaEventoCalendarioSeAttivo(sessione.dati);
   },
   notifica_urgente_titolare(sessione) {
-    const evento = emit(sessione, { tipo: 'urgenza_notificata', dati: { ...sessione.dati } });
+    const evento = emit(sessione, { tipo: 'urgenza_notificata', dati: { ...sessione.dati }, numero_chiamante: sessione.numeroChiamante });
     notificaSeAttivo(evento);
   },
   verifica_stato_veicolo(sessione) {
-    const evento = emit(sessione, { tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa });
+    const evento = emit(sessione, { tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa, numero_chiamante: sessione.numeroChiamante });
     notificaSeAttivo(evento);
   },
 };
@@ -120,10 +121,23 @@ function interpola(msg, sessione) {
 
 function nuovaSessione() {
   const id = crypto.randomUUID();
-  const sessione = { id, stato: 'saluto', dati: {}, eventi: [], attesa_input: null, finita: false };
+  const sessione = { id, stato: 'saluto', dati: {}, eventi: [], attesa_input: null, finita: false, creata: Date.now() };
   sessioni.set(id, sessione);
   emit(sessione, { tipo: 'chiamata_iniziata' });
   return sessione;
+}
+
+// Pulizia periodica: senza questo, ogni chiamata (conclusa o abbandonata
+// a metà) resterebbe per sempre in memoria — un memory leak su un server
+// che gira per settimane. Rimuove le sessioni concluse e quelle rimaste
+// "a metà" (es. il chiamante ha riagganciato senza completare) da oltre
+// SESSIONE_MAX_ETA_MS.
+const SESSIONE_MAX_ETA_MS = 30 * 60 * 1000; // 30 minuti
+function pulisciSessioni() {
+  const ora = Date.now();
+  for (const [id, sessione] of sessioni) {
+    if (sessione.finita || ora - sessione.creata > SESSIONE_MAX_ETA_MS) sessioni.delete(id);
+  }
 }
 
 // Esegue gli stati "parlanti" finché non serve input dell'utente o la chiamata finisce.
@@ -296,6 +310,26 @@ function api() {
           const messages = ricevi(sessione, String(text || ''));
           return rispondi(200, { messages, done: sessione.finita, events: sessione.eventi });
         }
+        if (req.method === 'POST' && (req.url === '/voice/incoming' || /^\/voice\/gather\//.test(req.url))) {
+          // SICUREZZA: verifica che la richiesta arrivi davvero da Twilio,
+          // non da chiunque abbia scoperto l'URL del webhook (vedi
+          // integrazioni/telefonia.js per i dettagli dell'algoritmo).
+          // Saltata se le credenziali sono ancora mock: non c'è nulla di
+          // reale da validare, e la demo via curl resta testabile.
+          if (!modalitaSimulata('twilio')) {
+            const urlCompleto = CONFIG.server.publicUrl.replace(/\/$/, '') + req.url;
+            const valida = validaFirmaTwilio({
+              urlCompleto,
+              params: parseCorpoForm(corpo),
+              firmaRicevuta: req.headers['x-twilio-signature'],
+              authToken: CONFIG.twilio.authToken,
+            });
+            if (!valida) {
+              res.writeHead(403, { 'Content-Type': 'text/plain' });
+              return res.end('Firma non valida');
+            }
+          }
+        }
         if (req.method === 'POST' && req.url === '/voice/incoming') {
           return rispondiXml(gestisciChiamataInArrivo(corpo, { nuovaSessione, avanza, sessioni }));
         }
@@ -314,6 +348,10 @@ function api() {
       }
     });
   });
+  // .unref(): il timer di pulizia non deve mai impedire al processo di
+  // terminare (rilevante per --test e per chi importa server.js da altri
+  // script, dove questa funzione non gira comunque).
+  setInterval(pulisciSessioni, 5 * 60 * 1000).unref();
   server.listen(3000, () => console.log(`🎙️  Voice receptionist API su :3000 — flusso: "${flow.nome}"`));
 }
 

@@ -63,19 +63,24 @@ async function inviaWhatsAppTitolare(messaggio) {
   return { simulato: false, status: risposta.status, body: risposta.body };
 }
 
-/** Compone il messaggio di notifica a partire da un evento del motore. */
+/** Compone il messaggio di notifica a partire da un evento del motore.
+ * Include sempre il numero del chiamante quando disponibile (solo nelle
+ * chiamate telefoniche reali via Twilio, non nella demo web/CLI): senza
+ * questo numero il titolare non saprebbe CHI richiamare per un'urgenza —
+ * un bug reale, corretto qui, non solo un dettaglio cosmetico. */
 function messaggioPerEvento(evento) {
   const dati = evento.dati || {};
+  const numero = evento.numero_chiamante ? `\n📞 Numero: ${evento.numero_chiamante}` : '';
   if (evento.tipo === 'appuntamento_creato') {
-    return `📅 Nuovo appuntamento: ${dati.nome || 'cliente'} — preferenza: ${dati.preferenza_orario || 'da confermare'}. Gestito dall'assistente AI.`;
+    return `📅 Nuovo appuntamento: ${dati.nome || 'cliente'} — preferenza: ${dati.preferenza_orario || 'da confermare'}. Gestito dall'assistente AI.${numero}`;
   }
   if (evento.tipo === 'urgenza_notificata') {
-    return `🚨 URGENZA segnalata da ${dati.nome || 'chiamante sconosciuto'} — richiamare appena possibile.`;
+    return `🚨 URGENZA segnalata da ${dati.nome || 'chiamante sconosciuto'} — richiamare appena possibile.${numero}`;
   }
   if (evento.tipo === 'richiesta_stato_veicolo') {
-    return `🔧 Richiesta stato veicolo, targa ${evento.targa || 'n/d'} — verificare e rispondere al cliente.`;
+    return `🔧 Richiesta stato veicolo, targa ${evento.targa || 'n/d'} — verificare e rispondere al cliente.${numero}`;
   }
-  return `ℹ️ Evento "${evento.tipo}" gestito dall'assistente AI.`;
+  return `ℹ️ Evento "${evento.tipo}" gestito dall'assistente AI.${numero}`;
 }
 
 module.exports = { inviaWhatsAppTitolare, messaggioPerEvento };

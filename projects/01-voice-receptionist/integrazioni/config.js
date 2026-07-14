@@ -26,6 +26,12 @@ const CONFIG = {
   notifiche: {
     numeroTitolare: leggi('NOTIFICHE_NUMERO_TITOLARE', 'MOCK_+393331234567'),
   },
+  server: {
+    // URL pubblico su cui Twilio raggiunge questo server (es. https://tuoapp.onrender.com).
+    // Serve a validare la firma X-Twilio-Signature: senza l'URL esatto usato da
+    // Twilio per firmare la richiesta, non si può verificare che sia autentica.
+    publicUrl: leggi('PUBLIC_URL', 'MOCK_https://tuoapp.esempio.it'),
+  },
   calendario: {
     googleClientId: leggi('GOOGLE_CALENDAR_CLIENT_ID', 'MOCK_CLIENT_ID'),
     googleClientSecret: leggi('GOOGLE_CALENDAR_CLIENT_SECRET', 'MOCK_CLIENT_SECRET'),

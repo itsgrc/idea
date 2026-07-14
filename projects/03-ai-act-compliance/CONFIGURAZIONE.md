@@ -17,10 +17,23 @@ python3 lead_capture.py
 # apri http://localhost:8010 nel browser: è l'assessment servito dal backend
 ```
 
-Fai il questionario, richiedi l'audit inserendo un'email: il lead finisce in `lead.jsonl` e vedi la notifica (simulata) in console. Verifica con:
+Fai il questionario, richiedi l'audit inserendo un'email: il lead finisce in `lead.jsonl` e vedi la notifica (simulata) in console.
+
+**Prima di vedere i lead serve una chiave** (protezione obbligatoria: `/leads` contiene email e classificazioni dei prospect):
 ```bash
-curl http://localhost:8010/leads
+python3 -c "import secrets; print(secrets.token_urlsafe(32))"   # genera una chiave vera
+LEAD_API_KEY=<chiave-generata> python3 lead_capture.py
+curl -H "X-Api-Key: <chiave-generata>" http://localhost:8010/leads
 ```
+Senza `LEAD_API_KEY` configurata (resta al valore `MOCK_...`), `/leads` risponde sempre 401 — nessuna chiave funziona, di proposito: è il comportamento sicuro di default.
+
+## Cancellazione dei lead (diritto all'oblio, Art. 17 GDPR)
+
+`lead.jsonl` è un file di testo semplice: per cancellare il lead di una persona che lo richiede,
+```bash
+grep -v "email-da-rimuovere@esempio.it" lead.jsonl > lead_tmp.jsonl && mv lead_tmp.jsonl lead.jsonl
+```
+Per un volume più alto di richieste, vale la pena costruire uno script dedicato — a questo volume iniziale, il comando sopra è sufficiente e va eseguito entro i termini di legge (di norma 30 giorni) dalla richiesta.
 
 ## Passo 2 — Credenziali SMTP per la notifica reale (10 minuti)
 

@@ -78,6 +78,17 @@ Vedi `CONFIGURAZIONE.md` per la guida passo-passo (account Twilio, hosting, Goog
 - 📅 Appuntamenti fissati dall'AI
 - 💶 **Valore recuperato** = appuntamenti × valore medio prestazione (il numero che vende)
 
+## 🔍 Audit di sicurezza e legale — cosa è stato trovato e corretto
+
+| Problema trovato | Rischio | Correzione |
+|---|---|---|
+| Webhook `/voice/incoming` e `/voice/gather` accettavano richieste da chiunque, senza verificare che arrivassero davvero da Twilio | Un estraneo che scopre l'URL potrebbe far scattare notifiche/eventi calendario falsi | Validazione della firma `X-Twilio-Signature` (HMAC-SHA1, confronto a tempo costante), attiva automaticamente quando le credenziali sono reali — verificata con firme valide e non valide |
+| Le sessioni di chiamata non venivano mai rimosse dalla memoria | Memory leak su un server che gira per settimane | Pulizia periodica (ogni 5 min) delle sessioni concluse o abbandonate da oltre 30 minuti |
+| Il numero del chiamante non arrivava mai alla notifica WhatsApp dell'urgenza | Il titolare non avrebbe saputo CHI richiamare in un'emergenza — bug funzionale, non solo di sicurezza | Il numero ora è incluso in ogni notifica quando disponibile |
+| La homepage dichiarava "i dati restano in Europa" in modo assoluto | Claim non allineato all'architettura reale (Twilio e Google Calendar sono fornitori USA): rischio di pubblicità ingannevole | Testo corretto per riflettere la realtà: conformità GDPR con Clausole Contrattuali Standard, dettagli per fornitore nell'informativa |
+
+Tutte le correzioni sono testate (incluse richieste HTTP che simulano firme Twilio valide e contraffatte).
+
 ## Prima azione da fare OGGI
 
 Chiama 5 studi dentistici della tua zona alle 13:30 (ora di pranzo). Conta quanti non rispondono. Quel numero è la tua prima slide di vendita.

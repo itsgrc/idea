@@ -13,8 +13,10 @@ Uso:
     python3 lead_capture.py            # serve su :8010
     python3 lead_capture.py --demo     # invia un lead di prova e mostra il log
 """
+import hmac
 import json
 import os
+import re
 import smtplib
 import sys
 import datetime
@@ -23,6 +25,29 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 LEAD_LOG = os.environ.get("LEAD_LOG", "lead.jsonl")
 PORTA = int(os.environ.get("LEAD_PORT", "8010"))
+
+# SICUREZZA: /leads espone email e classificazione di rischio di ogni
+# prospect — dati personali e informazioni di business sensibili. Senza
+# questa chiave, chiunque scopra l'URL li leggerebbe tutti. La chiave va
+# configurata (non lasciata al default) prima di esporre il servizio su
+# un hosting pubblico: vedi CONFIGURAZIONE.md.
+LEAD_API_KEY = os.environ.get("LEAD_API_KEY", "MOCK_cambia_questa_chiave_prima_di_andare_live")
+EMAIL_REGEX = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+
+
+def richiesta_autorizzata(handler):
+    """Confronto a tempo costante: evita che il tempo di risposta riveli
+    quanti caratteri della chiave sono corretti (timing attack).
+
+    Se LEAD_API_KEY è ancora il valore MOCK_ di default, l'accesso è
+    SEMPRE negato — questo codice è pubblico, quindi il valore mock è
+    un segreto noto a chiunque legga il sorgente. A differenza degli
+    altri adapter (dove "mock" significa "simula in sicurezza"), qui
+    "mock" deve significare "endpoint chiuso", non "chiave nota a tutti"."""
+    if LEAD_API_KEY.startswith("MOCK_"):
+        return False
+    fornita = handler.headers.get("X-Api-Key", "")
+    return hmac.compare_digest(fornita, LEAD_API_KEY)
 
 
 def smtp_config():
@@ -90,8 +115,10 @@ class Handler(BaseHTTPRequestHandler):
                 lead = json.loads(self.rfile.read(n) or b"{}")
             except Exception:
                 return self._json(400, {"errore": "corpo non valido"})
-            if not lead.get("email"):
-                return self._json(400, {"errore": "email mancante"})
+            email = str(lead.get("email", "")).strip()
+            if not email or not EMAIL_REGEX.match(email):
+                return self._json(400, {"errore": "email mancante o non valida"})
+            lead["email"] = email
             salva_lead(lead)
             try:
                 notifica_nuovo_lead(lead)
@@ -113,6 +140,8 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(html)
             return
         if self.path == "/leads":
+            if not richiesta_autorizzata(self):
+                return self._json(401, {"errore": "non autorizzato — serve l'header X-Api-Key con LEAD_API_KEY"})
             leads = []
             if os.path.exists(LEAD_LOG):
                 with open(LEAD_LOG, encoding="utf-8") as f:

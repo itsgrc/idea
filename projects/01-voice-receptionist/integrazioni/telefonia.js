@@ -23,6 +23,7 @@
  */
 'use strict';
 const querystring = require('querystring');
+const crypto = require('crypto');
 
 function escapeXml(testo) {
   return String(testo)
@@ -51,6 +52,30 @@ function generaTwiML(messaggi, { finita, actionUrl, lingua = 'it-IT', voce = 'Po
     // stesso URL: ripetiamo la domanda invece di agganciare nel silenzio.
     `<Redirect method="POST">${actionUrl}</Redirect></Response>`
   );
+}
+
+/**
+ * Valida la firma X-Twilio-Signature — SICUREZZA: senza questo controllo,
+ * chiunque scopra l'URL del webhook può inviare richieste false (finte
+ * trascrizioni vocali) e far scattare notifiche WhatsApp o eventi
+ * calendario a piacere. Algoritmo documentato da Twilio: concatena l'URL
+ * completo con chiave+valore di ogni parametro POST in ordine alfabetico,
+ * firma con HMAC-SHA1 usando l'Auth Token, confronta in tempo costante.
+ *
+ * Richiede PUBLIC_URL configurato correttamente (l'URL esatto che hai
+ * messo nella console Twilio) — con un URL sbagliato la firma non
+ * corrisponderà MAI, anche se la richiesta è genuina: vedi CONFIGURAZIONE.md.
+ */
+function validaFirmaTwilio({ urlCompleto, params, firmaRicevuta, authToken }) {
+  if (!firmaRicevuta || !authToken) return false;
+  const stringaDaFirmare = Object.keys(params)
+    .sort()
+    .reduce((acc, k) => acc + k + params[k], urlCompleto);
+  const firmaAttesa = crypto.createHmac('sha1', authToken).update(Buffer.from(stringaDaFirmare, 'utf-8')).digest('base64');
+  const bufAttesa = Buffer.from(firmaAttesa);
+  const bufRicevuta = Buffer.from(firmaRicevuta);
+  if (bufAttesa.length !== bufRicevuta.length) return false;
+  return crypto.timingSafeEqual(bufAttesa, bufRicevuta);
 }
 
 /** Parsa il corpo x-www-form-urlencoded che Twilio invia (non JSON).
@@ -92,4 +117,4 @@ function gestisciRispostaVocale(corpoStringa, sessionId, { ricevi, sessioni }) {
   return generaTwiML(messaggi, { finita: sessione.finita, actionUrl });
 }
 
-module.exports = { generaTwiML, parseCorpoForm, gestisciChiamataInArrivo, gestisciRispostaVocale, escapeXml };
+module.exports = { generaTwiML, parseCorpoForm, gestisciChiamataInArrivo, gestisciRispostaVocale, escapeXml, validaFirmaTwilio };
