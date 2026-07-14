@@ -15,7 +15,25 @@ Perché: le PMI italiane lasciano sul tavolo miliardi di fondi (PNRR, bandi regi
 |---|---|
 | `OFFERTA.md` | One-pager dell'offerta: pacchetti, prezzi, garanzia |
 | `outreach/email-templates.md` | Sequenze email/LinkedIn pronte (primo contatto, follow-up, referral) |
-| `roi_pitch.py` | **Generatore di pitch personalizzato**: inserisci i numeri del prospect, ottieni l'email di vendita con il suo ROI calcolato. `python3 roi_pitch.py --esempio` |
+| `roi_pitch.py` | Generatore di pitch con ROI ipotetico per il primo contatto a freddo. `python3 roi_pitch.py --esempio` |
+| `bandi.json` | **Database di bandi REALI**, non più segnaposto: Nuova Sabatini (MIMIT), Voucher Doppia Transizione Lombardia 2026 (Unioncamere), Formazione Fondi Interprofessionali — ognuno con fonte ufficiale verificabile e data di verifica |
+| `scout.py` | Motore di matching bandi↔azienda sul database reale. `python3 scout.py --demo` |
+| `verifica_freschezza.py` | **Il guardiano della disciplina**: segnala bandi scaduti, in scadenza o non riverificati da troppo tempo. `python3 verifica_freschezza.py` |
+| `campagna.py` | **Mail-merge**: da un CSV di prospect a email personalizzate con il bando migliore e il contributo calcolato correttamente (mai un numero inventato). `python3 campagna.py --demo` |
+
+## Il moat: dati reali disciplinati, non una lista che marcisce
+
+**Il problema di ogni "lista di bandi":** chiunque può copiarne una il primo giorno. Il valore di un abbonamento RADAR sta nel tenerla viva — e questo richiede una disciplina che la maggior parte dei concorrenti non ha voglia di mantenere.
+
+**1. `verifica_freschezza.py`** — ogni bando ha una `data_verifica`. Lo script segnala (con exit code diverso da zero, pronto per un cron) le voci scadute, in scadenza entro 20 giorni, o non riverificate da oltre 30. Regola della casa: **un database con un bando scaduto dentro è peggio di nessun database** — un cliente che lo scopre non si fida più. Nessun concorrente che vende "liste di bandi" a 50 € automatizza questo controllo.
+
+**2. `campagna.py` + distinzione `tipo_calcolo`** — il dettaglio che separa un servizio serio da uno che promette numeri a caso: non tutti i bandi si calcolano come "% dell'investimento". La Nuova Sabatini copre gli *interessi* su un finanziamento (6-9% reale, non il 100% dichiarato), la Formazione dipende dal *monte salari* non dall'investimento in macchinari. Il generatore di email **si rifiuta di inventare un numero** quando il bando non lo permette, e lo dice al cliente in chiaro — è la differenza tra un consulente che sa di cosa parla e un generatore di spam.
+
+```bash
+python3 verifica_freschezza.py    # controllo di disciplina prima di ogni invio
+python3 scout.py --demo           # report per il cliente demo, sui 3 bandi reali
+python3 campagna.py --demo        # 4 email pronte, numeri corretti per tipo di bando
+```
 
 ## Il processo produttivo (dove entra l'AI)
 

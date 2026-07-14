@@ -1,0 +1,261 @@
+<title>Assessment gratuito — Il tuo sistema AI, classificato in 10 minuti</title>
+<style>
+  :root{
+    --bg:#FFFFFF; --surface:#F5F7FA; --ink:#101B2D; --muted:#54627A;
+    --line:#D9E0EA; --navy:#1B2E4D; --gold:#B8860B; --gold-soft:#F7EFDC;
+    --alert:#9C2B2B; --good:#3E7A4E; --good-soft:#EAF3EC;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0C1524; --surface:#14203442; --ink:#E6EBF4; --muted:#9AA8BE;
+    --line:#26344C; --navy:#D4DEF0; --gold:#F2C14E; --gold-soft:#2A2410;
+    --alert:#E58A8A; --good:#6FBF8A; --good-soft:#16261B;
+  }}
+  :root[data-theme="light"]{--bg:#FFFFFF;--surface:#F5F7FA;--ink:#101B2D;--muted:#54627A;--line:#D9E0EA;--navy:#1B2E4D;--gold:#B8860B;--gold-soft:#F7EFDC;--alert:#9C2B2B;--good:#3E7A4E;--good-soft:#EAF3EC}
+  :root[data-theme="dark"]{--bg:#0C1524;--surface:#14203442;--ink:#E6EBF4;--muted:#9AA8BE;--line:#26344C;--navy:#D4DEF0;--gold:#F2C14E;--gold-soft:#2A2410;--alert:#E58A8A;--good:#6FBF8A;--good-soft:#16261B}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px}
+  a{color:var(--gold)}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 12px;font-weight:700}
+  h1{font-family:Georgia,serif;font-size:clamp(26px,5vw,38px);line-height:1.15;font-weight:700;margin:0 0 14px;text-wrap:balance}
+  .lede{font-size:16.5px;color:var(--muted);max-width:58ch;margin:0 0 8px}
+  header.hero{padding:44px 0 28px;border-bottom:1px solid var(--line)}
+  .progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:20px 0 0}
+  .progress i{display:block;height:100%;background:var(--gold);border-radius:3px;transition:width .25s ease;width:0%}
+  main{padding:34px 0 60px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:18px}
+  .qn{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 10px}
+  .qtext{font-size:19px;font-weight:600;margin:0 0 6px;text-wrap:balance}
+  .qref{font-size:13px;color:var(--muted);margin:0 0 20px}
+  .answers{display:flex;gap:12px}
+  .answers button{flex:1;padding:14px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font-size:16px;font-weight:700;cursor:pointer}
+  .answers button:hover{border-color:var(--gold)}
+  .answers button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .back{font-size:13px;color:var(--muted);background:none;border:0;cursor:pointer;padding:8px 0;text-decoration:underline}
+  #intro .cta{display:inline-block;background:var(--gold);color:#1B1503;text-decoration:none;font-weight:700;padding:13px 26px;border-radius:8px;border:0;font-size:16px;cursor:pointer}
+  #intro ul{font-size:14.5px;color:var(--muted);padding-left:20px}
+  .risultato{display:none}
+  .badge{display:inline-block;font-size:13px;font-weight:800;letter-spacing:.05em;padding:6px 14px;border-radius:999px;margin-bottom:16px}
+  .badge.proibito{background:#F7E9E8;color:var(--alert)}
+  .badge.alto{background:var(--gold-soft);color:var(--gold)}
+  .badge.trasp{background:var(--gold-soft);color:var(--gold)}
+  .badge.minimo{background:var(--good-soft);color:var(--good)}
+  :root[data-theme="dark"] .badge.proibito{background:#3A2221}
+  .obblighi{margin:16px 0;padding-left:20px;font-size:14.5px}
+  .obblighi li{margin:6px 0}
+  .scadenza-box{background:var(--gold-soft);border:1px solid var(--gold);border-radius:10px;padding:16px 18px;margin:18px 0;font-size:14px}
+  .scadenza-box b{color:var(--gold)}
+  .leadbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px 26px;margin-top:24px}
+  .leadbox h3{margin:0 0 8px;font-size:17px}
+  .leadbox p{font-size:14px;color:var(--muted);margin:0 0 16px}
+  .leadrow{display:flex;gap:10px;flex-wrap:wrap}
+  .leadrow input{flex:1;min-width:180px;padding:11px 14px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:14.5px}
+  .leadrow button, .dlbtn{background:var(--gold);color:#1B1503;border:0;padding:11px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14.5px}
+  .dlbtn{background:transparent;border:2px solid var(--gold);color:var(--gold);margin-top:10px}
+  .disclaimer{font-size:12px;color:var(--muted);margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  .restart{font-size:13px;text-align:center;margin-top:10px}
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Conforme · Assessment gratuito EU AI Act</p>
+    <h1>Il tuo sistema AI rientra nell'EU AI Act? Scoprilo in 10 minuti.</h1>
+    <p class="lede">10 domande, nessuna registrazione, nessun costo. Alla fine: la classificazione preliminare, gli obblighi che ne derivano e — aggiornato al Digital Omnibus di giugno 2026 — le date vere, non quelle che leggi ancora su qualche blog fermo ad agosto 2026.</p>
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="intro" class="card">
+    <p class="qtext">Prima di iniziare</p>
+    <p style="font-size:14.5px;color:var(--muted)">Rispondi pensando a UN sistema AI specifico che la tua azienda usa o fornisce (es. un software di selezione CV, un chatbot, uno strumento di scoring). Se ne usi diversi, ripeti l'assessment per ciascuno.</p>
+    <ul>
+      <li>Nessun dato viene inviato a un server: tutto il calcolo avviene nel tuo browser</li>
+      <li>Il risultato è un pre-assessment informativo, non una classificazione legale formale</li>
+    </ul>
+    <button class="cta" onclick="avvia()">Inizia l'assessment →</button>
+  </div>
+
+  <div id="quiz" class="card" style="display:none">
+    <p class="qn" id="qn"></p>
+    <p class="qtext" id="qtext"></p>
+    <p class="qref" id="qref"></p>
+    <div class="answers">
+      <button onclick="rispondi(true)">Sì</button>
+      <button onclick="rispondi(false)">No</button>
+    </div>
+    <button class="back" id="backbtn" onclick="indietro()" style="display:none">← domanda precedente</button>
+  </div>
+
+  <div id="risultato" class="risultato card"></div>
+
+  <p class="disclaimer">Questo strumento riproduce in forma semplificata i criteri del Regolamento UE 2024/1689 (EU AI Act) e del pacchetto "Digital Omnibus" (Consiglio UE, 29/06/2026). Ha finalità informativa e divulgativa: <b>non costituisce consulenza legale</b>. La classificazione formale, opponibile in caso di controlli, richiede l'audit completo con professionisti abilitati. Nessun dato di questa pagina viene raccolto o trasmesso, salvo quanto inserisci volontariamente nel modulo di contatto finale.</p>
+</main>
+
+<script>
+// Stesse domande e stesso ordine di valutazione di classifica.py (PRATICHE_PROIBITE,
+// ALTO_RISCHIO, RISCHIO_TRASPARENZA): un'unica fonte di verità per la logica,
+// duplicata qui in JS perché questo strumento gira lato client senza backend.
+const PROIBITO = [
+  ["Il sistema usa tecniche subliminali o manipolative per distorcere il comportamento delle persone causando danni?", "Art. 5.1.a"],
+  ["Sfrutta vulnerabilità di età, disabilità o condizione sociale?", "Art. 5.1.b"],
+  ["Fa social scoring generalizzato delle persone per conto di autorità o aziende?", "Art. 5.1.c"],
+  ["Fa identificazione biometrica remota in tempo reale in spazi pubblici (fuori dalle eccezioni di legge)?", "Art. 5.1.h"],
+  ["Riconosce le emozioni sul luogo di lavoro o a scuola?", "Art. 5.1.f"],
+];
+const ALTO = [
+  ["Identificazione/categorizzazione biometrica delle persone?", "Allegato III.1"],
+  ["Componente di sicurezza in infrastrutture critiche (acqua, energia, trasporti)?", "Allegato III.2"],
+  ["Determina accesso, valutazione o sorveglianza in ambito educativo?", "Allegato III.3"],
+  ["Usato per selezione del personale, valutazione candidati, promozioni, licenziamenti o assegnazione compiti?", "Allegato III.4 — il caso più comune nelle PMI"],
+  ["Decide accesso a servizi essenziali: credit scoring, assicurazioni vita/salute, prestazioni pubbliche, emergenze?", "Allegato III.5"],
+  ["Usato da forze dell'ordine (valutazione rischio reati, poligrafi, analisi prove)?", "Allegato III.6"],
+  ["Usato per controllo migrazione, asilo o frontiere?", "Allegato III.7"],
+  ["Assiste autorità giudiziarie o influenza elezioni?", "Allegato III.8"],
+];
+const TRASPARENZA = [
+  ["Interagisce direttamente con persone (chatbot, assistente vocale)?", "Art. 50.1"],
+  ["Genera contenuti sintetici (testo, immagini, audio, video)?", "Art. 50.2"],
+  ["Genera o manipola immagini/audio/video di persone reali (deepfake)?", "Art. 50.4"],
+];
+
+let domande = [], risposte = [], indice = 0;
+
+function costruisciDomande(){
+  domande = [];
+  PROIBITO.forEach((q,i)=>domande.push({sezione:"proibito", i, testo:q[0], rif:q[1]}));
+  ALTO.forEach((q,i)=>domande.push({sezione:"alto", i, testo:q[0], rif:q[1]}));
+  TRASPARENZA.forEach((q,i)=>domande.push({sezione:"trasp", i, testo:q[0], rif:q[1]}));
+}
+
+function avvia(){
+  costruisciDomande();
+  risposte = [];
+  indice = 0;
+  document.getElementById('intro').style.display='none';
+  document.getElementById('quiz').style.display='block';
+  mostraDomanda();
+}
+
+function mostraDomanda(){
+  const d = domande[indice];
+  document.getElementById('qn').textContent = `Domanda ${indice+1} di ${domande.length}`;
+  document.getElementById('qtext').textContent = d.testo;
+  document.getElementById('qref').textContent = d.rif;
+  document.getElementById('backbtn').style.display = indice>0 ? 'inline-block' : 'none';
+  document.getElementById('bar').style.width = Math.round((indice/domande.length)*100)+'%';
+}
+
+function indietro(){
+  if(indice>0){ indice--; risposte.pop(); mostraDomanda(); }
+}
+
+function rispondi(valore){
+  const d = domande[indice];
+  risposte[indice] = valore;
+
+  // Uscita anticipata: come in classifica.py, una sola risposta "sì" in una
+  // sezione determina subito il livello, senza dover rispondere al resto.
+  if(valore){
+    if(d.sezione==='proibito') return concludi('PROIBITO', d.rif);
+    if(d.sezione==='alto') return concludi('ALTO RISCHIO', d.rif);
+    if(d.sezione==='trasp') return concludi('RISCHIO TRASPARENZA', d.rif);
+  }
+
+  indice++;
+  if(indice >= domande.length) return concludi('RISCHIO MINIMO', null);
+  mostraDomanda();
+}
+
+const OBBLIGHI = {
+  'PROIBITO': {
+    badge: 'proibito', titolo: '🟥 PROIBITO',
+    lista: [
+      'Il sistema rientra nelle pratiche VIETATE dall\'Art. 5: va dismesso o modificato radicalmente.',
+      'Sanzione prevista: fino a 35 milioni di € o il 7% del fatturato mondiale annuo.',
+      'Già in vigore dal 2 febbraio 2025 — non rinviato dal Digital Omnibus.',
+    ]
+  },
+  'ALTO RISCHIO': {
+    badge: 'alto', titolo: '🟧 ALTO RISCHIO',
+    lista: [
+      'Sistema di gestione del rischio documentato (Art. 9)',
+      'Governance dei dati e documentazione tecnica (Artt. 10-11)',
+      'Registrazione automatica degli eventi / log (Art. 12)',
+      'Trasparenza verso gli utilizzatori e sorveglianza umana (Artt. 13-14)',
+      'Accuratezza, robustezza, cybersicurezza (Art. 15)',
+      'Monitoraggio post-market e segnalazione incidenti (Artt. 72-73)',
+    ]
+  },
+  'RISCHIO TRASPARENZA': {
+    badge: 'trasp', titolo: '🟨 RISCHIO TRASPARENZA',
+    lista: [
+      'Informare chiaramente le persone che interagiscono con un\'AI (Art. 50.1)',
+      'Marcare i contenuti generati come sintetici (Art. 50.2)',
+      'Etichettare esplicitamente i deepfake (Art. 50.4)',
+    ]
+  },
+  'RISCHIO MINIMO': {
+    badge: 'minimo', titolo: '🟩 RISCHIO MINIMO',
+    lista: [
+      'Nessun obbligo specifico oltre alle norme generali (GDPR, sicurezza prodotti).',
+      'Consigliato: censire comunque il sistema in un Registro AI aziendale.',
+    ]
+  },
+};
+
+const SCADENZE = {
+  'PROIBITO': '⏰ <b>Già in vigore dal 2 febbraio 2025.</b> Non è previsto alcun rinvio: è l\'unica categoria dove il tempo è già scaduto.',
+  'ALTO RISCHIO': '⏰ <b>Rinviato dal Digital Omnibus</b> (Consiglio UE, 29/06/2026): dal 2 agosto 2026 al <b>2 dicembre 2027</b> per i sistemi standalone (Allegato III). Attenzione: il rinvio non è un motivo per aspettare — chi inizia ora arriva pronto, chi aspetta il 2027 arriverà di corsa.',
+  'RISCHIO TRASPARENZA': '⏰ <b>NON rinviato:</b> resta in vigore dal 2 agosto 2026 — tra poche settimane.',
+  'RISCHIO MINIMO': '⏰ Nessuna scadenza applicabile a questo sistema, ma la classificazione va rivista a ogni modifica sostanziale.',
+};
+
+function concludi(livello, rif){
+  document.getElementById('quiz').style.display='none';
+  const box = document.getElementById('risultato');
+  const info = OBBLIGHI[livello];
+  const oggi = new Date().toLocaleDateString('it-IT');
+  box.innerHTML = `
+    <span class="badge ${info.badge}">${info.titolo}</span>
+    <p style="font-size:15px;color:var(--muted);margin:0 0 4px">Pre-assessment del ${oggi}${rif ? ' · criterio determinante: '+rif : ''}</p>
+    <h3 style="margin:18px 0 6px;font-size:17px">Obblighi applicabili</h3>
+    <ul class="obblighi">${info.lista.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <div class="scadenza-box">${SCADENZE[livello]}</div>
+    <div class="leadbox">
+      <h3>Vuoi la classificazione formale e il Registro completo?</h3>
+      <p>Questo è un pre-assessment automatico. L'audit completo produce il Registro dei Sistemi AI, la gap analysis e il piano di adeguamento — pronti per un'ispezione. Lascia un contatto o scrivici direttamente.</p>
+      <div class="leadrow">
+        <input id="leadEmail" type="email" placeholder="La tua email" autocomplete="email">
+        <button onclick="richiediAudit()">Richiedi l'audit</button>
+      </div>
+      <button class="dlbtn" onclick="scarica('${livello}', '${(rif||'').replace(/'/g,"")}')">⬇ Scarica il report (.txt)</button>
+    </div>
+    <p class="restart"><a href="#" onclick="location.reload();return false">↺ Rifai l'assessment su un altro sistema</a></p>
+  `;
+  box.style.display='block';
+  document.getElementById('bar').style.width='100%';
+}
+
+function richiediAudit(){
+  const email = document.getElementById('leadEmail').value.trim();
+  const oggetto = encodeURIComponent('Richiesta audit EU AI Act');
+  const corpo = encodeURIComponent(`Ho completato l'assessment gratuito.\nEmail di contatto: ${email || '(non inserita)'}\n\nVorrei richiedere l'audit completo.`);
+  window.location.href = `mailto:?subject=${oggetto}&body=${corpo}`;
+}
+
+function scarica(livello, rif){
+  const info = OBBLIGHI[livello];
+  const testo = `REPORT DI PRE-ASSESSMENT — EU AI ACT\n`+
+    `Data: ${new Date().toLocaleDateString('it-IT')}\n`+
+    `Classificazione: ${info.titolo}${rif ? ' (criterio: '+rif+')' : ''}\n\n`+
+    `OBBLIGHI APPLICABILI:\n`+ info.lista.map(x=>'- '+x).join('\n') +'\n\n'+
+    `SCADENZE (aggiornate al Digital Omnibus, 29/06/2026):\n`+ SCADENZE[livello].replace(/<[^>]+>/g,'') +'\n\n'+
+    `Documento generato dallo strumento di pre-assessment — non costituisce consulenza legale.`;
+  const blob = new Blob([testo], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'report-assessment-ai-act.txt';
+  a.click();
+}
+</script>

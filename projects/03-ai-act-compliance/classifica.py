@@ -58,12 +58,16 @@ OBBLIGHI = {
         "Accuratezza, robustezza, cybersicurezza (Art. 15)",
         "Se sei DEPLOYER: valutazione d'impatto sui diritti fondamentali ove richiesta (Art. 27)",
         "Monitoraggio post-market e segnalazione incidenti (Artt. 72-73)",
-        "⏰ Enforcement: AGOSTO 2026. Sanzioni fino a 15 M€ o 3% del fatturato.",
+        "⏰ Enforcement per i sistemi Allegato III (standalone): RINVIATO al 2 dicembre 2027 dal pacchetto",
+        "   'Digital Omnibus' (approvato dal Consiglio UE il 29/06/2026). Per i sistemi ad alto rischio",
+        "   integrati in prodotti (Allegato I) il rinvio è al 2 agosto 2028. Sanzioni quando in vigore:",
+        "   fino a 15 M€ o 3% del fatturato. Il rinvio NON è un motivo per aspettare: vedi scadenzario.py.",
     ],
     "RISCHIO TRASPARENZA": [
         "Informare chiaramente le persone che stanno interagendo con un'AI (Art. 50.1)",
         "Marcare i contenuti generati come sintetici, in formato machine-readable (Art. 50.2)",
         "Etichettare esplicitamente i deepfake (Art. 50.4)",
+        "⏰ In vigore dal 2 agosto 2026 — NON rinviato dal Digital Omnibus, a differenza dell'alto rischio.",
     ],
     "RISCHIO MINIMO": [
         "Nessun obbligo specifico oltre alle norme generali (GDPR, sicurezza prodotti).",

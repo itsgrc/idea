@@ -73,13 +73,18 @@ def match(bando, cliente):
     if giorni <= 45:
         punti += 2
         motivi.append(f"scadenza vicina ({giorni} giorni) ⏰")
-    punti += bando["intensita_pct"] // 25  # più fondo perduto = più priorità
+    if bando.get("tipo_calcolo") == "fondo_perduto":
+        punti += bando["intensita_pct"] // 25  # più fondo perduto = più priorità
+    else:
+        punti += 1  # contributo su interessi/altro: valido ma non paragonabile a un fondo perduto
 
     return True, motivi, punti
 
 
 def scheda(bando, cliente, motivi):
     giorni = (datetime.date.fromisoformat(bando["scadenza"]) - datetime.date.today()).days
+    massimale = f"{bando['massimale_eur']:,} €" if bando.get("massimale_eur") else "variabile (vedi note)"
+    modalita = bando.get("modalita_scadenza", "scadenza fissa")
     return f"""
 ### {bando['titolo']}
 
@@ -87,9 +92,9 @@ def scheda(bando, cliente, motivi):
 |---|---|
 | **Ente** | {bando['ente']} |
 | **Tema** | {bando['tema']} |
-| **Contributo** | {bando['tipo']} fino al **{bando['intensita_pct']}%**, max **{bando['massimale_eur']:,} €** |
-| **Scadenza** | {bando['scadenza']} ({giorni} giorni) |
-| **Fonte** | {bando['fonte']} |
+| **Contributo** | {bando['tipo']} fino al **{bando['intensita_pct']}%**, max **{massimale}** |
+| **Modalità** | {modalita} — {"scade tra " + str(giorni) + " giorni" if giorni <= 60 else bando['scadenza']} |
+| **Fonte** | {bando['fonte']} (verificato il {bando.get('data_verifica', 'n/d')}) |
 
 **Perché {cliente['azienda']} è idonea:** {" · ".join(motivi)}
 

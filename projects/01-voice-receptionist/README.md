@@ -6,9 +6,25 @@
 
 | File | Cosa fa |
 |---|---|
-| `server.js` | **Motore conversazionale funzionante** (zero dipendenze): macchina a stati che gestisce la telefonata — saluto, intento, raccolta dati, conferma appuntamento. Provalo subito: `node server.js --demo` |
-| `flows/dentista.json` | Il flusso conversazionale per la prima nicchia (studi dentistici), configurabile senza toccare codice |
+| `server.js` | **Motore conversazionale funzionante** (zero dipendenze): macchina a stati che gestisce la telefonata — saluto, intento, raccolta dati, conferma appuntamento. Ogni evento finisce in un log JSONL (`eventi.jsonl`). Provalo: `node server.js --demo` |
+| `flows/dentista.json`, `flows/officina.json` | I flussi conversazionali per le due nicchie, configurabili senza toccare codice |
+| `valori/*.json` | Il valore economico (€) di ogni evento, per flusso — lo configura il titolare in onboarding |
+| `valore.js` | **Il motore di ROI**: legge il log eventi e genera il report che chiude la vendita al giorno 30 del pilota. `node valore.js --demo` |
+| `suggerimenti.js` | **Il motore di auto-apprendimento**: analizza le richieste non capite e propone i nuovi intenti da aggiungere, con lo snippet JSON pronto. `node suggerimenti.js --demo` |
+| `simulatore.js` | Genera chiamate simulate (deterministiche) per popolare le demo di `valore.js`/`suggerimenti.js` senza aspettare un pilota reale |
 | `GO-TO-MARKET.md` | Playbook di vendita: come firmare i primi 3 piloti in 30 giorni |
+
+## Il moat: due motori che nessun wrapper generico Twilio+GPT ha
+
+**1. Il motore di ROI (`valore.js`)** — la differenza tra vendere "minuti di AI" e vendere "soldi recuperati". Ogni evento del flusso (appuntamento fissato, urgenza gestita) ha un valore economico configurato col cliente in onboarding. Il report non dice "23 chiamate gestite": dice **"4.740 € di valore recuperato, il servizio ne costa 300, ritorno 15,8×"** — il numero esatto che il GO-TO-MARKET.md prescrive di mostrare il giorno 30 del pilota. Costruirlo richiede l'infrastruttura di logging strutturato che questo motore già ha; un concorrente che assembla Twilio + un LLM a mano normalmente non la costruisce finché non gliela chiede un cliente arrabbiato.
+
+**2. Il motore di auto-apprendimento (`suggerimenti.js`)** — ogni volta che un chiamante dice qualcosa che il flusso non riconosce, il testo esatto finisce nel log. Lo script raggruppa questi "buchi" per parola ricorrente e genera lo snippet JSON pronto da incollare nel flusso. Risultato: **il flusso migliora da solo, chiamata dopo chiamata**, e i dati accumulati (quali domande fanno davvero i pazienti di QUEL dentista) non sono replicabili da un concorrente che parte da zero — sono un vantaggio che si compone nel tempo, non un pitch deck.
+
+```bash
+node simulatore.js            # genera 25 chiamate simulate (deterministiche)
+node valore.js --demo         # → 4.740 € recuperati, ROI 15,8×
+node suggerimenti.js --demo   # → "aggiungi l'intento parcheggio (3 volte)" + snippet pronto
+```
 
 ## Prova subito
 

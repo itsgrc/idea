@@ -1,8 +1,12 @@
 # File generati dai prototipi
 tracce.jsonl
+eventi.jsonl
+eventi-demo.jsonl
 officina.db
 officina_test.db
 report-*.md
+REGISTRO-*.md
 CALENDARIO.md
+dashboard.html
 __pycache__/
 *.pyc

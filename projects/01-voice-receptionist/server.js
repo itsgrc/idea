@@ -25,6 +25,26 @@ const FLOW_PATH = process.env.FLOW || path.join(__dirname, 'flows', 'dentista.js
 const flow = JSON.parse(fs.readFileSync(FLOW_PATH, 'utf8'));
 
 /* ------------------------------------------------------------------ *
+ * Log eventi — ogni chiamata, appuntamento, urgenza e fallback finisce
+ * su un file JSONL. È la materia prima di valore.js (report ROI) e
+ * suggerimenti.js (motore di auto-apprendimento): il motore da solo
+ * logga, gli strumenti a valle trasformano i log in soldi e in
+ * miglioramenti del flusso. Disattivato in --test per non sporcare
+ * l'output delle verifiche automatiche.
+ * ------------------------------------------------------------------ */
+const EVENTI_LOG = process.env.EVENTI_LOG || (process.argv.includes('--test') ? null : 'eventi.jsonl');
+function logEvento(record) {
+  if (!EVENTI_LOG) return;
+  fs.appendFileSync(EVENTI_LOG, JSON.stringify(record) + '\n');
+}
+function emit(sessione, evento) {
+  const record = { ts: Date.now(), flow: flow.nome, session_id: sessione.id, ...evento };
+  sessione.eventi.push(record);
+  logEvento(record);
+  return record;
+}
+
+/* ------------------------------------------------------------------ *
  * LLMAdapter — punto di innesto per il modello linguistico.
  * In MVP: matching a parole chiave. In produzione: sostituire classify()
  * con una chiamata all'API Claude che riceve la frase dell'utente e la
@@ -52,13 +72,13 @@ const LLMAdapter = {
  * ------------------------------------------------------------------ */
 const Azioni = {
   crea_appuntamento(sessione) {
-    sessione.eventi.push({ tipo: 'appuntamento_creato', dati: { ...sessione.dati } });
+    emit(sessione, { tipo: 'appuntamento_creato', dati: { ...sessione.dati } });
   },
   notifica_urgente_titolare(sessione) {
-    sessione.eventi.push({ tipo: 'urgenza_notificata', numero: sessione.id });
+    emit(sessione, { tipo: 'urgenza_notificata', dati: { ...sessione.dati } });
   },
   verifica_stato_veicolo(sessione) {
-    sessione.eventi.push({ tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa });
+    emit(sessione, { tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa });
   },
 };
 
@@ -75,6 +95,7 @@ function nuovaSessione() {
   const id = crypto.randomUUID();
   const sessione = { id, stato: 'saluto', dati: {}, eventi: [], attesa_input: null, finita: false };
   sessioni.set(id, sessione);
+  emit(sessione, { tipo: 'chiamata_iniziata' });
   return sessione;
 }
 
@@ -89,9 +110,10 @@ function avanza(sessione, risposte) {
       // Azioni note = side effect dedicato; azioni solo dichiarate nel flusso
       // diventano comunque eventi tracciati (il flusso comanda, non il codice).
       if (Azioni[stato.azione]) Azioni[stato.azione](sessione);
-      else sessione.eventi.push({ tipo: stato.azione, dati: { ...sessione.dati } });
+      else emit(sessione, { tipo: stato.azione, dati: { ...sessione.dati } });
     }
     if (stato.terminale) {
+      emit(sessione, { tipo: 'chiamata_conclusa', stato_finale: sessione.stato });
       sessione.finita = true;
       return;
     }
@@ -118,6 +140,7 @@ function ricevi(sessione, testo) {
   if (attesa.intenti) {
     const intento = LLMAdapter.classify(testo, attesa.intenti);
     if (!intento) {
+      emit(sessione, { tipo: 'fallback', stato: sessione.stato, testo: testo.trim() });
       risposte.push(attesa.fallback || 'Non ho capito, può ripetere?');
       return risposte; // resta in attesa sullo stesso stato
     }
@@ -254,6 +277,10 @@ function api() {
   server.listen(3000, () => console.log(`🎙️  Voice receptionist API su :3000 — flusso: "${flow.nome}"`));
 }
 
-if (process.argv.includes('--demo')) demo();
-else if (process.argv.includes('--test')) test();
-else api();
+module.exports = { nuovaSessione, ricevi, avanza, flow, EVENTI_LOG };
+
+if (require.main === module) {
+  if (process.argv.includes('--demo')) demo();
+  else if (process.argv.includes('--test')) test();
+  else api();
+}
