@@ -194,11 +194,11 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">Control Room · dossier completo · aggiornata al 13 luglio 2026</p>
+    <p class="eyebrow">Control Room · dossier completo · aggiornata al 15 luglio 2026</p>
     <h1>Cosa si può fare oggi. Cosa no. <em>Quanto manca. E perché.</em></h1>
     <p class="lede">La pagina unica del portfolio: capacità operative attuali, percentuale di completamento verso il primo cliente pagante, SWOT del portfolio, la classifica pesata delle 9 idee con mercati e scenari di fatturato, il flywheel e la roadmap. Tutto in un posto solo.</p>
     <div class="stats">
-      <div class="stat"><b>37%</b><span>completamento medio portfolio</span></div>
+      <div class="stat"><b>66%</b><span>completamento medio portfolio</span></div>
       <div class="stat"><b>8/9</b><span>prototipi funzionanti e testati</span></div>
       <div class="stat"><b>9/9</b><span>homepage pronte</span></div>
       <div class="stat"><b>8.2</b><span>score migliore (Voice AI)</span></div>
@@ -241,20 +241,22 @@
           <li><b>Inviare email vere su bandi REALI</b><span>invio.py: SMTP reale (dry-run di sicurezza) su 4 bandi verificati (Sabatini, Lombardia, Fondimpresa, SIMEST)</span></li>
           <li><b>Dimostrare che un database di bandi non è marcio</b><span>verifica_freschezza.py + monitor.py: segnalano scaduti, non riverificati, link rotti</span></li>
           <li><b>Salvare davvero i lead di un prospect</b><span>lead_capture.py: backend reale testato, assessment AI Act self-service dal browser</span></li>
-          <li><b>Gestire un'officina vera (in locale)</b><span>lavagna web: accettazione, stati, riepilogo incassi</span></li>
-          <li><b>Simulare la chiamata FiloDiretto completa</b><span>scenari benessere/emergenza testati sul motore condiviso</span></li>
+          <li><b>Gestire più officine vere sullo stesso server</b><span>login multi-tenant testato (PBKDF2), lavagna web, SMS "veicolo pronto", richiami tagliando automatici dai dati reali</span></li>
+          <li><b>Far iscrivere davvero un lettore alla newsletter</b><span>iscrizioni.py: doppio opt-in reale testato end-to-end, disiscrizione con cancellazione immediata</span></li>
+          <li><b>Comporre la sezione "numeri veri" della newsletter dai dati reali</b><span>generatore_numero.py: legge i dati reali dei progetti 1-4, mai mescolati con demo senza etichetta</span></li>
+          <li><b>Far chiamare FiloDiretto davvero e leggere lo stato reale</b><span>chiamata_uscente.py + dashboard.py + pattern_tracker.py: verificati end-to-end sul motore condiviso, incluso l'alert famiglia con le parole esatte dette dall'assistito</span></li>
           <li><b>Valutare un'azienda da acquisire in 10 minuti</b><span>valuta.py + pipeline.py + checklist due diligence + schema LOI</span></li>
         </ul>
       </div>
       <div class="cd no">
         <h3>❌ Non si può ancora (quasi sempre: manca una credenziale reale, non codice)</h3>
         <ul>
-          <li><b>Ricevere una chiamata da un numero vero</b><span>il webhook è pronto e testato: manca solo comprare un numero Twilio e puntarlo (20 min, guidato in CONFIGURAZIONE.md)</span></li>
+          <li><b>Ricevere/originare una chiamata da un numero vero</b><span>i webhook sono pronti e testati (in entrata per #1, in uscita per #6): manca solo comprare un numero Twilio e puntarlo (20 min, guidato in CONFIGURAZIONE.md)</span></li>
           <li><b>Incassare denaro</b><span>manca l'entità (P.IVA/SRL), IBAN, fatturazione — decisione da prendere prima del primo contratto</span></li>
-          <li><b>Firmare contratti coi clienti</b><span>bozze pronte (contratto pilota, privacy policy, partnership legale): serve la revisione di un avvocato vero</span></li>
-          <li><b>Inviare WhatsApp/email/notifiche realmente</b><span>codice reale e testato in dry-run per tutti e 3 i progetti: manca solo incollare le TUE credenziali in .env</span></li>
+          <li><b>Firmare contratti coi clienti</b><span>bozze pronte (contratto pilota, privacy policy, partnership legale, DPA): serve la revisione di un avvocato vero</span></li>
+          <li><b>Inviare WhatsApp/SMS/email/notifiche realmente</b><span>codice reale e testato in dry-run per tutti e 6 i progetti con credenziali: manca solo incollare le TUE credenziali in .env</span></li>
           <li><b>Usare i nomi in pubblico come marchi</b><span>Rispondo, Ponte, Conforme… da verificare su UIBM/EUIPO (checklist pronta)</span></li>
-          <li><b>Mettere i software in mano a più utenti</b><span>Ponte e AgentLens girano in locale: mancano hosting, login, backup</span></li>
+          <li><b>Mettere i software in mano a più utenti da internet</b><span>Ponte, Cantiere Aperto, FiloDiretto e AgentLens girano in locale: manca solo l'hosting pubblico (login e backup ci sono già dove servono)</span></li>
           <li><b>Vendere Perizia</b><span>vietato per disciplina: prima 15 interviste e go/no-go (oggi: 0/15 reali)</span></li>
         </ul>
       </div>
@@ -270,13 +272,13 @@
       <div class="crow"><span class="n">🎯 #2 TrovaBandi<small>4 bandi reali + invio SMTP vero + monitor freschezza</small></span><div class="bar"><i style="--w:88%"></i></div><span class="p">88%</span></div>
       <div class="crow"><span class="n">⚖️ #3 Conforme<small>lead capture reale; manca solo il partner legale</small></span><div class="bar"><i style="--w:85%"></i></div><span class="p">85%</span></div>
       <div class="crow"><span class="n">🎙️ #1 Rispondo<small>webhook Twilio reale; manca solo il numero vero</small></span><div class="bar"><i style="--w:90%"></i></div><span class="p">90%</span></div>
-      <div class="crow"><span class="n">🔧 #4 Ponte<small>app usabile in locale; manca hosting e validazione</small></span><div class="bar"><i style="--w:40%"></i></div><span class="p">40%</span></div>
-      <div class="crow"><span class="n">📰 #5 Cantiere Aperto<small>contenuti pronti; audience da zero</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></div>
+      <div class="crow"><span class="n">🔧 #4 Ponte<small>multi-tenant reale + SMS + richiami automatici; manca hosting</small></span><div class="bar"><i style="--w:88%"></i></div><span class="p">88%</span></div>
+      <div class="crow"><span class="n">📰 #5 Cantiere Aperto<small>iscrizione reale + generatore numeri veri; manca hosting</small></span><div class="bar"><i style="--w:82%"></i></div><span class="p">82%</span></div>
       <div class="crow"><span class="n">🔍 #7 AgentLens<small>tracer + dashboard; manca il repo pubblico</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></div>
-      <div class="crow"><span class="n">👵 #6 FiloDiretto<small>flusso reale sul motore #1; serve telefonia e pilota</small></span><div class="bar low"><i style="--w:30%"></i></div><span class="p">30%</span></div>
+      <div class="crow"><span class="n">👵 #6 FiloDiretto<small>chiamata uscente + dashboard + pattern tracker reali; manca hosting</small></span><div class="bar"><i style="--w:85%"></i></div><span class="p">85%</span></div>
       <div class="crow"><span class="n">🏢 #8 Continuità<small>strumenti completi; pipeline reale e capitale a zero</small></span><div class="bar low"><i style="--w:25%"></i></div><span class="p">25%</span></div>
       <div class="crow"><span class="n">🩺 #9 Perizia<small>kit validazione pronto; 0/15 interviste fatte</small></span><div class="bar low"><i style="--w:15%"></i></div><span class="p">15%</span></div>
-      <div class="crow tot"><span class="n">📊 PORTFOLIO<small>media pesata sulla priorità di lancio</small></span><div class="bar"><i style="--w:49%;background:var(--gold)"></i></div><span class="p">49%</span></div>
+      <div class="crow tot"><span class="n">📊 PORTFOLIO<small>media pesata sulla priorità di lancio</small></span><div class="bar"><i style="--w:66%;background:var(--gold)"></i></div><span class="p">66%</span></div>
     </div>
     <p class="legend">Verde = sopra il 40% (fase di lancio vicina) · Ambra = sotto il 40% (fase fondamenta/validazione). Le stime sono verso il primo cliente, non verso il prodotto completo.</p>
   </div>
@@ -290,9 +292,9 @@
       <div class="sq s">
         <h3>S · Punti di forza</h3>
         <ul>
-          <li><b>Progetti 1-3: infrastruttura reale completa</b> (webhook Twilio, invio SMTP, lead capture) dietro credenziali mock — swap e via, zero righe da riscrivere</li>
+          <li><b>Progetti 1-6: infrastruttura reale completa</b> (webhook Twilio, invio SMTP/SMS, lead capture, multi-tenant, doppio opt-in, chiamata uscente) dietro credenziali mock — swap e via, zero righe da riscrivere</li>
           <li><b>8 prototipi funzionanti</b> a zero dipendenze, tutti testati end-to-end</li>
-          <li><b>Flywheel dimostrato</b>: FiloDiretto gira sul motore di Rispondo (2° prodotto ≈ costo zero)</li>
+          <li><b>Flywheel dimostrato</b>: FiloDiretto gira sul motore di Rispondo (2° prodotto ≈ costo zero) — e ora genera lui stesso il moat di Cantiere Aperto</li>
           <li><b>Costi vivi ≈ 0</b>: tutto costruito senza capitale, nessun debito</li>
           <li>Materiale di vendita pronto: 9 homepage, playbook, report generabili dal vivo</li>
           <li>Disciplina scritta: KPI di fase, regola dei 90 giorni, checklist legale</li>
@@ -544,7 +546,7 @@
             <li>Mercato per singola nicchia limitato</li>
           </ul></div>
         </div>
-        <p class="infoline">Break-even 6–12 mesi · ticket 50–300 €/mese · canale: associazioni di categoria, fiere, passaparola tra colleghi. <b>Completamento attuale: 40%.</b></p>
+        <p class="infoline">Break-even 6–12 mesi · ticket 50–300 €/mese · canale: associazioni di categoria, fiere, passaparola tra colleghi. <b>Completamento attuale: 88%</b> — multi-tenant reale con login testato, SMS via Twilio, moat richiami automatici dai dati reali: manca solo hosting pubblico.</p>
         <p class="azione"><b>Prima azione oggi:</b> porta l'auto a fare il tagliando e chiedi al titolare quanto tempo perde al telefono. La risposta vale più di un mese di sviluppo.</p>
         <div class="linkrow">
           <a class="hplink" href="https://claude.ai/code/artifact/234ffb84-8759-4438-9952-565cd6329a5b" target="_blank" rel="noopener">🌐 Vedi la homepage — Ponte</a>
@@ -598,7 +600,7 @@
             <li>L'AI erode il valore dei contenuti generici</li>
           </ul></div>
         </div>
-        <p class="infoline">Break-even immediato · scala prodotti: newsletter gratis → template 29–49 € → workshop 149 € → corso 390 € → community 39 €/mese. <b>Completamento attuale: 35%.</b></p>
+        <p class="infoline">Break-even immediato · scala prodotti: newsletter gratis → template 29–49 € → workshop 149 € → corso 390 € → community 39 €/mese. <b>Completamento attuale: 82%</b> — iscrizione reale con double opt-in, moat "numeri veri" che legge i dati degli altri 4 progetti: manca solo hosting pubblico + audience.</p>
         <p class="azione"><b>Prima azione oggi:</b> pubblica il primo post: «Sto lanciando 9 business, in pubblico. Ecco la classifica» — il materiale ce l'hai già.</p>
         <div class="linkrow">
           <a class="hplink" href="https://claude.ai/code/artifact/f6c830cf-0505-4239-8254-5051eb12837f" target="_blank" rel="noopener">🌐 Vedi la homepage — Cantiere Aperto</a>
@@ -652,7 +654,7 @@
             <li>Canale B2B2C (comuni, RSA) lento</li>
           </ul></div>
         </div>
-        <p class="infoline">29–49 €/mese per famiglia · margine lordo ~90% · confronto: la teleassistenza col bottone SOS è passiva, FiloDiretto è proattivo. <b>Completamento attuale: 30%.</b></p>
+        <p class="infoline">29–49 €/mese per famiglia · margine lordo ~90% · confronto: la teleassistenza col bottone SOS è passiva, FiloDiretto è proattivo. <b>Completamento attuale: 85%</b> — chiamata uscente reale, dashboard famiglia con consenso GDPR tecnico, moat pattern tracker sui dati reali del motore #1: manca solo hosting + primo pilota.</p>
         <p class="azione"><b>Prima azione oggi:</b> chiedi a 10 persone con un genitore anziano solo: «pagheresti 29 €/mese per saperlo ogni giorno al sicuro?». 6+ sì = si parte.</p>
         <div class="linkrow">
           <a class="hplink" href="https://claude.ai/code/artifact/4750c830-d097-4aa8-a4b7-c1607627f39f" target="_blank" rel="noopener">🌐 Vedi la homepage — FiloDiretto</a>
@@ -922,13 +924,13 @@
     </details>
 
     <details class="proj">
-      <summary><span class="pt">🔧 #4 Ponte — gestionale officine<small>fase: fondamenta · KPI: 10 officine in lista</small></span><div class="bar"><i style="--w:40%"></i></div><span class="p">40%</span></summary>
+      <summary><span class="pt">🔧 #4 Ponte — gestionale officine<small>fase: lancio vicino · KPI: 10 officine in lista</small></span><div class="bar"><i style="--w:88%"></i></div><span class="p">88%</span></summary>
       <div class="pbody">
-        <p class="trycmd">python3 app.py  → lavagna web su :8000</p>
+        <p class="trycmd">python3 app.py  → lavagna web multi-officina su :8000</p>
         <a class="hplink" href="https://claude.ai/code/artifact/234ffb84-8759-4438-9952-565cd6329a5b" target="_blank" rel="noopener" style="justify-self:start">🌐 Vedi la homepage</a>
         <div class="pcd">
-          <div class="y"><h4>✅ Puoi già</h4><ul><li>Usare la lavagna web in un'officina vera (in locale)</li><li>Accettazione in 30 secondi, stati, riepilogo incassi</li><li>Validare la nicchia col framework a punteggio</li></ul></div>
-          <div class="x"><h4>❌ Manca</h4><ul><li>Le 10 interviste in officina (0 fatte — è il KPI)</li><li>Hosting multi-officina con login e backup</li><li>SMS "auto pronta" reale</li></ul></div>
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Registrare più officine reali sullo stesso server, isolate tra loro (login, PBKDF2, testato)</li><li>Accettazione in 30 secondi, stati, riepilogo incassi</li><li>SMS reale "veicolo pronto" + richiami tagliando automatici dai dati reali</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Le 10 interviste in officina (0 fatte — è il KPI)</li><li>Hosting pubblico (il codice è pronto, serve solo il deploy)</li><li>Un Data Processing Agreement validato da un avvocato</li></ul></div>
         </div>
         <div class="mswot">
           <span class="ms"><b>S</b>churn bassissimo una volta adottato</span>
@@ -936,18 +938,18 @@
           <span class="mo"><b>O</b>playbook ServiceTitan libero in EU</span>
           <span class="mt"><b>T</b>gestionali legacy che si svegliano</span>
         </div>
-        <p class="next"><b>Prossimo passo:</b> le 10 interviste (6/10 devono confermare il dolore) PRIMA di ogni altra riga di codice. Sblocca: la certezza che la nicchia è giusta.</p>
+        <p class="next"><b>Prossimo passo:</b> le 10 interviste (6/10 devono confermare il dolore) — la tecnologia non è più il collo di bottiglia. Sblocca: la certezza che la nicchia è giusta.</p>
       </div>
     </details>
 
     <details class="proj">
-      <summary><span class="pt">📰 #5 Cantiere Aperto — knowledge business<small>fase: fondamenta · KPI: 1.000 follower in 60 gg</small></span><div class="bar low"><i style="--w:35%"></i></div><span class="p">35%</span></summary>
+      <summary><span class="pt">📰 #5 Cantiere Aperto — knowledge business<small>fase: lancio vicino · KPI: 1.000 follower in 60 gg</small></span><div class="bar"><i style="--w:82%"></i></div><span class="p">82%</span></summary>
       <div class="pbody">
-        <p class="trycmd">python3 calendario.py  → calendario editoriale 90 gg</p>
+        <p class="trycmd">python3 generatore_numero.py  → sezione "numeri veri" dai dati reali del portfolio</p>
         <a class="hplink" href="https://claude.ai/code/artifact/f6c830cf-0505-4239-8254-5051eb12837f" target="_blank" rel="noopener" style="justify-self:start">🌐 Vedi la homepage</a>
         <div class="pcd">
-          <div class="y"><h4>✅ Puoi già</h4><ul><li>Pubblicare: Numero Zero + 6 post già scritti</li><li>Calendario editoriale di 90 giorni generato</li><li>Funnel e scala prodotti definiti</li></ul></div>
-          <div class="x"><h4>❌ Manca</h4><ul><li>Tutto ciò che conta: la costanza (0 post pubblicati)</li><li>Piattaforma newsletter con doppio opt-in GDPR</li><li>60 giorni di ritmo prima di giudicare i numeri</li></ul></div>
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Iscrizione reale con doppio opt-in GDPR, testata end-to-end</li><li>Generare la sezione "numeri veri" leggendo i dati reali dei progetti 1-4</li><li>Calendario editoriale di 90 giorni generato</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Tutto ciò che conta: la costanza (0 post pubblicati)</li><li>Hosting pubblico per il modulo di iscrizione</li><li>60 giorni di ritmo prima di giudicare i numeri</li></ul></div>
         </div>
         <div class="mswot">
           <span class="ms"><b>S</b>materia prima unica: il cantiere vero</span>
@@ -960,13 +962,13 @@
     </details>
 
     <details class="proj">
-      <summary><span class="pt">👵 #6 FiloDiretto — silver tech<small>fase: incubazione · KPI: 20 famiglie in pilota</small></span><div class="bar low"><i style="--w:30%"></i></div><span class="p">30%</span></summary>
+      <summary><span class="pt">👵 #6 FiloDiretto — silver tech<small>fase: lancio vicino · KPI: 20 famiglie in pilota</small></span><div class="bar"><i style="--w:85%"></i></div><span class="p">85%</span></summary>
       <div class="pbody">
-        <p class="trycmd">FLOW=../06-silver-tech/flows/filodiretto.json node ../01-voice-receptionist/server.js --demo</p>
+        <p class="trycmd">python3 pattern_tracker.py --demo  → report settimanale dai dati reali del motore #1</p>
         <a class="hplink" href="https://claude.ai/code/artifact/4750c830-d097-4aa8-a4b7-c1607627f39f" target="_blank" rel="noopener" style="justify-self:start">🌐 Vedi la homepage</a>
         <div class="pcd">
-          <div class="y"><h4>✅ Puoi già</h4><ul><li>Simulare la chiamata completa (benessere, farmaci, emergenza→allerta)</li><li>Riusare il motore del #1: il flusso è pronto</li><li>Testare la domanda con le 10 telefonate ai figli</li></ul></div>
-          <div class="x"><h4>❌ Manca</h4><ul><li>Telefonia reale (arriva "gratis" quando la fa il #1)</li><li>Dashboard famiglia + consenso GDPR operativo</li><li>Concierge test: 10 famiglie con chiamate UMANE</li></ul></div>
+          <div class="y"><h4>✅ Puoi già</h4><ul><li>Chiamata uscente reale via Twilio (mock finché non hai le credenziali)</li><li>Dashboard famiglia + consenso GDPR che blocca l'accesso finché non è raccolto (tecnico, non solo su carta)</li><li>Pattern tracker: report settimanale calcolato sui dati reali, non simulati</li></ul></div>
+          <div class="x"><h4>❌ Manca</h4><ul><li>Hosting pubblico (il codice è pronto, serve solo il deploy)</li><li>Concierge test: 10 famiglie con chiamate UMANE</li><li>Classificazione formale AI Act del servizio</li></ul></div>
         </div>
         <div class="mswot">
           <span class="ms"><b>S</b>zero hardware, zero app da imparare</span>
@@ -974,7 +976,7 @@
           <span class="mo"><b>O</b>il paese più vecchio d'Europa</span>
           <span class="mt"><b>T</b>fiducia difficile da conquistare (e facile da perdere)</span>
         </div>
-        <p class="next"><b>Prossimo passo:</b> il sondaggio dei 10 sì (genitore anziano solo, 29 €/mese: pagheresti?). Sblocca: il concierge test — che non richiede nemmeno la tecnologia.</p>
+        <p class="next"><b>Prossimo passo:</b> il sondaggio dei 10 sì (genitore anziano solo, 29 €/mese: pagheresti?). Sblocca: il concierge test — la tecnologia è già pronta ad aspettarlo.</p>
       </div>
     </details>
 
