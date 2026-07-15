@@ -4,6 +4,8 @@ eventi.jsonl
 eventi-demo.jsonl
 officina.db
 officina_test.db
+richiami_demo.db
+officina_http_test*.db
 report-*.md
 REGISTRO-*.md
 CALENDARIO.md
