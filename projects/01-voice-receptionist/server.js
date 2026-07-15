@@ -138,6 +138,13 @@ function pulisciSessioni() {
   for (const [id, sessione] of sessioni) {
     if (sessione.finita || ora - sessione.creata > SESSIONE_MAX_ETA_MS) sessioni.delete(id);
   }
+  // Stessa disciplina anche per la mappa del rate limiter: senza pulizia
+  // sarebbe lei stessa un memory leak, l'esatto problema che dovrebbe prevenire.
+  for (const [ip, richieste] of richiestePerIp) {
+    const recenti = richieste.filter((t) => ora - t < RATE_LIMIT_FINESTRA_MS);
+    if (recenti.length === 0) richiestePerIp.delete(ip);
+    else richiestePerIp.set(ip, recenti);
+  }
 }
 
 // Esegue gli stati "parlanti" finché non serve input dell'utente o la chiamata finisce.
@@ -282,6 +289,21 @@ start();
  *   POST /voice/incoming             → webhook Twilio (TwiML), chiamata reale
  *   POST /voice/gather/:sessionId    → webhook Twilio (TwiML), risposta vocale
  * ------------------------------------------------------------------ */
+// Anti-spam su /call/start (il widget demo pubblico della homepage, senza
+// autenticazione per design): senza un limite, chiunque potrebbe creare
+// migliaia di sessioni al minuto, saturando memoria prima che la pulizia
+// periodica intervenga.
+const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || '20', 10);
+const RATE_LIMIT_FINESTRA_MS = 60 * 60 * 1000; // per ora, per IP
+const richiestePerIp = new Map();
+function rateLimitSuperato(ip) {
+  const ora = Date.now();
+  const richieste = (richiestePerIp.get(ip) || []).filter((t) => ora - t < RATE_LIMIT_FINESTRA_MS);
+  richieste.push(ora);
+  richiestePerIp.set(ip, richieste);
+  return richieste.length > RATE_LIMIT_MAX;
+}
+
 function api() {
   const server = http.createServer((req, res) => {
     const rispondi = (code, body) => {
@@ -297,6 +319,7 @@ function api() {
     req.on('end', () => {
       try {
         if (req.method === 'POST' && req.url === '/call/start') {
+          if (rateLimitSuperato(req.socket.remoteAddress)) return rispondi(429, { error: 'troppe richieste, riprova più tardi' });
           const sessione = nuovaSessione();
           const messages = [];
           avanza(sessione, messages);

@@ -84,6 +84,7 @@ Vedi `CONFIGURAZIONE.md` per la guida passo-passo.
 | `POST /lead` validava solo che l'email non fosse vuota, non che fosse un indirizzo valido | Dati sporchi nel database lead, bypassabile aggirando la validazione JavaScript lato client | Validazione server-side con regex, difesa in profondità |
 | Nessuna procedura documentata per cancellare un lead su richiesta | Rischio di non poter evadere una richiesta di cancellazione (Art. 17 GDPR) nei tempi di legge | Procedura documentata in `CONFIGURAZIONE.md` |
 | `assessment.html` dichiarava "nessun dato inviato a un server" in modo assoluto, ma il modulo di contatto invia davvero l'email al backend | Incoerenza tra due punti della stessa pagina | Testo allineato: il calcolo resta nel browser, l'invio avviene solo se l'utente lo richiede esplicitamente |
+| `POST /lead` accettava richieste illimitate | Chiunque poteva inondarlo di lead falsi, riempiendo il database e — con SMTP reale — spammando la casella email del titolare | Rate limit: 5 richieste/ora per IP |
 
 Tutte le correzioni sono testate (richieste HTTP reali con chiave assente, chiave mock, chiave reale corretta e chiave reale sbagliata).
 

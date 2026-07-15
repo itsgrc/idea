@@ -35,6 +35,23 @@ LEAD_API_KEY = os.environ.get("LEAD_API_KEY", "MOCK_cambia_questa_chiave_prima_d
 EMAIL_REGEX = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
 
+RATE_LIMIT_MAX = int(os.environ.get("LEAD_RATE_LIMIT", "5"))  # richieste
+RATE_LIMIT_FINESTRA_S = 3600  # per ora, per IP
+_invii_per_ip = {}
+
+
+def rate_limit_superato(ip):
+    """Protezione anti-spam su POST /lead (endpoint pubblico, senza auth
+    per design): senza questo, chiunque potrebbe inondarlo di lead falsi,
+    riempiendo lead.jsonl e — con SMTP reale configurato — spammando la
+    casella email del titolare (rischio reputazionale/di blocco account)."""
+    ora = datetime.datetime.now().timestamp()
+    invii = [t for t in _invii_per_ip.get(ip, []) if ora - t < RATE_LIMIT_FINESTRA_S]
+    invii.append(ora)
+    _invii_per_ip[ip] = invii
+    return len(invii) > RATE_LIMIT_MAX
+
+
 def richiesta_autorizzata(handler):
     """Confronto a tempo costante: evita che il tempo di risposta riveli
     quanti caratteri della chiave sono corretti (timing attack).
@@ -110,6 +127,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         if self.path == "/lead":
+            if rate_limit_superato(self.client_address[0]):
+                return self._json(429, {"errore": "troppe richieste, riprova più tardi"})
             n = int(self.headers.get("Content-Length") or 0)
             try:
                 lead = json.loads(self.rfile.read(n) or b"{}")

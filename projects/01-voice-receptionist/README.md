@@ -86,6 +86,7 @@ Vedi `CONFIGURAZIONE.md` per la guida passo-passo (account Twilio, hosting, Goog
 | Le sessioni di chiamata non venivano mai rimosse dalla memoria | Memory leak su un server che gira per settimane | Pulizia periodica (ogni 5 min) delle sessioni concluse o abbandonate da oltre 30 minuti |
 | Il numero del chiamante non arrivava mai alla notifica WhatsApp dell'urgenza | Il titolare non avrebbe saputo CHI richiamare in un'emergenza — bug funzionale, non solo di sicurezza | Il numero ora è incluso in ogni notifica quando disponibile |
 | La homepage dichiarava "i dati restano in Europa" in modo assoluto | Claim non allineato all'architettura reale (Twilio e Google Calendar sono fornitori USA): rischio di pubblicità ingannevole | Testo corretto per riflettere la realtà: conformità GDPR con Clausole Contrattuali Standard, dettagli per fornitore nell'informativa |
+| `/call/start` (il widget demo pubblico) accettava richieste illimitate | Chiunque poteva creare migliaia di sessioni al minuto, saturando la memoria | Rate limit: 20 richieste/ora per IP, con pulizia periodica della mappa stessa |
 
 Tutte le correzioni sono testate (incluse richieste HTTP che simulano firme Twilio valide e contraffatte).
 
