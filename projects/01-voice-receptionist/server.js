@@ -108,6 +108,13 @@ const Azioni = {
     const evento = emit(sessione, { tipo: 'richiesta_stato_veicolo', targa: sessione.dati.targa, numero_chiamante: sessione.numeroChiamante });
     notificaSeAttivo(evento);
   },
+  // Progetto 06 (FiloDiretto): un segnale forte (caduta, dolore, confusione)
+  // deve avvisare la famiglia SUBITO, non restare solo un evento nel log —
+  // è l'unica azione di questo flusso per cui un ritardo ha conseguenze reali.
+  allerta_famiglia_immediata(sessione) {
+    const evento = emit(sessione, { tipo: 'allerta_famiglia_immediata', dati: { ...sessione.dati }, numero_chiamante: sessione.numeroChiamante });
+    notificaSeAttivo(evento);
+  },
 };
 
 /* ------------------------------------------------------------------ *

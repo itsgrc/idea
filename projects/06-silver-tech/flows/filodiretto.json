@@ -8,6 +8,7 @@
       "vai_a": "valuta_benessere"
     },
     "valuta_benessere": {
+      "salva_in": "testo_segnalazione",
       "intenti": {
         "sta_bene": {
           "parole": ["bene", "benone", "benissimo", "meglio", "non c'è male", "si tira avanti", "tutto a posto"],

@@ -80,6 +80,10 @@ function messaggioPerEvento(evento) {
   if (evento.tipo === 'richiesta_stato_veicolo') {
     return `🔧 Richiesta stato veicolo, targa ${evento.targa || 'n/d'} — verificare e rispondere al cliente.${numero}`;
   }
+  if (evento.tipo === 'allerta_famiglia_immediata') {
+    const dettaglio = dati.testo_segnalazione ? `«${dati.testo_segnalazione}»` : "l'assistito ha riferito un problema serio";
+    return `🚨 FILODIRETTO — durante la chiamata di oggi ha detto: ${dettaglio}. Chiamatelo SUBITO. Se non risponde, valutate il 112.${numero}`;
+  }
   return `ℹ️ Evento "${evento.tipo}" gestito dall'assistente AI.${numero}`;
 }
 

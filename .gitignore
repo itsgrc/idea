@@ -16,6 +16,8 @@ lead-demo.jsonl
 newsletter.db
 newsletter-demo.db
 newsletter_http_test*.db
+consenso.json
+chiamate.log
 .env
 __pycache__/
 *.pyc

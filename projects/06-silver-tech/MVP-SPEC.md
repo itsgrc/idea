@@ -36,7 +36,7 @@
 - Consenso esplicito dell'anziano registrato alla prima chiamata
 - Audio cancellato dopo la classificazione (si conservano solo le sintesi) — default
 - Dati sanitari: minimizzazione — si registra «ha preso le medicine: sì/no», non diagnosi
-- Tutto su infrastruttura UE. «I dati di sua madre non lasciano l'Europa» è una frase che vende.
+- Il servizio è trattato secondo il GDPR; la telefonia riusa lo stack del progetto #01 (Twilio, fornitore extra-UE) con le garanzie previste dal GDPR (Clausole Contrattuali Standard) — non promettere «i dati non lasciano l'Europa» finché l'infrastruttura reale non lo garantisce davvero: è lo stesso errore già trovato e corretto nei progetti #01 e #04.
 - Classificazione AI Act: da verificare con il progetto #03 (probabile rischio trasparenza, non alto rischio, finché non si fanno valutazioni sanitarie)
 
 ## Cosa NON fa l'MVP (e va detto chiaramente ai clienti)
