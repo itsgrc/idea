@@ -33,6 +33,7 @@
 | 7 | 🏗️ Agent Infra (AgentLens) | [`07-agent-infra/`](07-agent-infra/) | 🔵 Incubazione | ✅ `python3 dashboard.py tracce.jsonl` | Dashboard HTML (anteprima del prodotto cloud) | 50 stelle GitHub / 10 utenti |
 | 8 | 🏢 Roll-up PMI + AI | [`08-rollup-pmi/`](08-rollup-pmi/) | 🔵 Incubazione | ✅ `python3 pipeline.py --demo` | CRM pipeline con score + template LOI | 1 LOI firmata |
 | 9 | 🩺 Vertical AI Legale/Sanità | [`09-vertical-ai-legale/`](09-vertical-ai-legale/) | ⚪ Validazione | ✅ `python3 tracker.py --demo` | Scoreboard interviste con go/no-go automatico | 15 interviste + 1 pilot |
+| 10 | 🏆 Prenotazioni Multisport | [`10-prenotazioni-multisport/`](10-prenotazioni-multisport/) | 🟢 Sviluppo attivo | ✅ `python3 prenota.py --selftest` | Motore no-show + rete di disponibilità, entrambi testati end-to-end | 3 strutture pilota nella stessa città |
 
 **Legenda fasi:** ⚪ Validazione → 🔵 Incubazione → 🟡 Fondamenta → 🟢 Sviluppo attivo → 🚀 Sul mercato
 
@@ -51,6 +52,7 @@ Ogni progetto ha la sua **homepage completa** (`homepage.html` nella cartella de
 | 7 | Agent infra | **AgentLens** | [`homepage.html`](07-agent-infra/homepage.html) |
 | 8 | Roll-up PMI | **Continuità** | [`homepage.html`](08-rollup-pmi/homepage.html) |
 | 9 | Vertical AI | **Perizia** | [`homepage.html`](09-vertical-ai-legale/homepage.html) |
+| 10 | Prenotazioni multisport | **Campolibero** | [`homepage.html`](10-prenotazioni-multisport/homepage.html) |
 
 ## Principi di sviluppo del portfolio
 

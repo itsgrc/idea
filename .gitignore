@@ -18,6 +18,9 @@ newsletter-demo.db
 newsletter_http_test*.db
 consenso.json
 chiamate.log
+campolibero.db
+campolibero_test.db
+campolibero_http_test*.db
 .env
 __pycache__/
 *.pyc

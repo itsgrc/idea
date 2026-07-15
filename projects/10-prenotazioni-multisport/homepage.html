@@ -1,0 +1,161 @@
+<title>Campolibero — Prenotazioni multisport, senza slot persi</title>
+<style>
+  :root{
+    --bg:#F4F7F4; --surface:#FFFFFF; --ink:#12261A; --muted:#5C6B60;
+    --line:#DCE3DC; --verde:#1F9D55; --verde-scuro:#0F5C31; --giallo:#E8A93A;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0F1512; --surface:#182119; --ink:#EAF0EA; --muted:#9BAAA0;
+    --line:#293830; --verde:#2FBE68; --verde-scuro:#0F5C31; --giallo:#F0B94E;
+  }}
+  :root[data-theme="light"]{--bg:#F4F7F4;--surface:#FFFFFF;--ink:#12261A;--muted:#5C6B60;--line:#DCE3DC;--verde:#1F9D55;--verde-scuro:#0F5C31;--giallo:#E8A93A}
+  :root[data-theme="dark"]{--bg:#0F1512;--surface:#182119;--ink:#EAF0EA;--muted:#9BAAA0;--line:#293830;--verde:#2FBE68;--verde-scuro:#0F5C31;--giallo:#F0B94E}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  a{color:var(--verde-scuro)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+  .stripe{height:10px;background:linear-gradient(90deg,var(--verde),var(--giallo))}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--verde-scuro);margin:0 0 12px;font-weight:700}
+  h1{font-size:clamp(30px,6vw,50px);line-height:1.06;letter-spacing:-.02em;font-weight:900;margin:0 0 16px;text-wrap:balance}
+  h1 mark{background:var(--giallo);color:#1B1D1F;padding:0 8px;border-radius:4px}
+  h2{font-size:clamp(21px,3.5vw,28px);font-weight:800;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);max-width:58ch;margin:0 0 26px}
+  .hero{padding:52px 0 36px}
+  .cta{display:inline-block;background:var(--verde);color:#fff;text-decoration:none;font-weight:800;padding:14px 28px;border-radius:8px;font-size:15px}
+  .cta.sec{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap}
+  .ctanote{font-size:13px;color:var(--muted);margin-top:12px}
+  .board{background:var(--verde-scuro);color:#F2F7F3;border-radius:12px;padding:20px;margin-top:34px;max-width:560px}
+  .board .bh{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--giallo);margin:0 0 12px}
+  .slot{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #2A4636;font-size:14px}
+  .slot:last-child{border-bottom:0}
+  .st{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+  .st.libero{background:var(--giallo);color:#1B1D1F}.st.rete{background:#3E7A9E;color:#fff}.st.ok{background:#2FBE68;color:#06301A}
+  section{padding:44px 0 10px}
+  .secnote{color:var(--muted);max-width:62ch;margin:0 0 24px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;border-top:4px solid var(--verde)}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+  .price.hl{border:3px solid var(--verde)}
+  .price .tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--verde-scuro)}
+  .price .amount{font-size:34px;font-weight:900;font-family:ui-monospace,Menlo,monospace;display:block;margin:6px 0;letter-spacing:-.02em}
+  .price .amount small{font-size:14px;font-weight:400;color:var(--muted);font-family:system-ui,sans-serif}
+  .price ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+  .price li{margin:4px 0}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin:0 0 10px;padding:0 16px}
+  summary{cursor:pointer;font-weight:700;padding:14px 0;font-size:15px}
+  details p{margin:0 0 14px;font-size:14.5px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:52px;padding:26px 0 44px}
+  footer p{font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+
+<div class="stripe" aria-hidden="true"></div>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Campolibero · Prenotazioni per centri sportivi e altri servizi a slot</p>
+    <h1>Il campo pieno<br>non è più<br><mark>uno slot perso.</mark></h1>
+    <p class="lede">Padel, calcio a 5, tennis, corsi, personal trainer: un sistema di prenotazione che decide da solo quando chiedere un deposito (e quando fidarsi) e che trova un posto altrove nella rete quando il tuo campo è pieno.</p>
+    <div class="ctarow">
+      <a class="cta" href="#prezzi">Provalo gratis 30 giorni</a>
+      <a class="cta sec" href="#funzioni">Cosa fa</a>
+    </div>
+    <p class="ctanote">Senza carta di credito · i tuoi dati restano tuoi · disdici quando vuoi</p>
+
+    <div class="board" role="img" aria-label="Esempio di ricerca disponibilità">
+      <p class="bh">🔎 Padel, sabato ore 18:00 — Milano</p>
+      <div class="slot"><span>18:00 · Campo 2</span><span>Padel Navigli</span><span class="st libero">Libero</span></div>
+      <div class="slot"><span>18:30 · Campo Centrale</span><span>Padel Isola <small style="color:#9BB3A5">(rete)</small></span><span class="st rete">Vicino a te</span></div>
+      <div class="slot"><span>19:00 · Campo 1</span><span>Padel Navigli</span><span class="st ok">Confermato</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="problema">
+  <div class="wrap">
+    <h2>Due problemi che nessun calendario da solo risolve</h2>
+    <p class="secnote">Un centro sportivo su due gestisce ancora prenotazioni via WhatsApp o un calendario Google condiviso: funziona finché non arrivano i due problemi veri.</p>
+    <div class="grid3">
+      <div class="card"><h3>👻 Il no-show</h3><p>Uno slot delle 19 di martedì prenotato e mai occupato non si rivende più. Chiedere sempre il deposito scoraggia i clienti buoni; non chiederlo mai regala lo slot a chi salta sempre.</p></div>
+      <div class="card"><h3>🚪 «Pieno» = cliente perso</h3><p>Se il tuo campo è pieno all'ora richiesta, il cliente chiude l'app e prova altrove — magari da un concorrente che non ti conosce nemmeno.</p></div>
+      <div class="card"><h3>📋 Prenotazioni su carta/WhatsApp</h3><p>Doppie prenotazioni, messaggi persi, nessuno storico su chi si presenta davvero. La cassa la fai a mente a fine giornata.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="funzioni">
+  <div class="wrap">
+    <h2>Cosa fa</h2>
+    <div class="grid3">
+      <div class="card"><h3>Prenotazione in 30 secondi</h3><p>Scegli lo sport, il giorno, il campo libero: prenoti dal telefono, senza scaricare nulla.</p></div>
+      <div class="card"><h3>Deposito intelligente, non sempre</h3><p>Il sistema impara dallo storico di OGNI cliente e di OGNI fascia oraria: chiede il deposito solo quando il rischio di no-show è reale, mai ai clienti affidabili.</p></div>
+      <div class="card"><h3>Rete tra strutture</h3><p>Il tuo campo è pieno? Il cliente vede subito il primo posto libero in una struttura vicina che usa Campolibero — invece di perderlo del tutto.</p></div>
+      <div class="card"><h3>SMS automatici</h3><p>Conferma, link di deposito quando serve, promemoria il giorno stesso: zero telefonate per «è confermato?».</p></div>
+      <div class="card"><h3>Multisport, non solo padel</h3><p>Campi, sale corsi, istruttori: qualunque risorsa prenotabile a slot, nello stesso pannello.</p></div>
+      <div class="card"><h3>Riepilogo del giorno</h3><p>Chi arriva, a che ora, se ha pagato il deposito. La lista che guardi aprendo la struttura la mattina.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="prezzi">
+  <div class="wrap">
+    <h2>Prezzi da centro sportivo, non da enterprise SaaS</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA esclusa.</p>
+    <div class="prices">
+      <div class="price">
+        <span class="tag">Base</span>
+        <span class="amount">39 €<small>/mese</small></span>
+        <ul><li>Prenotazioni illimitate</li><li>SMS di conferma</li><li>1-2 risorse</li></ul>
+      </div>
+      <div class="price hl">
+        <span class="tag">Struttura · consigliato</span>
+        <span class="amount">79 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Base</li><li>Motore anti no-show con deposito automatico</li><li>Risorse illimitate</li><li>Riepilogo giornaliero</li></ul>
+      </div>
+      <div class="price">
+        <span class="tag">Rete</span>
+        <span class="amount">129 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Struttura</li><li>Rete di disponibilità con le altre strutture della zona</li><li>Priorità nei suggerimenti agli utenti</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="wrap">
+    <h2>Il moat: più strutture entrano, più forte diventa per tutti</h2>
+    <p class="secnote">Un calendario si copia in un weekend. Uno storico di prenotazioni reale (chi si presenta, quando, in quale struttura) no — ed è quello storico a decidere quando chiedere un deposito senza infastidire i clienti buoni. E più centri sportivi della tua zona usano Campolibero, più diventa probabile che un cliente "pieno da te" resti comunque tuo cliente, solo nel campo del vicino di rete — un vantaggio che un singolo concorrente con "solo un calendario" non può replicare da solo.</p>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Domande dirette, risposte dirette</h2>
+    <details><summary>Il deposito lo decido io o lo decide il software?</summary><p>Il software propone, in base allo storico reale di quel cliente e di quella fascia oraria — tu vedi sempre il motivo della decisione e puoi sempre annullare o confermare manualmente una prenotazione.</p></details>
+    <details><summary>La "rete" mi fa perdere clienti verso altre strutture?</summary><p>Il contrario: entra in gioco solo quando il TUO campo è già pieno — in quel momento il cliente lo avresti perso comunque. La rete lo mantiene dentro l'ecosistema, e i suggerimenti sono reciproci tra le strutture iscritte.</p></details>
+    <details><summary>Devo installare qualcosa?</summary><p>No: è un pannello web, funziona da telefono o computer. I tuoi clienti prenotano da un link, senza scaricare app.</p></details>
+    <details><summary>I miei dati dove finiscono?</summary><p>Trattati secondo il GDPR. L'invio SMS e l'incasso dei depositi passano da fornitori terzi (rispettivamente per la messaggistica e i pagamenti) con le garanzie previste dal GDPR — dettagli completi nell'informativa privacy.</p></details>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="wrap">
+    <h2>Entra tra le strutture pilota</h2>
+    <p class="secnote">Stiamo selezionando le prime strutture pilota nella stessa città, per far funzionare la rete di disponibilità fin dal primo giorno.</p>
+    <a class="cta" href="#contatti">Candidati come struttura pilota</a>
+    <p class="ctanote">Programma pilota: posti limitati per città, per garantire massa critica alla rete</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «Campolibero» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un software in fase di sviluppo con programma pilota: prezzi indicativi, IVA esclusa; le tempistiche possono variare. Il motore di valutazione del rischio no-show è una stima statistica sullo storico delle prenotazioni, non una previsione certa: nessun risultato economico è garantito. Trattamento dati conforme al GDPR; fornitori terzi per messaggistica e pagamenti operano con le garanzie previste dal GDPR (Clausole Contrattuali Standard) — informativa completa disponibile all'attivazione.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento.</p>
+    <p>© 2026 Progetto Campolibero — pagina dimostrativa.</p>
+  </div>
+</footer>
+<div class="stripe" aria-hidden="true"></div>
