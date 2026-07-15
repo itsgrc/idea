@@ -48,6 +48,30 @@ def _giorno(evento):
     return datetime.datetime.fromtimestamp(evento["ts"] / 1000).date()
 
 
+# Il report settimanale e il rilevamento pattern guardano al massimo 7
+# giorni indietro: non c'è motivo di scopo che giustifichi conservare
+# indefinitamente dati particolari (segnali di malessere, ex art. 9 GDPR).
+# 90 giorni bastano abbondantemente per rivedere un caso dubbio con la
+# famiglia, senza accumulare uno storico sanitario a tempo indeterminato
+# (GDPR art. 5.1.e, limitazione della conservazione).
+RETENTION_GIORNI = 90
+
+
+def pulisci_eventi_vecchi(path=None):
+    path = path or EVENTI_LOG
+    eventi = leggi_eventi(path)
+    if not eventi:
+        return 0
+    soglia = datetime.datetime.now() - datetime.timedelta(days=RETENTION_GIORNI)
+    da_tenere = [e for e in eventi if "ts" not in e or e["ts"] / 1000 >= soglia.timestamp()]
+    rimossi = len(eventi) - len(da_tenere)
+    if rimossi:
+        with open(path, "w", encoding="utf-8") as f:
+            for e in da_tenere:
+                f.write(json.dumps(e, ensure_ascii=False) + "\n")
+    return rimossi
+
+
 def registra_no_risposta(path=None):
     """Chiamato dal webhook di stato chiamata (chiamata_uscente.py) quando
     Twilio segnala che l'assistito non ha risposto: è l'unico evento che

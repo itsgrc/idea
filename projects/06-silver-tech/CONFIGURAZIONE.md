@@ -74,5 +74,16 @@ python3 integrazioni/chiamata_uscente.py
 - ✅ Consenso esplicito obbligatorio prima che il servizio mostri dati (tecnico, non solo su carta)
 - ✅ Minimizzazione: si registrano solo eventi classificati (sì/no, tipo di segnale), mai l'audio o la trascrizione integrale
 - ✅ Accesso alla dashboard protetto da token dedicato (dati particolari ex art. 9 GDPR)
+- ✅ Limitazione della conservazione (art. 5.1.e): gli eventi più vecchi di 90 giorni vengono cancellati automaticamente da `pattern_tracker.py` (il report settimanale e il rilevamento pattern guardano al massimo 7 giorni indietro — non c'è motivo di scopo per conservare oltre)
 - ❌ **Da fare**: l'informativa privacy completa per l'assistito, e un DPA con l'eventuale RSA/comune se venduto B2B2C — fanne validare le bozze da un avvocato prima del primo cliente pagante
 - ❌ **Da fare**: la classificazione formale AI Act del servizio (probabile "rischio trasparenza", da verificare con gli strumenti del progetto 03 — `classifica.py --demo` è un buon punto di partenza)
+
+## Cancellazione dati su richiesta (art. 17 GDPR)
+
+Se la famiglia interrompe il servizio e chiede la cancellazione:
+
+```bash
+rm eventi.jsonl consenso.json
+```
+
+Non c'è altro da cancellare: l'audio non viene mai conservato (per design, non solo per policy), e non esiste un database separato per questo progetto.

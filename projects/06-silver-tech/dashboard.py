@@ -36,7 +36,7 @@ import sys
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-from pattern_tracker import stato_di_oggi, report_settimanale, registra_no_risposta, leggi_eventi
+from pattern_tracker import stato_di_oggi, report_settimanale, registra_no_risposta, leggi_eventi, pulisci_eventi_vecchi
 
 CONSENSO_PATH = os.environ.get("CONSENSO_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "consenso.json"))
 PORTA = int(os.environ.get("FILODIRETTO_DASHBOARD_PORT", "8030"))
@@ -174,6 +174,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(401, {"errore": "token non valido — vedi CONFIGURAZIONE.md"})
             if leggi_consenso() is None:
                 return self._json(403, {"errore": "servizio non attivo: consenso non ancora raccolto (vedi POST /consenso)"})
+            pulisci_eventi_vecchi()
             if parsed.path == "/stato":
                 return self._json(200, stato_di_oggi())
             return self._json(200, report_settimanale())
