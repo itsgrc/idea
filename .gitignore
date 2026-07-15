@@ -13,6 +13,9 @@ dashboard.html
 campagna-*.md
 lead.jsonl
 lead-demo.jsonl
+newsletter.db
+newsletter-demo.db
+newsletter_http_test*.db
 .env
 __pycache__/
 *.pyc

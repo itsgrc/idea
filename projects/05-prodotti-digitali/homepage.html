@@ -126,12 +126,40 @@
 <section id="iscriviti">
   <div class="wrap" style="text-align:center">
     <h3 class="sec">Il cantiere apre ogni sabato</h3>
-    <p class="secnote">La newsletter è in fase di lancio: il modulo di iscrizione viene attivato a breve su questa pagina.</p>
-    <a class="cta" href="#iscriviti">Iscriviti — è gratis</a>
+    <p class="secnote">Un'email, una conferma (double opt-in, come richiede il GDPR: nessuna iscrizione senza click di conferma), e sei dentro.</p>
+    <form id="form-iscrizione" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:420px;margin:18px auto 0">
+      <input id="email-iscrizione" type="email" required placeholder="la-tua-email@esempio.it"
+        style="flex:1;min-width:220px;padding:12px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:15px">
+      <button class="cta" type="submit" style="border:0;cursor:pointer">Iscriviti — è gratis</button>
+    </form>
+    <p id="esito-iscrizione" class="ctanote" role="status"></p>
     <p class="ctanote">Primo numero: autunno 2026</p>
   </div>
 </section>
 </main>
+<script>
+(function(){
+  var form = document.getElementById('form-iscrizione');
+  if (!form) return;
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var email = document.getElementById('email-iscrizione').value;
+    var esito = document.getElementById('esito-iscrizione');
+    esito.textContent = 'Invio in corso…';
+    try {
+      var res = await fetch('/iscrivi', { method: 'POST', body: JSON.stringify({ email: email }) });
+      var dati = await res.json();
+      if (!res.ok) { esito.textContent = dati.errore || 'Qualcosa non ha funzionato, riprova.'; return; }
+      esito.textContent = dati.gia_iscritto
+        ? 'Sei già iscritto — a sabato!'
+        : 'Controlla la tua email: un click per confermare e sei dentro.';
+      form.reset();
+    } catch (err) {
+      esito.textContent = 'Il modulo non è ancora collegato a un server pubblico — vedi CONFIGURAZIONE.md.';
+    }
+  });
+})();
+</script>
 
 <footer>
   <div class="wrap">
