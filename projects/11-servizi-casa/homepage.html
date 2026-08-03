@@ -1,0 +1,172 @@
+<title>ProntoCasa — Trova subito idraulici, elettricisti e artigiani</title>
+<style>
+  :root{
+    --bg:#F5F6F8; --surface:#FFFFFF; --ink:#1A1E27; --muted:#5C6474;
+    --line:#DDE1E8; --blu:#2A5FD9; --blu-scuro:#1A3E99; --arancio:#E8752A;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#12141A; --surface:#1B1E27; --ink:#E9ECF3; --muted:#9AA2B4;
+    --line:#2C3140; --blu:#5B85EA; --blu-scuro:#8FACF2; --arancio:#F0935A;
+  }}
+  :root[data-theme="light"]{--bg:#F5F6F8;--surface:#FFFFFF;--ink:#1A1E27;--muted:#5C6474;--line:#DDE1E8;--blu:#2A5FD9;--blu-scuro:#1A3E99;--arancio:#E8752A}
+  :root[data-theme="dark"]{--bg:#12141A;--surface:#1B1E27;--ink:#E9ECF3;--muted:#9AA2B4;--line:#2C3140;--blu:#5B85EA;--blu-scuro:#8FACF2;--arancio:#F0935A}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  a{color:var(--blu)} a:focus-visible,.cta:focus-visible{outline:2px solid var(--blu);outline-offset:2px}
+  .stripe{height:10px;background:linear-gradient(90deg,var(--blu),var(--arancio))}
+  .eyebrow{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blu-scuro);margin:0 0 12px;font-weight:700}
+  h1{font-size:clamp(30px,6vw,50px);line-height:1.06;letter-spacing:-.02em;font-weight:900;margin:0 0 16px;text-wrap:balance}
+  h1 mark{background:var(--arancio);color:#fff;padding:0 8px;border-radius:4px}
+  h2{font-size:clamp(21px,3.5vw,28px);font-weight:800;letter-spacing:-.01em;margin:0 0 8px;text-wrap:balance}
+  .lede{font-size:18px;color:var(--muted);max-width:58ch;margin:0 0 26px}
+  .hero{padding:52px 0 36px}
+  .cta{display:inline-block;background:var(--blu);color:#fff;text-decoration:none;font-weight:800;padding:14px 28px;border-radius:8px;font-size:15px}
+  .cta.sec{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+  .ctarow{display:flex;gap:12px;flex-wrap:wrap}
+  .ctanote{font-size:13px;color:var(--muted);margin-top:12px}
+  .board{background:var(--blu-scuro);color:#F0F3FF;border-radius:12px;padding:20px;margin-top:34px;max-width:560px}
+  .board .bh{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--arancio);margin:0 0 12px}
+  .step{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #2C4499;font-size:14px}
+  .step:last-child{border-bottom:0}
+  .badge{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--arancio);color:#fff}
+  section{padding:44px 0 10px}
+  .secnote{color:var(--muted);max-width:62ch;margin:0 0 24px}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;border-top:4px solid var(--blu)}
+  .card h3{margin:0 0 6px;font-size:16px}
+  .card p{margin:0;font-size:14px;color:var(--muted)}
+  .categorie{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+  .cat{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:14px;font-weight:600}
+  .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+  .price.hl{border:3px solid var(--blu)}
+  .price .tag{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blu-scuro)}
+  .price .amount{font-size:34px;font-weight:900;font-family:ui-monospace,Menlo,monospace;display:block;margin:6px 0;letter-spacing:-.02em}
+  .price .amount small{font-size:14px;font-weight:400;color:var(--muted);font-family:system-ui,sans-serif}
+  .price ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--muted)}
+  .price li{margin:4px 0}
+  details{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin:0 0 10px;padding:0 16px}
+  summary{cursor:pointer;font-weight:700;padding:14px 0;font-size:15px}
+  details p{margin:0 0 14px;font-size:14.5px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:52px;padding:26px 0 44px}
+  footer p{font-size:12.5px;color:var(--muted);max-width:76ch;margin:0 0 8px}
+</style>
+<div id="banner-costruzione" role="status" style="position:sticky;top:0;z-index:999;background:#1A1A1A;color:#FFC94A;padding:10px 16px;text-align:center;font:600 13.5px/1.5 system-ui,-apple-system,sans-serif;border-bottom:3px solid #FFC94A">
+  🚧 <strong>Sito in costruzione</strong> — pagina dimostrativa di un progetto in fase di sviluppo, non ancora attivo al pubblico. Prezzi indicativi, nomi e marchi provvisori, nessun servizio erogato. Dettagli legali completi in fondo alla pagina.
+</div>
+
+<div class="stripe" aria-hidden="true"></div>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">ProntoCasa · Idraulici, elettricisti, muratori e altri artigiani</p>
+    <h1>Non un elenco.<br>Qualcuno che <mark>risponde davvero.</mark></h1>
+    <p class="lede">Racconti il problema, e ProntoCasa contatta subito il professionista più affidabile disponibile nella tua zona — non tutta la lista insieme, uno alla volta, il migliore per primo. Se non risponde in tempo, passa automaticamente al successivo.</p>
+    <div class="ctarow">
+      <a class="cta" href="#richiedi">Trova qualcuno adesso</a>
+      <a class="cta sec" href="#funzioni">Come funziona</a>
+    </div>
+    <p class="ctanote">Nessun account per chi cerca un servizio · gratis per chi cerca · niente aste al ribasso</p>
+
+    <div class="board" role="img" aria-label="Esempio di dispacciamento automatico">
+      <p class="bh">🔧 Perdita sotto il lavandino — Milano</p>
+      <div class="step"><span>1° tentativo</span><span>Mario I. — non risponde in 10 min</span><span class="badge">scaduto</span></div>
+      <div class="step"><span>2° tentativo</span><span>Luca B. — accetta subito</span><span class="badge" style="background:#1F9D55">assegnato</span></div>
+      <div class="step"><span>SMS al cliente</span><span>«Il tuo idraulico è confermato: Luca B., 3xx...»</span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="categorie">
+  <div class="wrap">
+    <div class="categorie">
+      <span class="cat">🚰 Idraulico</span><span class="cat">⚡ Elettricista</span><span class="cat">🧱 Muratore</span>
+      <span class="cat">🎨 Imbianchino</span><span class="cat">🪚 Falegname</span><span class="cat">🔑 Fabbro</span>
+      <span class="cat">🌳 Giardiniere</span><span class="cat">📦 Traslocatore</span><span class="cat">❄️ Climatizzazione</span>
+      <span class="cat">🧹 Pulizie</span>
+    </div>
+  </div>
+</section>
+
+<section id="problema">
+  <div class="wrap">
+    <h2>Il problema di ogni elenco di artigiani</h2>
+    <p class="secnote">Cercare "idraulico vicino a me" dà una lista. Chi ti serve davvero è UNA persona che risponde ora, non dieci nomi da chiamare uno per uno sperando che qualcuno risponda.</p>
+    <div class="grid3">
+      <div class="card"><h3>😤 Chiamate a vuoto</h3><p>Cinque numeri, tre non rispondono, uno dice "richiama domani". Il problema in casa intanto peggiora.</p></div>
+      <div class="card"><h3>⭐ Stelline gonfiate</h3><p>Le recensioni si comprano o si scrivono da soli. Chi è nuovo parte da zero anche se è il migliore della zona.</p></div>
+      <div class="card"><h3>💸 Preventivi opachi</h3><p>Prezzi che cambiano a seconda di chi chiede, senza un termine di paragone.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="funzioni">
+  <div class="wrap">
+    <h2>Come funziona</h2>
+    <div class="grid3">
+      <div class="card"><h3>1. Racconti il problema</h3><p>Categoria, città, descrizione, e se è urgente o può aspettare. Trenta secondi, senza account.</p></div>
+      <div class="card"><h3>2. ProntoCasa contatta il migliore</h3><p>Non spamma tutti: contatta il professionista più affidabile disponibile in zona, uno alla volta.</p></div>
+      <div class="card"><h3>3. Se non risponde, passa al prossimo</h3><p>Scaduto il tempo (breve per le urgenze), passa automaticamente al candidato successivo — senza che tu debba fare nulla.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="moat">
+  <div class="wrap">
+    <h2>Il moat: l'affidabilità si guadagna, non si compra</h2>
+    <p class="secnote">Nessuna stellina soggettiva: il punteggio di ogni professionista viene calcolato da fatti registrati dalla piattaforma — quante volte risponde in tempo, quante volte accetta, quante volte porta a termine il lavoro invece di sparire a metà. Un professionista nuovo parte da un punteggio neutro, non da zero: non è penalizzato per non avere ancora storico, ma nemmeno può comprarselo. Più lavora bene su ProntoCasa, più sale in classifica — un vantaggio che nessun elenco generico di artigiani può replicare senza lo stesso storico reale.</p>
+  </div>
+</section>
+
+<section id="prezzi">
+  <div class="wrap">
+    <h2>Gratis per chi cerca, equo per chi lavora</h2>
+    <p class="secnote">Prezzi di lancio indicativi, IVA esclusa.</p>
+    <div class="prices">
+      <div class="price">
+        <span class="tag">Chi cerca un servizio</span>
+        <span class="amount">Gratis</span>
+        <ul><li>Nessun account richiesto</li><li>Dispacciamento automatico al migliore disponibile</li><li>SMS di conferma quando qualcuno accetta</li></ul>
+      </div>
+      <div class="price hl">
+        <span class="tag">Professionista · Base</span>
+        <span class="amount">19 €<small>/mese</small></span>
+        <ul><li>Ricevi richieste nella tua categoria e città</li><li>Costruisci il tuo punteggio di affidabilità</li><li>Nessuna commissione sui lavori</li></ul>
+      </div>
+      <div class="price">
+        <span class="tag">Professionista · Priorità</span>
+        <span class="amount">39 €<small>/mese</small></span>
+        <ul><li>Tutto il piano Base</li><li>Priorità nella cascata a parità di punteggio</li><li>Statistiche dettagliate sul tuo storico</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Domande dirette, risposte dirette</h2>
+    <details><summary>Verificate le qualifiche dei professionisti?</summary><p>Ogni professionista dichiara sotto la propria responsabilità di possedere i requisiti e le abilitazioni previste dalla legge per la propria categoria (es. DM 37/08 per impianti elettrici/idraulici). ProntoCasa non verifica direttamente licenze, assicurazioni o certificazioni: verificale sempre tu prima di affidare un lavoro, specialmente per interventi rilevanti.</p></details>
+    <details><summary>Come decidete chi contattare per primo?</summary><p>In base al punteggio di affidabilità calcolato sui fatti (risposte, accettazioni, completamenti) tra i professionisti disponibili in quella categoria e città — mai in base a chi paga di più.</p></details>
+    <details><summary>Cosa succede se nessuno risponde?</summary><p>Dopo aver contattato in cascata fino a 5 professionisti disponibili senza risposta, il sistema te lo dice chiaramente invece di lasciarti in attesa indefinita.</p></details>
+    <details><summary>I miei dati dove finiscono?</summary><p>Trattati secondo il GDPR. L'invio SMS passa da un fornitore terzo (Twilio, extra-UE) con le garanzie previste dal GDPR (Clausole Contrattuali Standard) — dettagli completi nell'informativa privacy.</p></details>
+  </div>
+</section>
+
+<section id="richiedi">
+  <div class="wrap" style="text-align:center">
+    <h2>Hai un problema in casa adesso?</h2>
+    <p class="secnote" style="margin:0 auto 20px">Il modulo di richiesta è nel pannello dell'app (in fase di collegamento a questa pagina): <code>python3 prontocasa.py</code> per provarlo subito in locale.</p>
+    <a class="cta" href="#richiedi">Trova qualcuno adesso</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Note legali e trasparenza.</b> «ProntoCasa» è un nome di progetto provvisorio, in fase di verifica di registrabilità come marchio. Questa pagina presenta un servizio in fase di sviluppo con programma pilota: prezzi indicativi, IVA esclusa; le tempistiche possono variare. ProntoCasa è un intermediario tecnico tra chi cerca un servizio e professionisti indipendenti: <b>non è parte del contratto d'opera</b> tra cliente e professionista, non garantisce la qualità del lavoro svolto né possiede o verifica le abilitazioni professionali richieste dalla legge (es. DM 37/08) — resta responsabilità di ciascun professionista dichiararle e del cliente verificarle. Il punteggio di affidabilità è una stima statistica sullo storico delle richieste sulla piattaforma, non un giudizio di qualità professionale né una garanzia di risultato. Trattamento dati conforme al GDPR; fornitori terzi per la messaggistica operano con le garanzie previste dal GDPR (Clausole Contrattuali Standard) — informativa completa disponibile all'attivazione.</p>
+    <p>Questa pagina non utilizza cookie né strumenti di tracciamento.</p>
+    <p>© 2026 Progetto ProntoCasa — pagina dimostrativa.</p>
+  </div>
+</footer>
+<div class="stripe" aria-hidden="true"></div>

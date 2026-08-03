@@ -21,6 +21,10 @@ chiamate.log
 campolibero.db
 campolibero_test.db
 campolibero_http_test*.db
+prontocasa.db
+prontocasa_test.db
+prontocasa_http_test*.db
+prontocasa_ui_test.db
 .env
 __pycache__/
 *.pyc
