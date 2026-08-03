@@ -14,6 +14,7 @@ Uso:
 
 Endpoints:
     POST /auth/registra  {nome, categoria, citta, telefono, email, password,
+                           servizi_offerti, tariffa_base?, tariffa_oraria?,
                            dichiarazione_requisiti}          -> {token, professionista}
     POST /auth/login     {email, password}                   -> {token, professionista}
     -- richiedono Authorization: Bearer <token> --
@@ -23,6 +24,7 @@ Endpoints:
     PATCH /richieste/<id>  {stato: completata}
     GET  /affidabilita   (la propria)
     -- pubblici, nessun token (il cliente finale non ha un account) --
+    GET  /professionisti?categoria=...&citta=...  -> directory con servizi e costi, mai contatti
     POST /richieste      {cliente_nome, cliente_telefono, categoria, citta, descrizione, urgenza?}
                          -> include "codice": conservalo, serve per consultare lo stato
     GET  /richieste/<id>/stato?codice=...
@@ -59,6 +61,7 @@ CREATE TABLE IF NOT EXISTS professionisti (
     id INTEGER PRIMARY KEY, nome TEXT NOT NULL, categoria TEXT NOT NULL,
     citta TEXT NOT NULL, telefono TEXT NOT NULL, email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL, salt TEXT NOT NULL,
+    servizi_offerti TEXT NOT NULL DEFAULT '', tariffa_base REAL, tariffa_oraria REAL,
     disponibile INTEGER NOT NULL DEFAULT 1,
     dichiarazione_requisiti INTEGER NOT NULL DEFAULT 0,
     creato TEXT DEFAULT CURRENT_TIMESTAMP
@@ -134,7 +137,7 @@ def pulisci_sessioni():
 
 
 def registra_professionista(dati):
-    for campo in ("nome", "categoria", "citta", "telefono", "email", "password"):
+    for campo in ("nome", "categoria", "citta", "telefono", "email", "password", "servizi_offerti"):
         if not dati.get(campo):
             raise ValueError(f"campo mancante: {campo}")
     if dati["categoria"] not in CATEGORIE_VALIDE:
@@ -144,15 +147,25 @@ def registra_professionista(dati):
             "serve dichiarare sotto la propria responsabilità di possedere i requisiti "
             "e le abilitazioni di legge per la categoria scelta"
         )
+    # I costi sono facoltativi (non tutti i lavori hanno una tariffa fissa),
+    # ma se forniti devono avere senso: un costo negativo non è un prezzo.
+    tariffa_base = dati.get("tariffa_base")
+    tariffa_oraria = dati.get("tariffa_oraria")
+    for nome_campo, valore in (("tariffa_base", tariffa_base), ("tariffa_oraria", tariffa_oraria)):
+        if valore is not None and float(valore) < 0:
+            raise ValueError(f"{nome_campo} non può essere negativa")
     h, salt = hash_password(dati["password"])
     with db() as conn:
         try:
             cur = conn.execute(
                 """INSERT INTO professionisti
-                   (nome, categoria, citta, telefono, email, password_hash, salt, dichiarazione_requisiti)
-                   VALUES (?,?,?,?,?,?,?,1)""",
+                   (nome, categoria, citta, telefono, email, password_hash, salt,
+                    servizi_offerti, tariffa_base, tariffa_oraria, dichiarazione_requisiti)
+                   VALUES (?,?,?,?,?,?,?,?,?,?,1)""",
                 (dati["nome"], dati["categoria"], dati["citta"].strip(), dati["telefono"],
-                 dati["email"].lower().strip(), h, salt),
+                 dati["email"].lower().strip(), h, salt, dati["servizi_offerti"].strip(),
+                 float(tariffa_base) if tariffa_base is not None else None,
+                 float(tariffa_oraria) if tariffa_oraria is not None else None),
             )
         except sqlite3.IntegrityError:
             raise ValueError("email già registrata")
@@ -200,6 +213,28 @@ def imposta_disponibilita(professionista_id, disponibile):
             (professionista_id,),
         ).fetchone()
         return dict(riga)
+
+
+def lista_professionisti(categoria=None, citta=None):
+    """Directory pubblica (nessun account richiesto): mostra chi fa cosa e
+    a che prezzo, MAI telefono/email — il contatto diretto si sblocca solo
+    quando una richiesta viene assegnata, stesso principio già applicato
+    altrove nel progetto (niente disintermediazione prima di un match)."""
+    q = """SELECT id, nome, categoria, citta, servizi_offerti, tariffa_base, tariffa_oraria
+           FROM professionisti WHERE disponibile=1"""
+    args = []
+    if categoria:
+        q += " AND categoria=?"
+        args.append(categoria)
+    if citta:
+        q += " AND citta=?"
+        args.append(citta)
+    with db() as conn:
+        righe = [dict(r) for r in conn.execute(q, args).fetchall()]
+    for r in righe:
+        r["affidabilita"] = calcola_affidabilita(r["id"], DB)
+    righe.sort(key=lambda r: r["affidabilita"]["punteggio"], reverse=True)
+    return righe
 
 
 def crea_richiesta(dati):
@@ -306,7 +341,9 @@ button.principale{width:100%;margin-top:16px;background:var(--blu);color:#fff;bo
   <select id="c-categoria"></select>
   <label>Città</label>
   <input id="c-citta" placeholder="es. Milano">
-  <label>Descrivi il problema</label>
+  <button class="principale" id="c-sfoglia" style="margin-top:10px;background:transparent;color:var(--blu);border:1px solid var(--blu)">Sfoglia i professionisti disponibili</button>
+  <div id="c-directory"></div>
+  <label style="margin-top:18px">Descrivi il problema</label>
   <textarea id="c-descrizione" placeholder="es. perdita d'acqua sotto il lavandino"></textarea>
   <label>Quanto è urgente?</label>
   <div class="urgenza">
@@ -328,6 +365,9 @@ button.principale{width:100%;margin-top:16px;background:var(--blu);color:#fff;bo
     <select id="l-categoria" class="hidden"></select>
     <input id="l-citta" class="hidden" placeholder="Città">
     <input id="l-telefono" class="hidden" placeholder="Telefono">
+    <textarea id="l-servizi" class="hidden" placeholder="Che servizi offri? es. riparazioni, sostituzione rubinetteria, sblocco scarichi"></textarea>
+    <input id="l-tariffa-base" class="hidden" type="number" placeholder="Costo base sopralluogo € (facoltativo)">
+    <input id="l-tariffa-oraria" class="hidden" type="number" placeholder="Tariffa oraria € (facoltativo)">
     <input id="l-email" placeholder="Email" type="email">
     <input id="l-password" placeholder="Password" type="password">
     <label id="l-dich-label" class="hidden" style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;margin-top:10px">
@@ -372,6 +412,25 @@ function mostraTab(quale){
   document.getElementById('pannello-prof').classList.toggle('hidden', quale!=='prof');
 }
 
+document.getElementById('c-sfoglia').addEventListener('click', async () => {
+  const g = id => document.getElementById(id).value;
+  const el = document.getElementById('c-directory');
+  el.innerHTML = '<p style="color:var(--muted);font-size:14px">Carico…</p>';
+  const res = await fetch('/professionisti?categoria=' + encodeURIComponent(g('c-categoria')) + '&citta=' + encodeURIComponent(g('c-citta')));
+  const professionisti = await res.json();
+  if (!professionisti.length) { el.innerHTML = '<p style="color:var(--muted);font-size:14px">Nessun professionista disponibile con questi filtri, per ora.</p>'; return; }
+  el.innerHTML = '';
+  for (const p of professionisti) {
+    const d = document.createElement('div'); d.className = 'job';
+    const costo = [
+      p.tariffa_base != null ? `sopralluogo ${p.tariffa_base}€` : null,
+      p.tariffa_oraria != null ? `${p.tariffa_oraria}€/h` : null,
+    ].filter(Boolean).join(' · ') || 'costo da concordare';
+    d.innerHTML = `<b>${p.nome}</b><div class="meta">${p.servizi_offerti || p.categoria} · ${costo} · affidabilità ${Math.round(p.affidabilita.punteggio*100)}%</div>`;
+    el.appendChild(d);
+  }
+});
+
 document.getElementById('c-invia').addEventListener('click', async () => {
   const g = id => document.getElementById(id).value;
   const esito = document.getElementById('c-esito');
@@ -391,7 +450,7 @@ let token = null;
 let modoRegistrazione = false;
 document.getElementById('l-switch').addEventListener('click', () => {
   modoRegistrazione = !modoRegistrazione;
-  for (const id of ['l-nome','l-categoria','l-citta','l-telefono','l-dich-label']) document.getElementById(id).classList.toggle('hidden', !modoRegistrazione);
+  for (const id of ['l-nome','l-categoria','l-citta','l-telefono','l-servizi','l-tariffa-base','l-tariffa-oraria','l-dich-label']) document.getElementById(id).classList.toggle('hidden', !modoRegistrazione);
   document.getElementById('l-submit').textContent = modoRegistrazione ? 'Registrati' : 'Accedi';
   document.getElementById('l-switch').textContent = modoRegistrazione ? 'Hai già un account? Accedi' : 'Non hai un account? Registrati';
 });
@@ -399,7 +458,10 @@ document.getElementById('l-submit').addEventListener('click', async () => {
   const g = id => document.getElementById(id).value;
   const err = document.getElementById('l-err'); err.textContent = '';
   const corpo = modoRegistrazione
-    ? { nome:g('l-nome'), categoria:g('l-categoria'), citta:g('l-citta'), telefono:g('l-telefono'), email:g('l-email'), password:g('l-password'), dichiarazione_requisiti: document.getElementById('l-dichiarazione').checked }
+    ? { nome:g('l-nome'), categoria:g('l-categoria'), citta:g('l-citta'), telefono:g('l-telefono'),
+        servizi_offerti:g('l-servizi'), tariffa_base: g('l-tariffa-base') ? +g('l-tariffa-base') : null,
+        tariffa_oraria: g('l-tariffa-oraria') ? +g('l-tariffa-oraria') : null,
+        email:g('l-email'), password:g('l-password'), dichiarazione_requisiti: document.getElementById('l-dichiarazione').checked }
     : { email:g('l-email'), password:g('l-password') };
   const res = await fetch(modoRegistrazione ? '/auth/registra' : '/auth/login', { method:'POST', body: JSON.stringify(corpo) });
   const dati = await res.json();
@@ -551,6 +613,12 @@ class Handler(BaseHTTPRequestHandler):
                 codice = (qs.get("codice") or [None])[0]
                 return self._json(200, stato_richiesta(int(m.group(1)), codice))
 
+            if parsed.path == "/professionisti":
+                qs = urllib.parse.parse_qs(parsed.query)
+                categoria = (qs.get("categoria") or [None])[0]
+                citta = (qs.get("citta") or [None])[0]
+                return self._json(200, lista_professionisti(categoria, citta))
+
             professionista_id = self._professionista()
             if professionista_id is None:
                 return self._json(401, {"errore": "non autorizzato — serve login"})
@@ -578,14 +646,16 @@ def selftest():
     reg = registra_professionista({
         "nome": "Mario Rossi", "categoria": "idraulico", "citta": "Milano",
         "telefono": "+393331112222", "email": "mario@idraulico.test", "password": "passwordMario123",
-        "dichiarazione_requisiti": True,
+        "servizi_offerti": "Riparazioni, sostituzione rubinetteria, sblocco scarichi",
+        "tariffa_base": 30, "tariffa_oraria": 25, "dichiarazione_requisiti": True,
     })
     professionista_id = reg["professionista"]["id"]
 
     try:
         registra_professionista({
             "nome": "Altro", "categoria": "idraulico", "citta": "Milano", "telefono": "1",
-            "email": "mario@idraulico.test", "password": "altrapassword1", "dichiarazione_requisiti": True,
+            "email": "mario@idraulico.test", "password": "altrapassword1", "servizi_offerti": "test",
+            "dichiarazione_requisiti": True,
         })
         raise AssertionError("email duplicata avrebbe dovuto fallire")
     except ValueError:
@@ -594,9 +664,19 @@ def selftest():
     try:
         registra_professionista({
             "nome": "Senza Dichiarazione", "categoria": "idraulico", "citta": "Milano", "telefono": "1",
-            "email": "altro@test.test", "password": "passwordaltro1",
+            "email": "altro@test.test", "password": "passwordaltro1", "servizi_offerti": "test",
         })
         raise AssertionError("senza dichiarazione requisiti avrebbe dovuto fallire")
+    except ValueError:
+        pass
+
+    try:
+        registra_professionista({
+            "nome": "Tariffa Negativa", "categoria": "idraulico", "citta": "Milano", "telefono": "1",
+            "email": "negativo@test.test", "password": "passwordneg123", "servizi_offerti": "test",
+            "tariffa_base": -10, "dichiarazione_requisiti": True,
+        })
+        raise AssertionError("tariffa negativa avrebbe dovuto fallire")
     except ValueError:
         pass
 
@@ -628,7 +708,7 @@ def selftest():
     reg2 = registra_professionista({
         "nome": "Altro Idraulico", "categoria": "idraulico", "citta": "Milano",
         "telefono": "+393330001111", "email": "altro2@idraulico.test", "password": "passwordAltra12",
-        "dichiarazione_requisiti": True,
+        "servizi_offerti": "Manutenzione caldaie", "dichiarazione_requisiti": True,
     })
     try:
         aggiorna_stato_richiesta(richiesta["id"], reg2["professionista"]["id"], "annullata")
@@ -639,6 +719,13 @@ def selftest():
     affidabilita_mario = calcola_affidabilita(professionista_id, DB)
     assert affidabilita_mario["n_proposte"] == 1
     assert affidabilita_mario["tasso_completamento"] == 1.0
+
+    # la directory pubblica mostra servizi e costi, MAI telefono/email
+    directory = lista_professionisti("idraulico", "Milano")
+    assert len(directory) == 2
+    for voce in directory:
+        assert "telefono" not in voce and "email" not in voce
+    assert any(v["tariffa_base"] == 30 for v in directory)
 
     print("Flusso: registrazione → login → richiesta → dispacciamento → accettazione → completamento ✅")
     os.remove(DB)

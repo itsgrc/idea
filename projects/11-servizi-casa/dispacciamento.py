@@ -174,7 +174,8 @@ def demo():
             p = registra_professionista({
                 "nome": nome, "categoria": "idraulico", "citta": "Napoli",
                 "telefono": f"+39333000000{i}", "email": f"idraulico{i}@test.test",
-                "password": f"passwordDemo{i}23", "dichiarazione_requisiti": True,
+                "password": f"passwordDemo{i}23", "servizi_offerti": "Riparazioni idrauliche",
+                "dichiarazione_requisiti": True,
             })["professionista"]
             professionisti.append(p)
 

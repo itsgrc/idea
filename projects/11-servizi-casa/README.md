@@ -4,13 +4,13 @@
 
 ## Il prodotto: un'app semplice per due tipi di utenti
 
-**Chi cerca un servizio** (idraulico, elettricista, muratore, imbianchino, falegname, fabbro, giardiniere, traslocatore, climatizzazione, pulizie...) non ha bisogno di un account: descrive il problema, la città, se è urgente, e ProntoCasa fa il resto. **Chi offre il servizio** si registra una volta, imposta la propria disponibilità, e riceve le richieste che il motore di affidabilità ritiene adatte a lui.
+**Chi cerca un servizio** (idraulico, elettricista, muratore, imbianchino, falegname, fabbro, giardiniere, traslocatore, climatizzazione, pulizie...) non ha bisogno di un account: può prima **sfogliare il registro dei professionisti** disponibili in zona — cosa fanno davvero e quanto costano (sopralluogo + tariffa oraria dichiarati da loro, mai i contatti diretti prima di un abbinamento) — poi descrive il problema e ProntoCasa fa il resto. **Chi offre il servizio** si registra una volta con i propri servizi e tariffe indicative, imposta la disponibilità, e riceve le richieste che il motore di affidabilità ritiene adatte a lui.
 
 ## Cosa c'è in questa cartella
 
 | File | Cosa fa |
 |---|---|
-| `prontocasa.py` | **Motore funzionante** (zero dipendenze: `http.server` + `sqlite3`): registrazione/login professionisti (PBKDF2), richieste pubbliche senza account, pannello web incluso. `python3 prontocasa.py --selftest` |
+| `prontocasa.py` | **Motore funzionante** (zero dipendenze: `http.server` + `sqlite3`): registrazione/login professionisti (PBKDF2) con servizi e tariffe dichiarate, registro pubblico sfogliabile (`GET /professionisti`), richieste pubbliche senza account, pannello web incluso. `python3 prontocasa.py --selftest` |
 | `affidabilita.py` | **Moat #1**: calcola il punteggio di ogni professionista da fatti reali (risposta, accettazione, completamento) — mai da stelline soggettive. `python3 affidabilita.py --demo` |
 | `dispacciamento.py` | **Moat #2**: contatta il migliore disponibile, e se non risponde in tempo passa automaticamente al successivo — in cascata, senza intervento umano. `python3 dispacciamento.py --demo` |
 | `integrazioni/notifiche.py` | SMS reale (Twilio) al professionista contattato e al cliente quando qualcuno accetta — mock finché le credenziali non sono reali |

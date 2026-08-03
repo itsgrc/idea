@@ -122,11 +122,13 @@ def demo():
         bravo = registra_professionista({
             "nome": "Mario Idraulico", "categoria": "idraulico", "citta": "Torino",
             "telefono": "+393331110001", "email": "mario@idraulico.test", "password": "passwordMario1",
+            "servizi_offerti": "Riparazioni urgenti, sostituzione sanitari", "tariffa_base": 30, "tariffa_oraria": 25,
             "dichiarazione_requisiti": True,
         })["professionista"]
         scarso = registra_professionista({
             "nome": "Luigi Idraulico", "categoria": "idraulico", "citta": "Torino",
             "telefono": "+393331110002", "email": "luigi@idraulico.test", "password": "passwordLuigi1",
+            "servizi_offerti": "Riparazioni generiche", "tariffa_base": 25, "tariffa_oraria": 20,
             "dichiarazione_requisiti": True,
         })["professionista"]
 
