@@ -7,6 +7,7 @@
 | File | Cosa fa |
 |---|---|
 | `server.js` | **Motore conversazionale funzionante** (zero dipendenze): macchina a stati che gestisce la telefonata — saluto, intento, raccolta dati, conferma appuntamento. Ogni evento finisce in un log JSONL (`eventi.jsonl`). Provalo: `node server.js --demo` |
+| `integrazioni/telefonia.test.js` | Test automatico del webhook telefonico: firma Twilio (valida/contraffatta/alterata), escaping XML del testo dettato dal chiamante, chiamata end-to-end simulata. `node integrazioni/telefonia.test.js` |
 | `flows/dentista.json`, `flows/officina.json` | I flussi conversazionali per le due nicchie, configurabili senza toccare codice |
 | `valori/*.json` | Il valore economico (€) di ogni evento, per flusso — lo configura il titolare in onboarding |
 | `valore.js` | **Il motore di ROI**: legge il log eventi e genera il report che chiude la vendita al giorno 30 del pilota. `node valore.js --demo` |
@@ -29,9 +30,10 @@ node suggerimenti.js --demo   # → "aggiungi l'intento parcheggio (3 volte)" + 
 ## Prova subito
 
 ```bash
-node server.js --demo     # conversazione interattiva nel terminale
-node server.js --test     # conversazione scriptata automatica (per CI)
-node server.js            # avvia l'API HTTP su :3000
+node server.js --demo             # conversazione interattiva nel terminale
+node server.js --test             # conversazione scriptata automatica (per CI)
+node integrazioni/telefonia.test.js  # firma Twilio + escaping XML + chiamata end-to-end
+node server.js                    # avvia l'API HTTP su :3000
 
 # Per testare l'altro settore (o uno nuovo), punta FLOW al suo file:
 FLOW=./flows/officina.json node server.js --test
@@ -93,7 +95,7 @@ Vedi `CONFIGURAZIONE.md` per la guida passo-passo (account Twilio, hosting, Goog
 | La homepage dichiarava "i dati restano in Europa" in modo assoluto | Claim non allineato all'architettura reale (Twilio e Google Calendar sono fornitori USA): rischio di pubblicità ingannevole | Testo corretto per riflettere la realtà: conformità GDPR con Clausole Contrattuali Standard, dettagli per fornitore nell'informativa |
 | `/call/start` (il widget demo pubblico) accettava richieste illimitate | Chiunque poteva creare migliaia di sessioni al minuto, saturando la memoria | Rate limit: 20 richieste/ora per IP, con pulizia periodica della mappa stessa |
 
-Tutte le correzioni sono testate (incluse richieste HTTP che simulano firme Twilio valide e contraffatte).
+Tutte le correzioni sono testate (incluse richieste HTTP che simulano firme Twilio valide e contraffatte) — regressione automatica in `integrazioni/telefonia.test.js`.
 
 ## Prima azione da fare OGGI
 
