@@ -56,7 +56,13 @@ Twilio deve poter raggiungere il tuo server su un URL pubblico HTTPS. Opzioni pi
 ## Passo 5 — Verifica finale
 
 ```bash
-# Con .env compilato e INTEGRAZIONI_ATTIVE=1:
+# Prima di tutto, un check automatico di quello che hai appena compilato:
+node verifica-configurazione.js
+# Dice esattamente cosa è già reale, cosa è ancora MOCK, e segnala da solo
+# l'errore più comune (PUBLIC_URL con lo slash finale o diverso da quello
+# nella console Twilio — la firma non validerebbe MAI, vedi Passo 2).
+
+# Con .env compilato, INTEGRAZIONI_ATTIVE=1 e la verifica sopra tutta verde:
 node server.js
 # Chiama il numero Twilio da un telefono vero.
 # Se tutto funziona: la conversazione risponde, e a fine chiamata

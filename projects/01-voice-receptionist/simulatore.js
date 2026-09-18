@@ -32,25 +32,28 @@ const rng = mulberry32(42);
 
 const NOMI = ['Mario Rossi', 'Laura Bianchi', 'Giuseppe Verdi', 'Anna Ferrari', 'Paolo Colombo', 'Chiara Ricci', 'Marco Esposito', 'Sara Romano'];
 const nomeCasuale = () => NOMI[Math.floor(rng() * NOMI.length)];
+const TARGHE = ['AB123CD Panda blu', 'FG456HL Golf grigia', 'XY789ZK 500 bianca', 'LM234NP Clio rossa'];
+const targaCasuale = () => TARGHE[Math.floor(rng() * TARGHE.length)];
 
-// Ogni copione è verificato a mano contro le parole chiave di flows/dentista.json,
-// per non innescare corrispondenze accidentali (es. "visita" dentro una frase sul
-// parcheggio farebbe matchare "appuntamento" invece di generare il fallback voluto).
-const COPIONI = [
-  { peso: 50, battute: () => ['Vorrei prenotare una pulizia dei denti', nomeCasuale(), 'meglio il pomeriggio'] },
-  { peso: 20, battute: () => ['Ho un forte dolore a un dente', nomeCasuale()] },
-  { peso: 15, battute: () => ['Avete un parcheggio per i pazienti?', 'Sì, vorrei comunque prenotare una visita', nomeCasuale(), 'la mattina se possibile'] },
-  { peso: 15, battute: () => ['Posso pagare con il bancomat?', 'Va bene, allora vorrei fissare un appuntamento', nomeCasuale(), 'il pomeriggio'] },
-];
+// I copioni (battute che finge di dire il chiamante) vivono dentro il flusso
+// stesso (flow.simulazione.copioni), non qui: ogni settore ha il proprio
+// vocabolario e i propri intenti, e un copione scritto contro le parole
+// chiave di un flusso genera conversazioni fuori sequenza (o solo fallback)
+// su un altro — stessa filosofia "il flusso comanda, non il codice" usata
+// per gli stati e per gli script di `--test`. {{nome}} e {{targa}} nelle
+// battute vengono sostituiti con un valore casuale (ma deterministico).
+function generaBattute(copione) {
+  return copione.battute.map((b) => (b === '{{nome}}' ? nomeCasuale() : b === '{{targa}}' ? targaCasuale() : b));
+}
 
-function scegliCopione() {
-  const totale = COPIONI.reduce((s, c) => s + c.peso, 0);
+function scegliCopione(copioni) {
+  const totale = copioni.reduce((s, c) => s + c.peso, 0);
   let r = rng() * totale;
-  for (const c of COPIONI) {
+  for (const c of copioni) {
     if (r < c.peso) return c;
     r -= c.peso;
   }
-  return COPIONI[0];
+  return copioni[0];
 }
 
 function genera(n) {
@@ -59,10 +62,15 @@ function genera(n) {
   // require DOPO aver settato EVENTI_LOG: il motore legge l'env var al load.
   const { nuovaSessione, ricevi, avanza, flow } = require('./server.js');
 
+  const copioni = flow.simulazione && flow.simulazione.copioni;
+  if (!copioni || !copioni.length) {
+    throw new Error(`Il flusso "${flow.nome}" non definisce copioni di simulazione (campo "simulazione.copioni" mancante nel suo file flows/*.json).`);
+  }
+
   for (let i = 0; i < n; i++) {
     const sessione = nuovaSessione();
     avanza(sessione, []); // come fanno demo()/test()/api(): pronuncia il saluto e arriva al primo stato in attesa, PRIMA di inviare la prima battuta.
-    const battute = scegliCopione().battute();
+    const battute = generaBattute(scegliCopione(copioni));
     for (const b of battute) {
       if (sessione.finita) break;
       ricevi(sessione, b);

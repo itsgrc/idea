@@ -7,6 +7,8 @@
 | File | Cosa fa |
 |---|---|
 | `server.js` | **Motore conversazionale funzionante** (zero dipendenze): macchina a stati che gestisce la telefonata — saluto, intento, raccolta dati, conferma appuntamento. Ogni evento finisce in un log JSONL (`eventi.jsonl`). Provalo: `node server.js --demo` |
+| `integrazioni/telefonia.test.js` | Test automatico del webhook telefonico: firma Twilio (valida/contraffatta/alterata), escaping XML del testo dettato dal chiamante, chiamata end-to-end simulata. `node integrazioni/telefonia.test.js` |
+| `verifica-configurazione.js` | **Checklist "sono pronto per il pilota?" in un comando solo** — dice cosa è già reale e cosa è ancora simulato, e intercetta l'errore più comune (`PUBLIC_URL` sbagliato) prima che lo scopra la prima chiamata vera. `node verifica-configurazione.js` |
 | `flows/dentista.json`, `flows/officina.json` | I flussi conversazionali per le due nicchie, configurabili senza toccare codice |
 | `valori/*.json` | Il valore economico (€) di ogni evento, per flusso — lo configura il titolare in onboarding |
 | `valore.js` | **Il motore di ROI**: legge il log eventi e genera il report che chiude la vendita al giorno 30 del pilota. `node valore.js --demo` |
@@ -29,10 +31,17 @@ node suggerimenti.js --demo   # → "aggiungi l'intento parcheggio (3 volte)" + 
 ## Prova subito
 
 ```bash
-node server.js --demo     # conversazione interattiva nel terminale
-node server.js --test     # conversazione scriptata automatica (per CI)
-node server.js            # avvia l'API HTTP su :3000
+node server.js --demo             # conversazione interattiva nel terminale
+node server.js --test             # conversazione scriptata automatica (per CI)
+node integrazioni/telefonia.test.js  # firma Twilio + escaping XML + chiamata end-to-end
+node integrazioni/config.test.js     # caricamento .env (vedi CONFIGURAZIONE.md)
+node server.js                    # avvia l'API HTTP su :3000
+
+# Per testare l'altro settore (o uno nuovo), punta FLOW al suo file:
+FLOW=./flows/officina.json node server.js --test
 ```
+
+Ogni flusso porta il proprio script di verifica (campo `"test"` in `flows/*.json`): aggiungere un settore non richiede toccare `server.js`, solo scrivere gli stati e le battute di prova nel suo JSON.
 
 ## Architettura — completa, con credenziali mock
 
@@ -87,8 +96,10 @@ Vedi `CONFIGURAZIONE.md` per la guida passo-passo (account Twilio, hosting, Goog
 | Il numero del chiamante non arrivava mai alla notifica WhatsApp dell'urgenza | Il titolare non avrebbe saputo CHI richiamare in un'emergenza — bug funzionale, non solo di sicurezza | Il numero ora è incluso in ogni notifica quando disponibile |
 | La homepage dichiarava "i dati restano in Europa" in modo assoluto | Claim non allineato all'architettura reale (Twilio e Google Calendar sono fornitori USA): rischio di pubblicità ingannevole | Testo corretto per riflettere la realtà: conformità GDPR con Clausole Contrattuali Standard, dettagli per fornitore nell'informativa |
 | `/call/start` (il widget demo pubblico) accettava richieste illimitate | Chiunque poteva creare migliaia di sessioni al minuto, saturando la memoria | Rate limit: 20 richieste/ora per IP, con pulizia periodica della mappa stessa |
+| `--test`, `simulatore.js` e i report `--demo` (`valore.js`, `suggerimenti.js`) erano scritti solo per il flusso dentista: puntati su `flows/officina.json` producevano conversazioni fuori sequenza, un report ROI a 0 € e un'etichetta sbagliata nel titolo | Il secondo settore (officine) non aveva nessuna verifica automatica né una demo vendibile — un pilota in un'officina si sarebbe visto mostrare un report finto a 0 € | Script di test e copioni di simulazione spostati dentro ciascun flusso (`flows/*.json`); `valore.js`/`suggerimenti.js` derivano il file `valori/`/l'etichetta dalla variabile `FLOW`, come già faceva `server.js` |
+| Nessun codice caricava mai il file `.env` in `process.env` (il progetto è a zero dipendenze, niente `dotenv`) | `CONFIGURAZIONE.md` dice "copia i valori in `.env`" come se bastasse: un titolare che lo compilava e provava `node server.js` in locale restava comunque in modalità MOCK, senza nessun errore a segnalarlo | `integrazioni/config.js` ora legge `.env` da solo (parser minimo, senza dipendenze); una variabile già impostata dall'hosting reale (Render, Railway, ...) continua a vincere sempre sul file, come farebbe dotenv |
 
-Tutte le correzioni sono testate (incluse richieste HTTP che simulano firme Twilio valide e contraffatte).
+Tutte le correzioni sono testate (incluse richieste HTTP che simulano firme Twilio valide e contraffatte) — regressione automatica in `integrazioni/telefonia.test.js`.
 
 ## Prima azione da fare OGGI
 

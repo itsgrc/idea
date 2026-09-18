@@ -111,7 +111,10 @@ function main() {
     const { genera, LOG_PATH } = require('./simulatore.js');
     if (!fs.existsSync(LOG_PATH)) genera(25);
     logPath = LOG_PATH;
-    flowPath = path.join(__dirname, 'flows', 'dentista.json');
+    // Stessa convenzione FLOW di server.js/simulatore.js/valore.js: senza
+    // questo, `FLOW=./flows/officina.json node suggerimenti.js --demo`
+    // etichettava il report come "Studio Dentistico Demo".
+    flowPath = process.env.FLOW || path.join(__dirname, 'flows', 'dentista.json');
   } else {
     logPath = process.argv[2];
     flowPath = process.argv[3];

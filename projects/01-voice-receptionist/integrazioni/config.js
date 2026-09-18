@@ -11,6 +11,37 @@
  * Come andare live: vedi CONFIGURAZIONE.md nella cartella del progetto.
  */
 'use strict';
+const fs = require('fs');
+const path = require('path');
+
+/* ------------------------------------------------------------------ *
+ * Caricamento .env — CONFIGURAZIONE.md dice "copia i valori in .env" e
+ * dà per scontato che basti quello. Senza questo, nulla legge mai il
+ * file: process.env[...] resta sempre MOCK_ anche con .env compilato
+ * correttamente, in silenzio (nessun errore, nessun avviso) — un pilota
+ * seguirebbe la guida alla lettera e si ritroverebbe comunque in
+ * modalità simulata su un test locale. Niente pacchetto dotenv: due
+ * variabili d'ambiente valgono più di una dipendenza in più (principio
+ * "zero dipendenze finché possibile" del portfolio). Le variabili già
+ * impostate dall'ambiente reale (Render, Railway, ...) vincono sempre
+ * sul file, come fa dotenv.
+ * ------------------------------------------------------------------ */
+function caricaDotEnv(percorso) {
+  if (!fs.existsSync(percorso)) return;
+  for (const riga of fs.readFileSync(percorso, 'utf8').split('\n')) {
+    const r = riga.trim();
+    if (!r || r.startsWith('#')) continue;
+    const eq = r.indexOf('=');
+    if (eq === -1) continue;
+    const chiave = r.slice(0, eq).trim();
+    let valore = r.slice(eq + 1).trim();
+    if ((valore.startsWith('"') && valore.endsWith('"')) || (valore.startsWith("'") && valore.endsWith("'"))) {
+      valore = valore.slice(1, -1);
+    }
+    if (process.env[chiave] === undefined) process.env[chiave] = valore;
+  }
+}
+caricaDotEnv(path.join(__dirname, '..', '.env'));
 
 function leggi(nome, fallbackMock) {
   return process.env[nome] || fallbackMock;
@@ -50,4 +81,4 @@ function modalitaSimulata(sezione) {
   return Object.values(CONFIG[sezione]).some(isMock);
 }
 
-module.exports = { CONFIG, isMock, modalitaSimulata };
+module.exports = { CONFIG, isMock, modalitaSimulata, caricaDotEnv };
