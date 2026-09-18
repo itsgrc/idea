@@ -8,6 +8,7 @@
 |---|---|
 | `server.js` | **Motore conversazionale funzionante** (zero dipendenze): macchina a stati che gestisce la telefonata — saluto, intento, raccolta dati, conferma appuntamento. Ogni evento finisce in un log JSONL (`eventi.jsonl`). Provalo: `node server.js --demo` |
 | `integrazioni/telefonia.test.js` | Test automatico del webhook telefonico: firma Twilio (valida/contraffatta/alterata), escaping XML del testo dettato dal chiamante, chiamata end-to-end simulata. `node integrazioni/telefonia.test.js` |
+| `verifica-configurazione.js` | **Checklist "sono pronto per il pilota?" in un comando solo** — dice cosa è già reale e cosa è ancora simulato, e intercetta l'errore più comune (`PUBLIC_URL` sbagliato) prima che lo scopra la prima chiamata vera. `node verifica-configurazione.js` |
 | `flows/dentista.json`, `flows/officina.json` | I flussi conversazionali per le due nicchie, configurabili senza toccare codice |
 | `valori/*.json` | Il valore economico (€) di ogni evento, per flusso — lo configura il titolare in onboarding |
 | `valore.js` | **Il motore di ROI**: legge il log eventi e genera il report che chiude la vendita al giorno 30 del pilota. `node valore.js --demo` |
