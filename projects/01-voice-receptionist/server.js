@@ -235,20 +235,30 @@ function demo() {
 
 /* ------------------------------------------------------------------ *
  * Modalità test: conversazione scriptata, verifica il flusso completo.
+ * Lo script (battute + esito atteso) vive dentro il flusso stesso
+ * (flow.test), non qui: così ogni nuovo settore (flows/*.json) porta
+ * la propria verifica automatica senza toccare il motore — la stessa
+ * filosofia "il flusso comanda, non il codice" usata per gli stati.
  * ------------------------------------------------------------------ */
 function test() {
+  const spec = flow.test;
+  if (!spec) {
+    console.log(`⚠️  Il flusso "${flow.nome}" non definisce uno script di test (campo "test" mancante in ${path.basename(FLOW_PATH)}).`);
+    process.exit(1);
+  }
   const sessione = nuovaSessione();
   const out = [];
   avanza(sessione, out);
-  const battute = ['Vorrei prenotare una pulizia dei denti', 'Mario Rossi', 'meglio il pomeriggio', 'no grazie'];
-  for (const b of battute) {
+  for (const b of spec.battute) {
     out.push(`> ${b}`);
     ricevi(sessione, b).forEach((r) => out.push(r));
     if (sessione.finita) break;
   }
   console.log(out.join('\n'));
-  const ok = sessione.eventi.some((e) => e.tipo === 'appuntamento_creato') && sessione.dati.nome === 'Mario Rossi';
-  console.log(ok ? '\n✅ TEST OK: appuntamento creato per Mario Rossi' : '\n❌ TEST FALLITO');
+  const evento = sessione.eventi.find((e) => e.tipo === spec.verifica.evento);
+  const campiOk = Object.entries(spec.verifica.campi || {}).every(([k, v]) => sessione.dati[k] === v);
+  const ok = Boolean(evento) && campiOk;
+  console.log(ok ? `\n✅ TEST OK (${flow.nome}): ${spec.verifica.evento} con i dati attesi` : `\n❌ TEST FALLITO (${flow.nome})`);
   process.exit(ok ? 0 : 1);
 }
 

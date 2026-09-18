@@ -32,7 +32,12 @@ node suggerimenti.js --demo   # → "aggiungi l'intento parcheggio (3 volte)" + 
 node server.js --demo     # conversazione interattiva nel terminale
 node server.js --test     # conversazione scriptata automatica (per CI)
 node server.js            # avvia l'API HTTP su :3000
+
+# Per testare l'altro settore (o uno nuovo), punta FLOW al suo file:
+FLOW=./flows/officina.json node server.js --test
 ```
+
+Ogni flusso porta il proprio script di verifica (campo `"test"` in `flows/*.json`): aggiungere un settore non richiede toccare `server.js`, solo scrivere gli stati e le battute di prova nel suo JSON.
 
 ## Architettura — completa, con credenziali mock
 

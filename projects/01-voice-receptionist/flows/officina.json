@@ -86,5 +86,12 @@
       "messaggio": "Grazie per aver chiamato l'Officina Demo. Buona giornata!",
       "terminale": true
     }
+  },
+  "test": {
+    "battute": ["Vorrei portare la macchina per un tagliando", "AB123CD Panda blu", "Mario Rossi", "pomeriggio"],
+    "verifica": {
+      "evento": "appuntamento_creato",
+      "campi": { "targa": "AB123CD Panda blu", "nome": "Mario Rossi", "preferenza_orario": "pomeriggio" }
+    }
   }
 }

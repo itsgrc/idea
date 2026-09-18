@@ -67,5 +67,12 @@
       "messaggio": "Grazie per aver chiamato lo Studio Dentistico Demo. Buona giornata!",
       "terminale": true
     }
+  },
+  "test": {
+    "battute": ["Vorrei prenotare una pulizia dei denti", "Mario Rossi", "pomeriggio"],
+    "verifica": {
+      "evento": "appuntamento_creato",
+      "campi": { "nome": "Mario Rossi", "preferenza_orario": "pomeriggio" }
+    }
   }
 }
