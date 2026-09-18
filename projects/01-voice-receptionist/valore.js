@@ -89,7 +89,13 @@ function main() {
     const { genera, LOG_PATH } = require('./simulatore.js');
     if (!fs.existsSync(LOG_PATH)) genera(25);
     logPath = LOG_PATH;
-    valoriPath = path.join(__dirname, 'valori', 'dentista.json');
+    // Stessa convenzione di FLOW per server.js/simulatore.js: il nome del
+    // file flusso decide anche il file valori/ da usare, così
+    // `FLOW=./flows/officina.json node valore.js --demo` mostra il report
+    // dell'officina invece di riprezzare i suoi eventi con le tariffe del
+    // dentista (settori diversi, valori economici diversi).
+    const nomeFlusso = path.basename(process.env.FLOW || 'flows/dentista.json', '.json');
+    valoriPath = path.join(__dirname, 'valori', `${nomeFlusso}.json`);
   } else {
     logPath = process.argv[2];
     valoriPath = process.argv[3];

@@ -74,5 +74,14 @@
       "evento": "appuntamento_creato",
       "campi": { "nome": "Mario Rossi", "preferenza_orario": "pomeriggio" }
     }
+  },
+  "simulazione": {
+    "_nota": "Copioni per simulatore.js --demo. Ogni battuta è verificata a mano contro le parole chiave qui sopra, per non innescare corrispondenze accidentali (es. 'visita' dentro una frase sul parcheggio farebbe matchare 'appuntamento' invece di generare il fallback voluto).",
+    "copioni": [
+      { "peso": 50, "battute": ["Vorrei prenotare una pulizia dei denti", "{{nome}}", "meglio il pomeriggio"] },
+      { "peso": 20, "battute": ["Ho un forte dolore a un dente", "{{nome}}"] },
+      { "peso": 15, "battute": ["Avete un parcheggio per i pazienti?", "Sì, vorrei comunque prenotare una visita", "{{nome}}", "la mattina se possibile"] },
+      { "peso": 15, "battute": ["Posso pagare con il bancomat?", "Va bene, allora vorrei fissare un appuntamento", "{{nome}}", "il pomeriggio"] }
+    ]
   }
 }
